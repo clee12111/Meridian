@@ -1,0 +1,4339 @@
+{
+  "tests": [
+    {
+      "query_id": "privacy_qa-0000",
+      "query": "Consider \"Fiverr\"'s privacy policy; who can see which tasks i hire workers for?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3873,
+            4312
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0001",
+      "query": "Consider \"Fiverr\"'s privacy policy; who can see the jobs that i post?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3969,
+            4312
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0002",
+      "query": "Consider \"Fiverr\"'s privacy policy; what type of identifiable information is passed between users on the platform",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            528,
+            847
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            4943,
+            5248
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0003",
+      "query": "Consider \"Fiverr\"'s privacy policy; how is my info protected from hackers?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            19890,
+            20888
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0004",
+      "query": "Consider \"Fiverr\"'s privacy policy; who can see my information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3969,
+            4312
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            10829,
+            11080
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0005",
+      "query": "Consider \"Fiverr\"'s privacy policy; what information does the company store about me?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3358,
+            5248
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            5626,
+            5924
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0006",
+      "query": "Consider \"Fiverr\"'s privacy policy; what information can other people see?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            528,
+            847
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            4943,
+            5248
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0007",
+      "query": "Consider \"Fiverr\"'s privacy policy; how does fiverr protect freelancers' personal information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            19890,
+            20888
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0008",
+      "query": "Consider \"Fiverr\"'s privacy policy; how does fiverr ensure payments to freelancers are secure?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            12368,
+            12742
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            19890,
+            20804
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0009",
+      "query": "Consider \"Fiverr\"'s privacy policy; is my information sold to any third parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            10335,
+            11080
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0010",
+      "query": "Consider \"Fiverr\"'s privacy policy; will my location be constantly tracked?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3969,
+            4312
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0011",
+      "query": "Consider \"Fiverr\"'s privacy policy; will potential employers be able to obtain my address?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3358,
+            3873
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            4943,
+            5248
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0012",
+      "query": "Consider \"Fiverr\"'s privacy policy; can i control the information that is presented to potential employers?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            4943,
+            5248
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0013",
+      "query": "Consider \"Fiverr\"'s privacy policy; can other parties see my information",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3969,
+            4312
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            4943,
+            5248
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            10829,
+            11080
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0014",
+      "query": "Consider \"Fiverr\"'s privacy policy; can other people see my financial information",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            12368,
+            12742
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0015",
+      "query": "Consider \"Fiverr\"'s privacy policy; what information do you collect?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            528,
+            847
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3358,
+            5248
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            5626,
+            5924
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0016",
+      "query": "Consider \"Fiverr\"'s privacy policy; do you sell my information to third parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            10335,
+            11080
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0017",
+      "query": "Consider \"Fiverr\"'s privacy policy; do you use a secure payment service?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            12368,
+            12742
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0018",
+      "query": "Consider \"Fiverr\"'s privacy policy; how is information used?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            3541,
+            3873
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            4312,
+            4490
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Fiverr.txt",
+          "span": [
+            6512,
+            9052
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0019",
+      "query": "Consider \"Keep\"'s privacy policy; who has access to my workout plans?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4242
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            5074,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0020",
+      "query": "Consider \"Keep\"'s privacy policy; will my fitness coach share my information with others?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            5177
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            9454,
+            9692
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0021",
+      "query": "Consider \"Keep\"'s privacy policy; will my progress only be posted to social media if i want it to?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            4911
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0022",
+      "query": "Consider \"Keep\"'s privacy policy; will any photos i take be accessed by outside parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3814,
+            4242
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            5074,
+            5177
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            6484,
+            6678
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0023",
+      "query": "Consider \"Keep\"'s privacy policy; will my information be shared with other companies for marketing?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4517
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0024",
+      "query": "Consider \"Keep\"'s privacy policy; will the app use my data for marketing purposes?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4517
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0025",
+      "query": "Consider \"Keep\"'s privacy policy; does this app get access to my other apps like twitter and instagram?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2330,
+            2472
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            4911
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0026",
+      "query": "Consider \"Keep\"'s privacy policy; how safe is my account information on this app?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            7939,
+            8997
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0027",
+      "query": "Consider \"Keep\"'s privacy policy; are my statistics kept private?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4242
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            5074,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0028",
+      "query": "Consider \"Keep\"'s privacy policy; who can see my data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4242
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4956,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0029",
+      "query": "Consider \"Keep\"'s privacy policy; does the app access my contact list?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2895,
+            2980
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3814,
+            4004
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0030",
+      "query": "Consider \"Keep\"'s privacy policy; is my data safe?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            7939,
+            8997
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0031",
+      "query": "Consider \"Keep\"'s privacy policy; are you storing any of my information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            926,
+            1042
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2817,
+            3095
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3425,
+            4004
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0032",
+      "query": "Consider \"Keep\"'s privacy policy; do you access any of my contact's information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2895,
+            2980
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3814,
+            4004
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0033",
+      "query": "Consider \"Keep\"'s privacy policy; does it save any of my health data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            926,
+            1042
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            5327,
+            5787
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0034",
+      "query": "Consider \"Keep\"'s privacy policy; can the app access my location?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2980,
+            3095
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3633,
+            3814
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0035",
+      "query": "Consider \"Keep\"'s privacy policy; is any information shared with third parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0036",
+      "query": "Consider \"Keep\"'s privacy policy; can it access my other social media accounts?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2330,
+            2472
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            4911
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0037",
+      "query": "Consider \"Keep\"'s privacy policy; what information will this app have access to of mine?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            926,
+            1042
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2271,
+            2472
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2730,
+            4004
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0038",
+      "query": "Consider \"Keep\"'s privacy policy; will the personal info i share with this app to sign up be shared with other companies, etc?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4517
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0039",
+      "query": "Consider \"Keep\"'s privacy policy; will my workout data be given to anyone else or shared with anyone (i.e. insurance companies)?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4911
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4956,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0040",
+      "query": "Consider \"Keep\"'s privacy policy; how well does keep protect my data and how do they do that?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            7939,
+            8997
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0041",
+      "query": "Consider \"Keep\"'s privacy policy; can people see what workout list i'm using?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4242
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0042",
+      "query": "Consider \"Keep\"'s privacy policy; can people see my workout log?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4242
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0043",
+      "query": "Consider \"Keep\"'s privacy policy; will they share my information with anyone?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4517
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0044",
+      "query": "Consider \"Keep\"'s privacy policy; will my location be monitored and shared?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2980,
+            3095
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3633,
+            3814
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0045",
+      "query": "Consider \"Keep\"'s privacy policy; how is my information protected?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            7939,
+            8997
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0046",
+      "query": "Consider \"Keep\"'s privacy policy; will any of my information be sold?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4517
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0047",
+      "query": "Consider \"Keep\"'s privacy policy; do you know my location",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2980,
+            3095
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3633,
+            3814
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0048",
+      "query": "Consider \"Keep\"'s privacy policy; do you keep and upload my activity to your database",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            1221,
+            1361
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0049",
+      "query": "Consider \"Keep\"'s privacy policy; do you use my data to modify the app",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            1077,
+            1462
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            1484,
+            1720
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0050",
+      "query": "Consider \"Keep\"'s privacy policy; do you sell my data",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4517
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0051",
+      "query": "Consider \"Keep\"'s privacy policy; do you share my location with other people",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2980,
+            3095
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3633,
+            3814
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4956,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0052",
+      "query": "Consider \"Keep\"'s privacy policy; are my goals shared with third parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4004,
+            4670
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4807,
+            4911
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            4956,
+            5177
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0053",
+      "query": "Consider \"Keep\"'s privacy policy; do you keep track of my physical measurements like height and weight?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            926,
+            1042
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0054",
+      "query": "Consider \"Keep\"'s privacy policy; does it have access to my gps information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            2980,
+            3095
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            3633,
+            3814
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0055",
+      "query": "Consider \"Keep\"'s privacy policy; will biological data like heart rate, blood pressure, etc. be collected via the app?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            926,
+            1042
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Keep.txt",
+          "span": [
+            5177,
+            6139
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0056",
+      "query": "Consider \"Groupon\"'s privacy policy; what security system do you have in place for the app?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            13561,
+            14100
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0057",
+      "query": "Consider \"Groupon\"'s privacy policy; what happen if my account get compromise?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            13561,
+            14100
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0058",
+      "query": "Consider \"Groupon\"'s privacy policy; will my information be saved after i use groupon once?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            14613,
+            15440
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0059",
+      "query": "Consider \"Groupon\"'s privacy policy; who will have access to my information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4089,
+            4191
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6737,
+            10228
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0060",
+      "query": "Consider \"Groupon\"'s privacy policy; do i have to tell you my location?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3150,
+            3364
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            12815,
+            13561
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            22527,
+            23019
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0061",
+      "query": "Consider \"Groupon\"'s privacy policy; will you ever sell my information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4089,
+            4191
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4267,
+            4466
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4876,
+            5414
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            5645,
+            5805
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6737,
+            6836
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            7120,
+            7888
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            7938,
+            8061
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            8629,
+            8785
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0062",
+      "query": "Consider \"Groupon\"'s privacy policy; how long will you have my information for?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            14810,
+            15440
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0063",
+      "query": "Consider \"Groupon\"'s privacy policy; what kind of data does groupon collect?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            0,
+            842
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            22527,
+            23238
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            23888,
+            24048
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0064",
+      "query": "Consider \"Groupon\"'s privacy policy; what does groupon do with collected data? (eg, does it sell it to third parties?)",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4089,
+            9287
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            9598,
+            10163
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0065",
+      "query": "Consider \"Groupon\"'s privacy policy; what kind of permissions do i have to grant it?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            16602,
+            16886
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0066",
+      "query": "Consider \"Groupon\"'s privacy policy; what kind of security protocol does groupon use to protect data and privacy of its users?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            13561,
+            14100
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0067",
+      "query": "Consider \"Groupon\"'s privacy policy; if i decide to discontinue using groupon, how long does it keep my data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            14100,
+            14301
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            14510,
+            15440
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0068",
+      "query": "Consider \"Groupon\"'s privacy policy; what kind of personal info does groupon have on me?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            0,
+            842
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0069",
+      "query": "Consider \"Groupon\"'s privacy policy; does groupon sell my personal information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6737,
+            8061
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            9491,
+            9598
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0070",
+      "query": "Consider \"Groupon\"'s privacy policy; can groupon see where i am located?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            12815,
+            13561
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0071",
+      "query": "Consider \"Groupon\"'s privacy policy; can other users see any of my personal info if i use groupon?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            15463,
+            16036
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            16349,
+            16602
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0072",
+      "query": "Consider \"Groupon\"'s privacy policy; do vendors get my information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4089,
+            4191
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6737,
+            10446
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            27131,
+            27447
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0073",
+      "query": "Consider \"Groupon\"'s privacy policy; do the app keep track of my location data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4267,
+            4466
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6197,
+            6420
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            12815,
+            13561
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0074",
+      "query": "Consider \"Groupon\"'s privacy policy; is my search and purchase history shared with advertisers?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4089,
+            4191
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4267,
+            4466
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6737,
+            6836
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            7120,
+            9287
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            9491,
+            10812
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0075",
+      "query": "Consider \"Groupon\"'s privacy policy; what type of permissions does the app need to operate?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            16602,
+            16886
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0076",
+      "query": "Consider \"Groupon\"'s privacy policy; does it need location services while not using it?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            12815,
+            13561
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0077",
+      "query": "Consider \"Groupon\"'s privacy policy; do i need to enter any personal information to use it?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            0,
+            842
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            11044,
+            12594
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            12815,
+            13235
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            23888,
+            24298
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            24498,
+            25088
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            25678,
+            25934
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            26190,
+            26510
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0078",
+      "query": "Consider \"Groupon\"'s privacy policy; does it keep track of where i am?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4267,
+            4466
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6197,
+            6420
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            12815,
+            13561
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0079",
+      "query": "Consider \"Groupon\"'s privacy policy; does it share my personal information with others?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            4089,
+            4191
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6737,
+            10446
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0080",
+      "query": "Consider \"Groupon\"'s privacy policy; does it share my purchase information with others?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            7120,
+            7888
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            8367,
+            8629
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            27131,
+            27447
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0081",
+      "query": "Consider \"Groupon\"'s privacy policy; what permissions does it request on my phone?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            16602,
+            16886
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0082",
+      "query": "Consider \"Groupon\"'s privacy policy; does it need my location at all times, or can i just type in it whenever i'm looking for a coupon?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            3507,
+            3901
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            12815,
+            13561
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0083",
+      "query": "Consider \"Groupon\"'s privacy policy; does it sell my data to anyone?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            6737,
+            9287
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            9491,
+            9598
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0084",
+      "query": "Consider \"Groupon\"'s privacy policy; does it save all info on me if i delete my acct?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            14100,
+            14301
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            14510,
+            15440
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0085",
+      "query": "Consider \"Groupon\"'s privacy policy; how will my data be stored",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            13561,
+            14100
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0086",
+      "query": "Consider \"Groupon\"'s privacy policy; what protections are used",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            13561,
+            14100
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0087",
+      "query": "Consider \"Groupon\"'s privacy policy; is my data safe",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            13561,
+            14100
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0088",
+      "query": "Consider \"Groupon\"'s privacy policy; this app ask any kind personal details like credit card details?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            0,
+            152
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            371,
+            491
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            547,
+            601
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Groupon.txt",
+          "span": [
+            11044,
+            11273
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0089",
+      "query": "Consider \"Wordscapes\"'s privacy policy; what information of mine does it access",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1643,
+            1755
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1791,
+            1969
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2044,
+            2286
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2532,
+            3400
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3430,
+            3913
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4055,
+            4387
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4888,
+            5729
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6020
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0090",
+      "query": "Consider \"Wordscapes\"'s privacy policy; what information of mine does it collect",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1643,
+            1755
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1791,
+            1969
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2044,
+            2286
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2532,
+            3400
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3430,
+            3913
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4055,
+            4387
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4888,
+            5729
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6020
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0091",
+      "query": "Consider \"Wordscapes\"'s privacy policy; is my information sold",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14598,
+            15324
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            15709,
+            16104
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0092",
+      "query": "Consider \"Wordscapes\"'s privacy policy; is my information secure",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            23265,
+            24403
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0093",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it collect any of my contact's information",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3092,
+            3400
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5526,
+            5617
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0094",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does this app sell customer information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            13330,
+            13448
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14539,
+            15633
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            15709,
+            16104
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            25008,
+            25762
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0095",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does this app track my gps location?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            7061,
+            7152
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0096",
+      "query": "Consider \"Wordscapes\"'s privacy policy; will this app sell my information to any 3rd parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            13330,
+            13448
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14539,
+            15633
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            15709,
+            16104
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            25008,
+            25762
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0097",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does this app need access to any of my social media accounts?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2044,
+            2286
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0098",
+      "query": "Consider \"Wordscapes\"'s privacy policy; what information are they collecting?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1791,
+            1969
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2044,
+            2286
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2532,
+            3400
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3430,
+            3913
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4055,
+            4387
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4888,
+            5729
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6020
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0099",
+      "query": "Consider \"Wordscapes\"'s privacy policy; is it monitoring my location?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            7061,
+            7152
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0100",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it read my contacts?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3092,
+            3400
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5526,
+            5617
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0101",
+      "query": "Consider \"Wordscapes\"'s privacy policy; is my privacy secured?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            23265,
+            24403
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0102",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it record my location information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            7061,
+            7152
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0103",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does the app track my location?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            7061,
+            7152
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0104",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does the app contain third party ads?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            9215,
+            9351
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14598,
+            15709
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            16104,
+            16217
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0105",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does this app use data on my phone not within the app?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2044,
+            2286
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4888,
+            5211
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5321,
+            5617
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6020
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0106",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does the wordscapes app have access to my location?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            7061,
+            7152
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0107",
+      "query": "Consider \"Wordscapes\"'s privacy policy; are there any advertisements within the wordscapes app that could lead me to third party sites?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            16104,
+            16217
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0108",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does the wordscapes app collect any personally identifiable information like my name or email?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1791,
+            1969
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2044,
+            2286
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4055,
+            4311
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5321,
+            5526
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0109",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does the app show targeted advertisements?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14742,
+            15088
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            15324,
+            15552
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0110",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it have access to my contacts?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3092,
+            3400
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5526,
+            5617
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0111",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does the app sell any personal information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            13330,
+            13448
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14598,
+            16104
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0112",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it collect my location?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            7061,
+            7152
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0113",
+      "query": "Consider \"Wordscapes\"'s privacy policy; what data does it collect",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1643,
+            1755
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            1791,
+            1969
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2044,
+            2286
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            2532,
+            3400
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3430,
+            3913
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4055,
+            4387
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            4888,
+            5729
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0114",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it share data with others",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            13330,
+            13448
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            13488,
+            13734
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14598,
+            15324
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            15709,
+            16104
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            18250,
+            19035
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0115",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it collect payment information",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            3430,
+            3913
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0116",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it collect location",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            5760,
+            6208
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            7061,
+            7152
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0117",
+      "query": "Consider \"Wordscapes\"'s privacy policy; does it sell data",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            14539,
+            15324
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Wordscapes.txt",
+          "span": [
+            15709,
+            16104
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0118",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; is my reminder data saved anywhere?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            798,
+            1789
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0119",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; is my task schedule being tracked?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            426,
+            531
+          ]
+        },
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            798,
+            1006
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0120",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; can it view my real name?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            426,
+            531
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0121",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; can i delete my personally identifying information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            2600,
+            2833
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0122",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; what information do you take from me.",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            426,
+            1006
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0123",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; is my data shared with others?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0124",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; would there be a way to see what data you collect?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            368,
+            798
+          ]
+        },
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            2422,
+            2524
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0125",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; does the app share information with any third parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0126",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; will my data be shared with third party entities?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0127",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; are my ideas uploaded to any servers?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            798,
+            1789
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0128",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; who will have access to the info i enter into the application?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0129",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; will the application make money off of the info i enter in the app?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0130",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; who has access to whatever i create using this?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1789
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0131",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; do third parties have access to my data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0132",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; who all has access to my data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0133",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; does this app capture my ip address?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            368,
+            426
+          ]
+        },
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            649,
+            798
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0134",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; what data do they take",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            426,
+            1006
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0135",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; what information is shared",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1789
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0136",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; who sees my data",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0137",
+      "query": "Consider \"TickTick: To Do List with Reminder, Day Planner\"'s privacy policy; is there a way to opt out of data sharing",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1006,
+            1789
+          ]
+        },
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            1920,
+            2073
+          ]
+        },
+        {
+          "file_path": "privacy_qa/TickTick: To Do List with Reminder, Day Planner.txt",
+          "span": [
+            2600,
+            2719
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0138",
+      "query": "Consider \"23andMe\"'s privacy policy; is my information shared with any third parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            15349,
+            16534
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            16755,
+            16935
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            17233,
+            17584
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            18455,
+            18791
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            23008,
+            25180
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            25216,
+            25377
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            25400,
+            25499
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            25600,
+            26129
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            26154,
+            26489
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            27063,
+            27586
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            27671,
+            30659
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            30710,
+            31061
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0139",
+      "query": "Consider \"23andMe\"'s privacy policy; does the app save the address that my kit is shipped to?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            760,
+            1024
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            2350,
+            2636
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            23592,
+            23804
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0140",
+      "query": "Consider \"23andMe\"'s privacy policy; do you sell my genetic data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            15349,
+            16534
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            16755,
+            16935
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            17233,
+            17584
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            18455,
+            18791
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            23008,
+            23199
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            24684,
+            25009
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            25216,
+            25377
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            26154,
+            26398
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            27671,
+            28872
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            29318,
+            29533
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            30710,
+            31061
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            31187,
+            31433
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0141",
+      "query": "Consider \"23andMe\"'s privacy policy; is my data anonymized?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            184,
+            451
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            3914,
+            4041
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            37627,
+            37842
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0142",
+      "query": "Consider \"23andMe\"'s privacy policy; are you accessing and information about me from my phone?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            9236,
+            10181
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            27300,
+            27586
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0143",
+      "query": "Consider \"23andMe\"'s privacy policy; what will you do with my dna?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            13578,
+            13918
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            15349,
+            18791
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            19128,
+            19624
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            19978,
+            20113
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0144",
+      "query": "Consider \"23andMe\"'s privacy policy; will you destroy my dna sample when you are finished?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            8411,
+            8631
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            24806,
+            25009
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0145",
+      "query": "Consider \"23andMe\"'s privacy policy; do you use my data to do medical research",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            15349,
+            17584
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            17610,
+            17749
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            17874,
+            18399
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            18455,
+            18791
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            19128,
+            20113
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0146",
+      "query": "Consider \"23andMe\"'s privacy policy; is any information recorded",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            2350,
+            2636
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            2663,
+            3129
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            3272,
+            3543
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            4367,
+            4564
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            4599,
+            5115
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            5191,
+            5313
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            5525,
+            6192
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            6226,
+            6563
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            7982,
+            8776
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            8797,
+            9484
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0147",
+      "query": "Consider \"23andMe\"'s privacy policy; where is the information saved",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            8411,
+            8631
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            38099,
+            38277
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0148",
+      "query": "Consider \"23andMe\"'s privacy policy; is the information encrypted",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            37854,
+            37965
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0149",
+      "query": "Consider \"23andMe\"'s privacy policy; will my test results be shared with any third party entities?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            15349,
+            16534
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            16755,
+            16935
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            17233,
+            17584
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            18455,
+            18791
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            23008,
+            23199
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            23327,
+            25180
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            25216,
+            25377
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            25400,
+            25499
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            25600,
+            26129
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            26154,
+            26398
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            27063,
+            27300
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            27671,
+            29727
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            29959,
+            30659
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            30710,
+            31061
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0150",
+      "query": "Consider \"23andMe\"'s privacy policy; can i delete my personally identifying information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            32531,
+            32915
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            35001,
+            36320
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            36350,
+            37091
+          ]
+        },
+        {
+          "file_path": "privacy_qa/23andMe.txt",
+          "span": [
+            46602,
+            47020
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0151",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; does viber log messages?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            900
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            2742,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0152",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; are my call logs recorded?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            900
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            2742,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0153",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; are my video calls recorded?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            900
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            2742,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0154",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; do you require me to submit identifying information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            1412,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0155",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; what information is collected about users?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            1218,
+            3555
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            3626,
+            5240
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0156",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; how is my data used?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            6878,
+            7943
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            8203,
+            8969
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            9578,
+            10216
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            10771,
+            10918
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            12995,
+            13336
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0157",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; what data do you keep and for how long?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            10918,
+            11655
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0158",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; do you keep a record of our text ?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            900
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            2742,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0159",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; do you keep a record of our text messages?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            900
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            2742,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0160",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; do you record our phone calls?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            900
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            2742,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0161",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; if i send a message that is considered dirty, will the controllers of the app see it?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            773
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0162",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; does viber sell my information to advertisers and marketers?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11655,
+            11734
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            13453,
+            14579
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0163",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; does viber have any affiliation with the advertisement industry?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            13453,
+            14416
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0164",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; are there other people who can access my information?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11734,
+            11828
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            12995,
+            13336
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            13453,
+            13992
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            14579,
+            14803
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0165",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; how is any information collected by viber shared with other parties?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11655,
+            15357
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0166",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; is any data collected by the app has any connection with the third party sites?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            12995,
+            13336
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            13453,
+            14416
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0167",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; will my personal details be shared with third party  companies?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11655,
+            14803
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0168",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; can any 3rd party see my conversations?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            773
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0169",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; do you sell any of our data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11655,
+            11734
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            13453,
+            14579
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0170",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; how are my contacts stored?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            1864,
+            2107
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0171",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; can i submit a request to have my data deleted?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            773,
+            900
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            7943,
+            8080
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            17121,
+            17244
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0172",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; when do you delete stored data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            7943,
+            8080
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            10918,
+            11655
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0173",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; how long do you retain meta data?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            10918,
+            11474
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0174",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; are my message encrypted on viber?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            900,
+            1218
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23463,
+            23705
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23805,
+            24370
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0175",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; is there any sort of encryption for communications?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            900,
+            1218
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            22966,
+            23060
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23463,
+            23705
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23805,
+            24370
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0176",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; is it keep my phone numbers undisclosed?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            1864,
+            2107
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0177",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; is the messages sent through it are safe?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23339,
+            23705
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23805,
+            24370
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0178",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; the photos and videos shared will be kept confidential?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            773
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0179",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; can anyone view my account?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            1655,
+            1756
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            15659,
+            16188
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            16668,
+            16767
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0180",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; how is my data stored?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23339,
+            23705
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0181",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; does the app protect my account details from being accessed by other people?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23339,
+            23705
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23805,
+            23998
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0182",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; does the app offer a password service where i am required to input a password when i want to access it?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            5388,
+            5565
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            5943,
+            6196
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23705,
+            23805
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0183",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; will viber comply to government information request?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            14579,
+            14726
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0184",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; can my call log be subpoenaed?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            14579,
+            14726
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0185",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; if it's free, does viber profit off its users in some way?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            6878,
+            7943
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11655,
+            11734
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            12330,
+            14579
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0186",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; can anyone view my account?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            1655,
+            1756
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            15659,
+            16188
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            16668,
+            16767
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0187",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; does the app hide the content  of the messages i send from other people on my contact list?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            773
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            15766,
+            15842
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0188",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; if i send a message that is considered dirty, will the controllers of the app see it?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            773
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0189",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; does this send information to a third party?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11655,
+            11828
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            12995,
+            13336
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            13453,
+            14416
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            14579,
+            14803
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0190",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; what personal information will be required for me to set up an account?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            1412,
+            2508
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0191",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; will you ever sell my personal information to a third party?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            11655,
+            11734
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            12995,
+            13336
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            13453,
+            14579
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0192",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; how is my information protected when i'm using your app over wi-fi?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23339,
+            23705
+          ]
+        },
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            23805,
+            24370
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "privacy_qa-0193",
+      "query": "Consider \"Viber Messenger\"'s privacy policy; who will be able to see my information and/or the messages that i send?",
+      "snippets": [
+        {
+          "file_path": "privacy_qa/Viber Messenger.txt",
+          "span": [
+            500,
+            773
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3373 @@
+{
+  "tests": [
+    {
+      "query_id": "maud-1107",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            19905,
+            21370
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1108",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            242995,
+            243267
+          ]
+        },
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            245446,
+            245654
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1109",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            307910,
+            308097
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1110",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            174556,
+            175769
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1111",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            297969,
+            299321
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1112",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            306177,
+            307487
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1113",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            157832,
+            159005
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1114",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            213141,
+            214258
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1115",
+      "query": "Consider the Merger Agreement between Parent \"BridgeBio Pharma, Inc.\" and Target \"Eidos Therapeutics, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Eidos Therapeutics, Inc._BridgeBio Pharma, Inc..txt",
+          "span": [
+            269108,
+            270418
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1325",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            22301,
+            22980
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1326",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            325366,
+            325731
+          ]
+        },
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            328238,
+            328495
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1327",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            386851,
+            386995
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1328",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            381700,
+            383196
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1329",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            378474,
+            380640
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1330",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            338618,
+            338660
+          ]
+        },
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            341768,
+            341835
+          ]
+        },
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            342721,
+            343033
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1331",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; What happens during a Breach of No-Shop clause",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            333517,
+            333544
+          ]
+        },
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            336997,
+            337286
+          ]
+        },
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            339284,
+            340204
+          ]
+        },
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            410582,
+            410619
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1332",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            198939,
+            200862
+          ]
+        },
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            400967,
+            401238
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1333",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            294013,
+            294199
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1334",
+      "query": "Consider the Merger Agreement between Parent \"Cabot Oil & Gas Corporation\" and Target \"Cimarex Energy Co.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Cimarex Energy Co._Cabot Oil & Gas Corporation.pdf_Cimarex_Energy_Co_Cabot_Oil_Gas_Corporation_Amendment No.1.txt",
+          "span": [
+            365966,
+            366825
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0881",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            22033,
+            22882
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0882",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            266943,
+            267213
+          ]
+        },
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            269835,
+            270138
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0883",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            88489,
+            89043
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0884",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            308090,
+            308247
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0885",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            191060,
+            192673
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0886",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            306014,
+            307515
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0887",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            273387,
+            273580
+          ]
+        },
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            275664,
+            275706
+          ]
+        },
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            277286,
+            277677
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0888",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            150006,
+            150990
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0889",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            207214,
+            207927
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0890",
+      "query": "Consider the Acquisition Agreement between Parent \"Avangrid, Inc.\" and Target \"PNM Resources, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/PNM Resources, Inc._Avangrid, Inc..txt",
+          "span": [
+            327892,
+            328563
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0674",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            10152,
+            11260
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0675",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            230696,
+            230764
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            232417,
+            232610
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0676",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; What is the Definition of \"Material Adverse Effect\"",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            55247,
+            58202
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            58239,
+            58463
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            58477,
+            58918
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0677",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            255437,
+            255590
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0678",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            200861,
+            202950
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0679",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; What about the Fiduciary exception to the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            200861,
+            200916
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            207227,
+            209750
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0680",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            237959,
+            238057
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            241348,
+            242243
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0681",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            243425,
+            243459
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            244262,
+            245788
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0682",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            58477,
+            58918
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            154529,
+            156478
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0683",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            172439,
+            172470
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            173450,
+            174141
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0684",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            172439,
+            172470
+          ]
+        },
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            176116,
+            176518
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0685",
+      "query": "Consider the Acquisition Agreement between Parent \"Stock Yards Bancorp, Inc.\" and Target \"Kentucky Bancshares, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Kentucky_Bancshares_Stock_Yards_Bancorp.txt",
+          "span": [
+            262329,
+            262929
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0560",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            18672,
+            18708
+          ]
+        },
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            19211,
+            19546
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0561",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            314921,
+            315403
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0562",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            370764,
+            370887
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0563",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            226602,
+            226781
+          ]
+        },
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            242773,
+            245251
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0564",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            357638,
+            358945
+          ]
+        },
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            399484,
+            400696
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0565",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            371251,
+            371785
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0566",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            204309,
+            205059
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0567",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            265351,
+            265425
+          ]
+        },
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            265891,
+            266063
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0568",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            271528,
+            272763
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0569",
+      "query": "Consider the Merger Agreement between Parent \"Penn Virginia Corporation\" and Target \"Lonestar Resources US Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Lonestar_Resources_US_Inc_Penn_Virginia_Corporation.txt",
+          "span": [
+            346659,
+            347307
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0118",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            12534,
+            13338
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0119",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            223324,
+            223532
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            225445,
+            225818
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0120",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; What is the Definition of \"Material Adverse Effect\"",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            58500,
+            61251
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0121",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            248043,
+            248225
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0122",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            200147,
+            200866
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0123",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; What about the Fiduciary exception to the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            200147,
+            200207
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            200901,
+            204119
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0124",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            207389,
+            208091
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            208092,
+            209361
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0125",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            231216,
+            231478
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            235974,
+            236413
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0126",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            239462,
+            239484
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            240489,
+            241775
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0127",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; What happens during a Breach of No-Shop clause",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            200147,
+            200207
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            231216,
+            231265
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            234523,
+            234731
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            239462,
+            239484
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            239893,
+            240488
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0128",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            159220,
+            159688
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0129",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            174845,
+            174868
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            175898,
+            176582
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0130",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            174845,
+            174868
+          ]
+        },
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            180438,
+            181485
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0131",
+      "query": "Consider the Merger Agreement between Columbia Banking System, Inc. and Bank of Commerce Holdings; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Bank of Commerce Holdings_Columbia Banking System, Inc..txt",
+          "span": [
+            255141,
+            255539
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0021",
+      "query": "Consider the Acquisition Agreement between Parent \"Ocala Bidco, Inc.\" and Target \"Inovalon Holdings, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            262932,
+            263254
+          ]
+        },
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            265283,
+            265490
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0022",
+      "query": "Consider the Acquisition Agreement between Parent \"Ocala Bidco, Inc.\" and Target \"Inovalon Holdings, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            110957,
+            111583
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0023",
+      "query": "Consider the Acquisition Agreement between Parent \"Ocala Bidco, Inc.\" and Target \"Inovalon Holdings, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            37391,
+            37751
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0024",
+      "query": "Consider the Acquisition Agreement between Parent \"Ocala Bidco, Inc.\" and Target \"Inovalon Holdings, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            43442,
+            43707
+          ]
+        },
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            186487,
+            186516
+          ]
+        },
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            186520,
+            186819
+          ]
+        },
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            187932,
+            189851
+          ]
+        },
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            204300,
+            204551
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0025",
+      "query": "Consider the Acquisition Agreement between Parent \"Ocala Bidco, Inc.\" and Target \"Inovalon Holdings, Inc.\"; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            277943,
+            277982
+          ]
+        },
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            278826,
+            280114
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0026",
+      "query": "Consider the Acquisition Agreement between Parent \"Ocala Bidco, Inc.\" and Target \"Inovalon Holdings, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            174272,
+            175731
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0027",
+      "query": "Consider the Acquisition Agreement between Parent \"Ocala Bidco, Inc.\" and Target \"Inovalon Holdings, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Inovalon_Holdings_Management_Led_Buyout.txt",
+          "span": [
+            294260,
+            295363
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0011",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            297458,
+            297788
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            298780,
+            299013
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0012",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            132485,
+            132517
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            132899,
+            133353
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0013",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            40215,
+            40526
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0014",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            53879,
+            54291
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            224484,
+            226961
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            232042,
+            232294
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0015",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            14257,
+            15624
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            56585,
+            57623
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0016",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            38219,
+            40001
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0017",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            302239,
+            302388
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            303544,
+            303885
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0018",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            304295,
+            304337
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            305380,
+            306494
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0019",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            46004,
+            46507
+          ]
+        },
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            199960,
+            200983
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0020",
+      "query": "Consider the Acquisition Agreement between Parent \"LVMH Mo\u00ebt Hennessy-Louis Vuitton SE\" and Target \"Tiffany & Co.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/TIFFANY_&_CO._LVMH_MO\u00cbT_HENNESSY-LOUIS_VUITTON.txt",
+          "span": [
+            321431,
+            322598
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0238",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            26621,
+            27264
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0239",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            179735,
+            179775
+          ]
+        },
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            180597,
+            180974
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0240",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; What is the Definition of \"Material Adverse Effect\"",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            11632,
+            14566
+          ]
+        },
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            15044,
+            15555
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0241",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            51543,
+            51597
+          ]
+        },
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            51770,
+            51917
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0242",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            149504,
+            152875
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0243",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; What about the Fiduciary exception to the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            149504,
+            149531
+          ]
+        },
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            150505,
+            151284
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0244",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            4833,
+            5271
+          ]
+        },
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            186693,
+            187448
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0245",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            182114,
+            182198
+          ]
+        },
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            186693,
+            187023
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0246",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            39637,
+            40750
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0247",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            154624,
+            154653
+          ]
+        },
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            154654,
+            155518
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0248",
+      "query": "Consider the Merger Agreement between United Bankshares, Inc. and Community Bankers Trust Corporation; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/Community Bankers Trust Corporation_United Bankshares, Inc..txt",
+          "span": [
+            155773,
+            156343
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1444",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            14100,
+            14139
+          ]
+        },
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            14783,
+            15136
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1445",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            335241,
+            335791
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1446",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            401995,
+            402118
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1447",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            260530,
+            262976
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1448",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; What about the Fiduciary exception to the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            260530,
+            260562
+          ]
+        },
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            262977,
+            264341
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1449",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            416470,
+            417847
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1450",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            385419,
+            386506
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1451",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            213397,
+            214295
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1452",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            287030,
+            287519
+          ]
+        },
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            288111,
+            288549
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1453",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            282930,
+            282995
+          ]
+        },
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            288942,
+            290260
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1454",
+      "query": "Consider the Merger Agreement between Parent \"Devon Energy Corporation\" and Target \"WPX Energy, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/WPX Energy, Inc._Devon Energy Corporation.txt",
+          "span": [
+            368094,
+            368745
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0964",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            13010,
+            13443
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0965",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; Information about the Closing Condition: Accuracy of Target's Representations and Warranties",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            27268,
+            27306
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            28885,
+            28929
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            29392,
+            29792
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            30210,
+            30333
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            34152,
+            34170
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            103522,
+            103577
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            195270,
+            196799
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0966",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            195270,
+            195546
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            196801,
+            197105
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0967",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            44630,
+            45026
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0968",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; What is the Definition of \"Material Adverse Effect\"",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            235525,
+            237701
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0969",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            227246,
+            227662
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0970",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            163697,
+            164944
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            232700,
+            232844
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0971",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            239655,
+            240970
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0972",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            136087,
+            136570
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0973",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            190826,
+            191127
+          ]
+        },
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            191573,
+            192455
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0974",
+      "query": "Consider the Acquisition Agreement between Parent \"First Bancorp\" and Target \"Select Bancorp, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Select_Bancorp_Inc_First_Bancorp.txt",
+          "span": [
+            251446,
+            251996
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1201",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            62938,
+            63844
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1202",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; Information about the Closing Condition: Accuracy of Target's Representations and Warranties",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            105676,
+            105716
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            107172,
+            109100
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            302966,
+            305794
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1203",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            305830,
+            306104
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1204",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            131600,
+            132537
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1205",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            34311,
+            34604
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1206",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            44591,
+            44885
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            234771,
+            237213
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            242446,
+            242777
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1207",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; What about the Fiduciary exception to the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            234771,
+            234826
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            238057,
+            239568
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1208",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            8601,
+            10130
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            48928,
+            49973
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1209",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            32632,
+            34209
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1210",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            308551,
+            308678
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            312457,
+            313105
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1211",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            317156,
+            317191
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            317376,
+            317401
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            317575,
+            318791
+          ]
+        },
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            319019,
+            319251
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1212",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            220207,
+            221630
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1213",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            279331,
+            280507
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1214",
+      "query": "Consider the Acquisition Agreement between Parent \"Synaptics Incorporated\" and Target \"DSP Group, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/DSP_Group_Synaptics_Incorporated.txt",
+          "span": [
+            326757,
+            328075
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0814",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            57446,
+            57695
+          ]
+        },
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            58625,
+            60232
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0815",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            264473,
+            264709
+          ]
+        },
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            267113,
+            267372
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0816",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; What is the Definition of \"Material Adverse Effect\"",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            17815,
+            21732
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0817",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            32943,
+            33113
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0818",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            16780,
+            17780
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0819",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            267633,
+            267751
+          ]
+        },
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            271552,
+            271955
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0820",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            275545,
+            276487
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0821",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            177283,
+            178565
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0822",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            193977,
+            195307
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0823",
+      "query": "Consider the Merger Agreement between Parent \"Project Quick Parent, LLC\" and Target \"QAD Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/QAD Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            299051,
+            300060
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1175",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            81689,
+            81720
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            82905,
+            83478
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1176",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            319150,
+            319492
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            322327,
+            322576
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1177",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            138513,
+            138928
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1178",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            41341,
+            42274
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1179",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            52308,
+            52460
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            213604,
+            213649
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            216440,
+            216514
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            218230,
+            221029
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            239415,
+            240117
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1180",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            40401,
+            41260
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1181",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            325176,
+            325518
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            330813,
+            331451
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1182",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            335791,
+            335816
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            336512,
+            338192
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1183",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            74716,
+            74932
+          ]
+        },
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            199878,
+            201677
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-1184",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Metal Parent, LLC\" and Target \"Medallia, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Medallia_Inc_Thoma_Bravo_L_P.txt",
+          "span": [
+            365872,
+            366939
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0525",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            17112,
+            18069
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0526",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            273988,
+            274323
+          ]
+        },
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            275305,
+            275712
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0527",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            68083,
+            68522
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0528",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            311738,
+            311954
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0529",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; What about the Fiduciary exception to the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            184905,
+            184947
+          ]
+        },
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            188124,
+            190453
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0530",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            202225,
+            202775
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0531",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            302786,
+            304343
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0532",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            278980,
+            279306
+          ]
+        },
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            283590,
+            283609
+          ]
+        },
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            284607,
+            284964
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0533",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            170333,
+            171022
+          ]
+        },
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            328729,
+            328910
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0534",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            213371,
+            213862
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0535",
+      "query": "Consider the Acquisition Agreement between Parent \"Teledyne Technologies Incorporated\" and Target \"FLIR Systems, Inc.\"; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/FLIR Systems, Inc._Teledyne Technologies Incorporated.txt",
+          "span": [
+            224323,
+            225133
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0441",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            5121,
+            5739
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            63637,
+            63862
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            64385,
+            64722
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0442",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; Information about the Closing Condition: Accuracy of Target's Representations and Warranties",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            88054,
+            88115
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            88280,
+            88926
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            325077,
+            325100
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            325339,
+            325559
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            327220,
+            329547
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0443",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            325077,
+            325100
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            325339,
+            325559
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            329550,
+            329769
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0444",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            104309,
+            104580
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0445",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            24750,
+            25601
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0446",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            39709,
+            39923
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            179999,
+            182405
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0447",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            9365,
+            10309
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            40996,
+            41877
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0448",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            222463,
+            222580
+          ]
+        },
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            226840,
+            227286
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0449",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            169318,
+            170473
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0450",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            189351,
+            190681
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0451",
+      "query": "Consider the Acquisition Agreement between Parent \"Supernus Pharmaceuticals, Inc.\" and Target \"Adamas Pharmaceuticals, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Adamas_Pharmaceuticals_Supernus_Pharmaceuticals.txt",
+          "span": [
+            240672,
+            242006
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0779",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            10993,
+            12055
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0780",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            31861,
+            32321
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0781",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; What is the Target's Representation & Warranty of No Material Adverse Effect, with regards to some specified date",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            68571,
+            68613
+          ]
+        },
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            68838,
+            69064
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0782",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; What is the Definition of \"Material Adverse Effect\"",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            311009,
+            315782
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0783",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            326074,
+            326091
+          ]
+        },
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            326235,
+            326380
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0784",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            338863,
+            339753
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0785",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; What is the Definition of \"Interveining Event\"",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            324961,
+            326070
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0786",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; Information about the Fiduciary Termination Right Triggers for termination",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            251866,
+            252124
+          ]
+        },
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            254398,
+            254420
+          ]
+        },
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            256779,
+            257471
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0787",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            142888,
+            144300
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0788",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            178730,
+            179932
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0789",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; I want information about the Limitations on Antitrust Efforts",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            181084,
+            182328
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0790",
+      "query": "Consider the Acquisition Agreement between Parent \"Project Kafka Parent, LLC\" and Target \"Proofpoint, Inc.\"; Where is the Specific Performance clause",
+      "snippets": [
+        {
+          "file_path": "maud/Proofpoint, Inc._Thoma Bravo, L.P..txt",
+          "span": [
+            282128,
+            283441
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0922",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; What is the Type of Consideration",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            11703,
+            13102
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0923",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; Information about the Closing Condition: Compliance with Covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            256695,
+            256935
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            259244,
+            259669
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0924",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; What is the Definition of \"Material Adverse Effect\"",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            39507,
+            42259
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0925",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; What is the Definition of \"Knowledge\"",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            278710,
+            278871
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0926",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; Where is the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            227768,
+            233779
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0927",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; What about the Fiduciary exception to the No-Shop Clause",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            227768,
+            227811
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            228496,
+            229221
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0928",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; What is the Definition of \"Superior Proposal\"",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            232870,
+            233779
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0929",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; Is there a Tail provision for acquisition proposals",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            268292,
+            268384
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            270005,
+            270534
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0930",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; What happens during a Breach of Shareholder Meeting Covenant",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            206478,
+            206670
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            206707,
+            206827
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            263966,
+            264038
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            266754,
+            266850
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            267838,
+            267947
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            267963,
+            267986
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            268292,
+            268328
+          ]
+        },
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            270718,
+            271148
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0931",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; What are the Ordinary course of business covenants",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            178339,
+            178993
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "maud-0932",
+      "query": "Consider the Merger Agreement between SVB Financial Group and Boston Private Financial Holdings, Inc.; Where is the Closing Conditions: Regulatory Approvals clause",
+      "snippets": [
+        {
+          "file_path": "maud/Boston Private Financial Holdings, Inc._SVB Financial Group.txt",
+          "span": [
+            196895,
+            197533
+          ]
+        }
+      ]
+    }
+  ]
+}

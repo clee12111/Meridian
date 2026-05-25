@@ -1,0 +1,3100 @@
+{
+  "tests": [
+    {
+      "query_id": "contractnli-0762",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            3514,
+            3801
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            6194,
+            6403
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0769",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            4332,
+            4817
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            7238,
+            7537
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0776",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            8184,
+            8561
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            8586,
+            9672
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0786",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document permit the Receiving Party to create a copy of some Confidential Information under certain circumstances?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            6403,
+            6524
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            10307,
+            10875
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0790",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            4332,
+            4926
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            5132,
+            5481
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            6994,
+            7238
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0796",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            10307,
+            10875
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0804",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            10904,
+            11084
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            14830,
+            15034
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0811",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            2297,
+            2570
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            2840,
+            3328
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0817",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document include a clause that prevents the Receiving Party from disclosing the fact that the Agreement was agreed upon or negotiated?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            5482,
+            5628
+          ]
+        },
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            5736,
+            6002
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0825",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            13818,
+            14140
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0832",
+      "query": "Consider the Non-Disclosure Agreement between CEII and NDA; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ceii-and-nda.txt",
+          "span": [
+            9750,
+            10307
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0394",
+      "query": "Consider Motorola's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/nda_form_motorola.txt",
+          "span": [
+            575,
+            718
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0402",
+      "query": "Consider Motorola's Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/nda_form_motorola.txt",
+          "span": [
+            263,
+            574
+          ]
+        },
+        {
+          "file_path": "contractnli/nda_form_motorola.txt",
+          "span": [
+            719,
+            790
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0405",
+      "query": "Consider Motorola's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/nda_form_motorola.txt",
+          "span": [
+            263,
+            574
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0411",
+      "query": "Consider Motorola's Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/nda_form_motorola.txt",
+          "span": [
+            263,
+            574
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0175",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            6138,
+            6649
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0181",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            5706,
+            6045
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0187",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            6650,
+            7027
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0194",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            5706,
+            6045
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0198",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            2691,
+            2947
+          ]
+        },
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            3214,
+            3468
+          ]
+        },
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            4077,
+            4256
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0205",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            9939,
+            10049
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0211",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            3733,
+            3968
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0217",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            3733,
+            3968
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0222",
+      "query": "Consider VELCO's Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/VELCO%20NDA%20rev0%20Dec%2014%202015.txt",
+          "span": [
+            8388,
+            8636
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0534",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            2834,
+            3034
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0538",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            4039,
+            4431
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0546",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            1586,
+            1661
+          ]
+        },
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            2171,
+            2301
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0552",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            1586,
+            1661
+          ]
+        },
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            2526,
+            2805
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0559",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document permit the Receiving Party to create a copy of some Confidential Information under certain circumstances?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            3129,
+            3343
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0566",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            4039,
+            4431
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0573",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            728,
+            1482
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0581",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            1586,
+            1661
+          ]
+        },
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            2301,
+            2526
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0586",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            5717,
+            6079
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0594",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            728,
+            1482
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0600",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            728,
+            1272
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0607",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            5028,
+            5410
+          ]
+        },
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            5423,
+            5710
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0615",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Inventor and Product Development Experts, Inc.; Does the document mention whether or not the Receiving Party is allowed to reverse engineer any objects which embody the Disclosing Party's Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Mutual-Non-Disclosure-Agreement-Inventor-Product-Development-Experts-Inc..txt",
+          "span": [
+            3343,
+            3559
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0127",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            3231,
+            3678
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0132",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            3231,
+            3678
+          ]
+        },
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            4242,
+            4488
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0134",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            2430,
+            2489
+          ]
+        },
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            2776,
+            2965
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0142",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            3683,
+            3924
+          ]
+        },
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            4242,
+            4488
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0147",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            7698,
+            8208
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0153",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            1550,
+            2429
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0156",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            5609,
+            6022
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0159",
+      "query": "Consider Seeed's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            1550,
+            1634
+          ]
+        },
+        {
+          "file_path": "contractnli/NDA-Seeed.txt",
+          "span": [
+            2008,
+            2267
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0878",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            2601,
+            2972
+          ]
+        },
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            10254,
+            10356
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0885",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            4770,
+            5571
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0892",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            3823,
+            3900
+          ]
+        },
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            4231,
+            4238
+          ]
+        },
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            4330,
+            4559
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0898",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            4770,
+            5571
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0907",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document permit the Receiving Party to create a copy of some Confidential Information under certain circumstances?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            5572,
+            5852
+          ]
+        },
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            6723,
+            7213
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0915",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            4770,
+            5571
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0921",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            2973,
+            3334
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0929",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            5572,
+            5852
+          ]
+        },
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            6927,
+            7213
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0935",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            3823,
+            3900
+          ]
+        },
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            4231,
+            4238
+          ]
+        },
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            4559,
+            4671
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0942",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            6407,
+            6927
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0950",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            3334,
+            3573
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0958",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            1445,
+            1920
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0962",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            5853,
+            6318
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0972",
+      "query": "Consider Excelerate's Non-Disclosure Agreement; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/ExcelerateStandardNDAFormat.txt",
+          "span": [
+            6927,
+            7213
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0000",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            2895,
+            3428
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0006",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document permit the Receiving Party to create a copy of some Confidential Information under certain circumstances?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            1445,
+            1592
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0011",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            1611,
+            2162
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0014",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            567,
+            1012
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0018",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            5816,
+            6279
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0026",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            567,
+            1012
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0030",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            4354,
+            4695
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0188",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            1611,
+            2162
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0255",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            1127,
+            1265
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0307",
+      "query": "Consider the AGProjects' Non-Disclosure Agreement; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            4711,
+            4977
+          ]
+        },
+        {
+          "file_path": "contractnli/AGProjects-NDA.txt",
+          "span": [
+            5102,
+            5264
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0003",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document include a clause that prevents the Receiving Party from disclosing the fact that the Agreement was agreed upon or negotiated?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            1313,
+            1781
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            8667,
+            9136
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0010",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            10877,
+            11285
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0899",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            5360,
+            5607
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0906",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            4259,
+            4364
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            6525,
+            6710
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0914",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            1313,
+            1781
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            2191,
+            2225
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            2752,
+            3022
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0920",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            7381,
+            8083
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0928",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document permit the Receiving Party to create a copy of some Confidential Information under certain circumstances?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            5360,
+            5520
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            5761,
+            5990
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0934",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            4259,
+            4364
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            6525,
+            6710
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0941",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            1313,
+            1781
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0948",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            9379,
+            9439
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            9808,
+            10289
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0955",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            1313,
+            1781
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            2191,
+            2225
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            3224,
+            3332
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0956",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            10289,
+            10403
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            13679,
+            13900
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            14063,
+            14179
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0968",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            1313,
+            1781
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0974",
+      "query": "Consider Kenway's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            1313,
+            2119
+          ]
+        },
+        {
+          "file_path": "contractnli/Kenway-NDA-Form-Blank.txt",
+          "span": [
+            3815,
+            4138
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0501",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            4270,
+            4803
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0508",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            5068,
+            5668
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0516",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            5669,
+            5791
+          ]
+        },
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            5954,
+            6123
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0522",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            6456,
+            6800
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0530",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            4549,
+            5668
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0536",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            1498,
+            1551
+          ]
+        },
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            1729,
+            2612
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0540",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            7325,
+            7452
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0551",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            5669,
+            5791
+          ]
+        },
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            6124,
+            6455
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0557",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            7634,
+            7830
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0562",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            1498,
+            3494
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0570",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            1498,
+            1551
+          ]
+        },
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            1729,
+            3112
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0577",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            4270,
+            4549
+          ]
+        },
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            6966,
+            7151
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0585",
+      "query": "Consider HNBA's Confidentiality Agreement; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/HNBA-2017-18-Confidentiality-Agreement.txt",
+          "span": [
+            7152,
+            7325
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0816",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            1596,
+            1696
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0823",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            2436,
+            2629
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0831",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document permit the Receiving Party to create a copy of some Confidential Information under certain circumstances?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            1468,
+            1596
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0837",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            1449,
+            1596
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0844",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            933,
+            1448
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0851",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            933,
+            1448
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0858",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document include a clause that prevents the Receiving Party from disclosing the fact that the Agreement was agreed upon or negotiated?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            1851,
+            2071
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0865",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            2072,
+            2248
+          ]
+        },
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            3448,
+            3715
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0873",
+      "query": "Consider FNHA's Non-Disclosure Agreement; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/FNHA-2019RFP-02-NDA-form.txt",
+          "span": [
+            2248,
+            2435
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0439",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            1291,
+            1716
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0446",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            3017,
+            3186
+          ]
+        },
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            3410,
+            3636
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0455",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            3808,
+            4341
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0461",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            1291,
+            1716
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0467",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            2298,
+            3000
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0473",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            3017,
+            3186
+          ]
+        },
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            3636,
+            3808
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0481",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            7309,
+            7509
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0487",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            2298,
+            3000
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0495",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            758,
+            1029
+          ]
+        },
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            2298,
+            3000
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0502",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            4608,
+            4997
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0976",
+      "query": "Consider Evelozcity's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            1716,
+            1770
+          ]
+        },
+        {
+          "file_path": "contractnli/Evelozcity%20OESA%20NDA.txt",
+          "span": [
+            2078,
+            2185
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0186",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            7305,
+            7584
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0192",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            3845,
+            4734
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0199",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            3188,
+            3248
+          ]
+        },
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            3319,
+            3492
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0204",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            5480,
+            5869
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0210",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            3845,
+            4734
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0218",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            1141,
+            2571
+          ]
+        },
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            2777,
+            3000
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0223",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            8220,
+            8481
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0227",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            3188,
+            3248
+          ]
+        },
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            3604,
+            3744
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0234",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            6543,
+            7034
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0240",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            1141,
+            2571
+          ]
+        },
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            3000,
+            3171
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0246",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            1141,
+            2484
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0252",
+      "query": "Consider the Mutual Non-Disclosure Agreement between IPTK and CO; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            7051,
+            7305
+          ]
+        },
+        {
+          "file_path": "contractnli/IPTK-CO-MutualNon-DisclosureAgreement.txt",
+          "span": [
+            9030,
+            9351
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0470",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            6649,
+            7324
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0491",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            869,
+            1205
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0575",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            2984,
+            3729
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0715",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            7500,
+            7963
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0917",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            3730,
+            3987
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0924",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            4432,
+            4856
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0931",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            5209,
+            5537
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0938",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            5209,
+            5309
+          ]
+        },
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            5810,
+            6186
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0945",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            3987,
+            4160
+          ]
+        },
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            4432,
+            4856
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0952",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            3237,
+            3729
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0959",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            6649,
+            7324
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0966",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            5209,
+            5381
+          ]
+        },
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            5649,
+            5810
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0970",
+      "query": "Consider the Non-Disclosure Agreement between NREL and Another Company; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/sample-nrel-bilateral-nda-template.txt",
+          "span": [
+            7325,
+            7482
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0664",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            3725,
+            3823
+          ]
+        },
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            3825,
+            4093
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0669",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            3725,
+            3823
+          ]
+        },
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            4215,
+            4337
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0677",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            3725,
+            3823
+          ]
+        },
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            4215,
+            4337
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0686",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            757,
+            1492
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0690",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            1942,
+            2219
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0699",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            3725,
+            3823
+          ]
+        },
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            4718,
+            4985
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0705",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            1492,
+            1942
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0712",
+      "query": "Consider Grindrod SA's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/Grindrod%20SA%20Confidentiality%20and%20Non-Disclosure%20Undertaking.txt",
+          "span": [
+            757,
+            1492
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0414",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            5597,
+            5692
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            16280,
+            16667
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            17553,
+            17884
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0419",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            7246,
+            7665
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0426",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            4918,
+            5037
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            5267,
+            5402
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0431",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            6729,
+            7037
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0438",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document permit the Receiving Party to create a copy of some Confidential Information under certain circumstances?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            5597,
+            5614
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            6341,
+            6532
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0445",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            7246,
+            7665
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0452",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            1771,
+            1801
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            1979,
+            2484
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0459",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            8040,
+            8307
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0466",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            4918,
+            5037
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            5402,
+            5546
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0474",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            18066,
+            18260
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            18510,
+            18710
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0480",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            1771,
+            1801
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            1979,
+            2484
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            9330,
+            9722
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0488",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            13042,
+            13424
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0493",
+      "query": "Consider the Non-Disclosure Agreement between IBC and PMS; Does the document mention whether or not the Receiving Party is allowed to reverse engineer any objects which embody the Disclosing Party's Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            5597,
+            5614
+          ]
+        },
+        {
+          "file_path": "contractnli/IBC-PMS-NDA-agreement.txt",
+          "span": [
+            6533,
+            6728
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0486",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            1017,
+            1110
+          ]
+        },
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            1204,
+            1290
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0494",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            1017,
+            1110
+          ]
+        },
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            1586,
+            1874
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0500",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            3051,
+            3199
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0507",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            1017,
+            1110
+          ]
+        },
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            1426,
+            1478
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0514",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            6834,
+            7039
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0521",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            565,
+            1017
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0527",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            565,
+            1017
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0535",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            3679,
+            3888
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0545",
+      "query": "Consider the Mutual Non-Disclosure Agreement between Khronos and Khronos; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            3051,
+            3199
+          ]
+        },
+        {
+          "file_path": "contractnli/khronos-mutual-nda.txt",
+          "span": [
+            6611,
+            6834
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0383",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            766,
+            993
+          ]
+        },
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            1258,
+            1611
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0391",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            2028,
+            2382
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0399",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            1611,
+            1851
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0403",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            766,
+            993
+          ]
+        },
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            1258,
+            1611
+          ]
+        },
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            2028,
+            2382
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0410",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            1611,
+            1851
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0415",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            766,
+            993
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0422",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            766,
+            1253
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0427",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            766,
+            1253
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0433",
+      "query": "Consider ResConnect's Non-Disclosure Agreement; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/NDA_ResConnect.txt",
+          "span": [
+            1893,
+            2023
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0667",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document restrict the use of Confidential Information to the purposes stated in the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            3300,
+            3422
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0673",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document allow the Receiving Party to share some Confidential Information with their employees?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            3422,
+            3827
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0681",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document allow the Receiving Party to acquire information similar to the Confidential Information from a third party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            2565,
+            2609
+          ]
+        },
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            2721,
+            2983
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0685",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document require the Receiving Party to notify the Disclosing Party if they are required by law, regulation, or judicial process to disclose any Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            4338,
+            4675
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0695",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document allow the Receiving Party to share some Confidential Information with third parties, including consultants, agents, and professional advisors?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            3422,
+            3827
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0702",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document allow verbally conveyed information to be considered as Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            1368,
+            2399
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0709",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document permit the Receiving Party to retain some Confidential Information even after its return or destruction?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            7207,
+            7725
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0716",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document allow the Receiving Party to independently develop information that is similar to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            2565,
+            2609
+          ]
+        },
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            3119,
+            3245
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0725",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document mention that some obligations of the Agreement may survive the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            7207,
+            7725
+          ]
+        },
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            10548,
+            10722
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0729",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document require that all Confidential Information be expressly identified by the Disclosing Party?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            2399,
+            2564
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0737",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document state that Confidential Information shall only include technical information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            1368,
+            2399
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0742",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document include a clause that prevents the Receiving Party from disclosing the fact that the Agreement was agreed upon or negotiated?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            1368,
+            2399
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0749",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document indicate that the Agreement does not grant the Receiving Party any rights to the Confidential Information?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            8959,
+            9155
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "contractnli-0759",
+      "query": "Consider the Agreement between SE_NDCA and PRE-QUAL PACKAGE; Does the document specify whether the Receiving Party is required to destroy or return Confidential Information upon the termination of the Agreement?",
+      "snippets": [
+        {
+          "file_path": "contractnli/SE_NDCA_and_PRE-QUAL_PACKAGE_March-2016.txt",
+          "span": [
+            6193,
+            6796
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,3079 @@
+{
+  "tests": [
+    {
+      "query_id": "cuad-2807",
+      "query": "Consider the Amendment No. 3 to Wireless Content License Agreement between Fox Mobile Entertainment, Inc. and Glu Mobile Inc.; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement4.txt",
+          "span": [
+            598,
+            989
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0205",
+      "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; How is intellectual property ownership assigned in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+          "span": [
+            44840,
+            45359
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0213",
+      "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; Does this contract include any right of first refusal, right of first offer, or right of first negotiation?",
+      "snippets": [
+        {
+          "file_path": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+          "span": [
+            6235,
+            6531
+          ]
+        },
+        {
+          "file_path": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+          "span": [
+            6533,
+            7937
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0220",
+      "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; Are there any exceptions to competitive restrictions in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+          "span": [
+            33572,
+            34034
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0226",
+      "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+          "span": [
+            53956,
+            54252
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0234",
+      "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+          "span": [
+            693,
+            859
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3903",
+      "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+          "span": [
+            11380,
+            11583
+          ]
+        },
+        {
+          "file_path": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+          "span": [
+            12564,
+            12768
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3911",
+      "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+          "span": [
+            17341,
+            17432
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3917",
+      "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+          "span": [
+            18172,
+            18336
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3924",
+      "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+          "span": [
+            16867,
+            17117
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3931",
+      "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+          "span": [
+            5604,
+            5739
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0955",
+      "query": "Consider the Sponsorship Agreement between Jacksonville Jaguars, LLC and The ARC Group, Inc.; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+          "span": [
+            1697,
+            2488
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0964",
+      "query": "Consider the Sponsorship Agreement between Jacksonville Jaguars, LLC and The ARC Group, Inc.; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+          "span": [
+            1322,
+            1662
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0060",
+      "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Is there a covenant not to sue included in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+          "span": [
+            27816,
+            28397
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0066",
+      "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Does this contract provide for joint intellectual property ownership?",
+      "snippets": [
+        {
+          "file_path": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+          "span": [
+            16945,
+            17247
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0076",
+      "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; How is intellectual property ownership assigned in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+          "span": [
+            16945,
+            17247
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0080",
+      "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+          "span": [
+            18678,
+            18997
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0087",
+      "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Is there a clause preventing the solicitation of employees in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+          "span": [
+            25311,
+            25713
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0095",
+      "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+          "span": [
+            32015,
+            32250
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0101",
+      "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+          "span": [
+            4382,
+            4705
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0003",
+      "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+          "span": [
+            7079,
+            7183
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0010",
+      "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+          "span": [
+            4159,
+            4489
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0016",
+      "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+          "span": [
+            3546,
+            3655
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-4038",
+      "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; Is there a minimum commitment required under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+          "span": [
+            1116,
+            1204
+          ]
+        },
+        {
+          "file_path": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+          "span": [
+            2160,
+            2302
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3177",
+      "query": "Consider the Sponsorship Agreement between Excite, Inc. and Vitamin Shoppe Industries Inc. for Promotion on WebCrawler Channels; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+          "span": [
+            53891,
+            54600
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3185",
+      "query": "Consider the Sponsorship Agreement between Excite, Inc. and Vitamin Shoppe Industries Inc. for Promotion on WebCrawler Channels; Is there uncapped liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+          "span": [
+            54279,
+            54600
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3191",
+      "query": "Consider the Sponsorship Agreement between Excite, Inc. and Vitamin Shoppe Industries Inc. for Promotion on WebCrawler Channels; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+          "span": [
+            38021,
+            38280
+          ]
+        },
+        {
+          "file_path": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+          "span": [
+            44306,
+            44581
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3196",
+      "query": "Consider the Sponsorship Agreement between Excite, Inc. and Vitamin Shoppe Industries Inc. for Promotion on WebCrawler Channels; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+          "span": [
+            58417,
+            58720
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3205",
+      "query": "Consider the Sponsorship Agreement between Excite, Inc. and Vitamin Shoppe Industries Inc. for Promotion on WebCrawler Channels; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+          "span": [
+            33237,
+            33842
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1712",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Are there any third-party beneficiaries designated in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            41767,
+            41984
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1718",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Is there a covenant not to sue included in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            13844,
+            13911
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            18173,
+            18240
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            20121,
+            20393
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1728",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            32028,
+            32396
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            32504,
+            32693
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1736",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Is there uncapped liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            32028,
+            32397
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            32504,
+            32693
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1746",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            12612,
+            12792
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1752",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Are the licenses granted under this contract non-transferable?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            5690,
+            6080
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            6537,
+            7080
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1761",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            5690,
+            6080
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            6537,
+            7080
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1768",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; How is intellectual property ownership assigned in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            14401,
+            14603
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            14605,
+            15442
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            15667,
+            16433
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1778",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Does this contract include any revenue or profit-sharing arrangements?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            11393,
+            11877
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1784",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            36711,
+            37219
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1792",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Is there a clause preventing the solicitation of employees in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            21064,
+            21193
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            22640,
+            22769
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1800",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Does this contract include an exclusivity agreement?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            5690,
+            6079
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            6537,
+            7080
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1809",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Is there a non-compete clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            20426,
+            21063
+          ]
+        },
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            21989,
+            22639
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1816",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Are there any exceptions to competitive restrictions in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            23556,
+            23770
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1825",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            36019,
+            36116
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1829",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; What is the notice period required to terminate the renewal?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            18727,
+            19214
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1836",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; What is the renewal term for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            18727,
+            19214
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1840",
+      "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            18727,
+            19214
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1297",
+      "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; What are the insurance requirements under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            11001,
+            11165
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1307",
+      "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; What is the duration of any warranties provided in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            3021,
+            3209
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1318",
+      "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            5099,
+            5340
+          ]
+        },
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            5342,
+            5467
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1321",
+      "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; Does this contract include any volume restrictions?",
+      "snippets": [
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            958,
+            1076
+          ]
+        },
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            3210,
+            3809
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1328",
+      "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            16222,
+            16306
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1342",
+      "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            17415,
+            17518
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1345",
+      "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+          "span": [
+            2050,
+            2326
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0503",
+      "query": "Consider the Intellectual Property Agreement for COVID-19 Treatment Development between Marv Enterprises, LLC, Premier Biomedical, Inc., and Technology Health, Inc.; Does the licensee's affiliates have any licensing rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            5150,
+            5292
+          ]
+        },
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            5294,
+            5453
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0514",
+      "query": "Consider the Intellectual Property Agreement for COVID-19 Treatment Development between Marv Enterprises, LLC, Premier Biomedical, Inc., and Technology Health, Inc.; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            3264,
+            3378
+          ]
+        },
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            3388,
+            4736
+          ]
+        },
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            4750,
+            5144
+          ]
+        },
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            5150,
+            5453
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0522",
+      "query": "Consider the Intellectual Property Agreement for COVID-19 Treatment Development between Marv Enterprises, LLC, Premier Biomedical, Inc., and Technology Health, Inc.; Does this contract include any revenue or profit-sharing arrangements?",
+      "snippets": [
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            11296,
+            11663
+          ]
+        },
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            12407,
+            12824
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0529",
+      "query": "Consider the Intellectual Property Agreement for COVID-19 Treatment Development between Marv Enterprises, LLC, Premier Biomedical, Inc., and Technology Health, Inc.; Does this contract include an exclusivity agreement?",
+      "snippets": [
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            3388,
+            4736
+          ]
+        },
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            12938,
+            13072
+          ]
+        },
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            14754,
+            15163
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0537",
+      "query": "Consider the Intellectual Property Agreement for COVID-19 Treatment Development between Marv Enterprises, LLC, Premier Biomedical, Inc., and Technology Health, Inc.; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+          "span": [
+            20109,
+            20405
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1089",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); What are the insurance requirements under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            19106,
+            20201
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            20210,
+            20643
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            20883,
+            21314
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            21856,
+            22071
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1097",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            16459,
+            16927
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            18885,
+            19079
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1099",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            27110,
+            27294
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1115",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            47980,
+            48417
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1121",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            38299,
+            38573
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1129",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); What happens in the event of a change of control of one of the parties in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            33342,
+            33500
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            47980,
+            48417
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1140",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            33227,
+            33332
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1145",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Is there a clause preventing the solicitation of customers in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            7291,
+            7515
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            7537,
+            7727
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1153",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Does this contract include an exclusivity agreement?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            7970,
+            8101
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1163",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Is there a non-compete clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            47554,
+            47970
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            47980,
+            48417
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1169",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Are there any exceptions to competitive restrictions in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            8102,
+            8548
+          ]
+        },
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            8558,
+            8856
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1173",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            43832,
+            43942
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1189",
+      "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+          "span": [
+            3307,
+            3509
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0069",
+      "query": "Consider the Gas Franchise Agreement between the Town of Vinton and Roanoke Gas Company; Does this contract include any revenue or profit-sharing arrangements?",
+      "snippets": [
+        {
+          "file_path": "cuad/RgcResourcesInc_20151216_8-K_EX-10.3_9372751_EX-10.3_Franchise Agreement.txt",
+          "span": [
+            1896,
+            2484
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0072",
+      "query": "Consider the Gas Franchise Agreement between the Town of Vinton and Roanoke Gas Company; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/RgcResourcesInc_20151216_8-K_EX-10.3_9372751_EX-10.3_Franchise Agreement.txt",
+          "span": [
+            1173,
+            1257
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3414",
+      "query": "Consider the Co-Branding Agreement between PC Quote, Inc. and A.B. Watley, Inc. for Market Data Software; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement1.txt",
+          "span": [
+            9968,
+            10499
+          ]
+        },
+        {
+          "file_path": "cuad/PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement1.txt",
+          "span": [
+            10501,
+            10786
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3421",
+      "query": "Consider the Co-Branding Agreement between PC Quote, Inc. and A.B. Watley, Inc. for Market Data Software; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement1.txt",
+          "span": [
+            1881,
+            2005
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3428",
+      "query": "Consider the Co-Branding Agreement between PC Quote, Inc. and A.B. Watley, Inc. for Market Data Software; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement1.txt",
+          "span": [
+            14780,
+            14910
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3436",
+      "query": "Consider the Co-Branding Agreement between PC Quote, Inc. and A.B. Watley, Inc. for Market Data Software; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement1.txt",
+          "span": [
+            14946,
+            15133
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3575",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a covenant not to sue included in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            64934,
+            65583
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            66237,
+            66474
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            66571,
+            66967
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3582",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            85867,
+            86115
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            92834,
+            93846
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            140028,
+            140485
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3588",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            101415,
+            102455
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            102461,
+            103212
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3596",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            103074,
+            103212
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            105475,
+            105918
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            151361,
+            152005
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3604",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Does the licensee's affiliates have any licensing rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            27994,
+            28354
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3610",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Are the licenses granted under this contract non-transferable?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            54352,
+            54655
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            63634,
+            63982
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            65589,
+            65869
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3617",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            27994,
+            28354
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            53731,
+            53951
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            54352,
+            54655
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            63634,
+            63982
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            65589,
+            65869
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            65962,
+            66236
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            144427,
+            144889
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3626",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a minimum commitment required under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            42251,
+            42711
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            45281,
+            45804
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            112969,
+            113347
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            113354,
+            113644
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            113652,
+            113911
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            113917,
+            114282
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3631",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Does this contract include any revenue or profit-sharing arrangements?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            98802,
+            99086
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            105475,
+            105918
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3639",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            28504,
+            28839
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            157751,
+            157952
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3645",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Does this contract include any right of first refusal, right of first offer, or right of first negotiation?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            144427,
+            146183
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            147380,
+            147892
+          ]
+        },
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            148461,
+            149594
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3653",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Does this contract include an exclusivity agreement?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            144427,
+            144889
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3658",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a non-compete clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            28888,
+            29204
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3664",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            161547,
+            161728
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3675",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; What is the renewal term for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            112297,
+            112630
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3679",
+      "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+          "span": [
+            112116,
+            112296
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0133",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; Is there a covenant not to sue included in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            38269,
+            38959
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0138",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            39668,
+            40154
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0140",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; Is there uncapped liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            39668,
+            40153
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0151",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            30799,
+            31257
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0159",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; Does this contract include any volume restrictions?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            17043,
+            17661
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0166",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            45699,
+            45974
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0174",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            44720,
+            44931
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0180",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; What is the notice period required to terminate the renewal?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            49279,
+            49722
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0187",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; What is the renewal term for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            49279,
+            49722
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0196",
+      "query": "Consider the Gas Transportation Agreement between PennTex North Louisiana Operating, LLC and MRD Operating LLC; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement.txt",
+          "span": [
+            49279,
+            49722
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2667",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Is there a covenant not to sue included in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            15881,
+            16680
+          ]
+        },
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            41345,
+            41917
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2674",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; What are the insurance requirements under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            56320,
+            57181
+          ]
+        },
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            57186,
+            57727
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2678",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            58826,
+            59464
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2682",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            47413,
+            48223
+          ]
+        },
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            51519,
+            52259
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2690",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Are any of the licenses granted under this contract irrevocable or perpetual?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            28102,
+            28889
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2692",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Are the licenses granted under this contract non-transferable?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            3851,
+            4268
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2695",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            3851,
+            4268
+          ]
+        },
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            28102,
+            28889
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2702",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; How is intellectual property ownership assigned in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            6502,
+            7242
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2708",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Does this contract include any volume restrictions?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            17729,
+            17939
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2712",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Is there a minimum commitment required under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            17729,
+            18366
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2717",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            34757,
+            35166
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2722",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Is there a non-disparagement clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            13350,
+            13670
+          ]
+        },
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            61086,
+            61257
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2726",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Does this contract include an exclusivity agreement?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            4441,
+            5829
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2732",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Are there any exceptions to competitive restrictions in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            4441,
+            5829
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2739",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            63649,
+            63806
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2743",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; What is the renewal term for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            3546,
+            3820
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2747",
+      "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+          "span": [
+            3388,
+            3545
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2134",
+      "query": "Consider the Agency Agreement between General Electric Capital Corporation and Duckwall-Alco Stores, Inc. for Equipment Leasing; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ALCOSTORESINC_12_14_2005-EX-10.26-AGENCY AGREEMENT.txt",
+          "span": [
+            8376,
+            8551
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2139",
+      "query": "Consider the Agency Agreement between General Electric Capital Corporation and Duckwall-Alco Stores, Inc. for Equipment Leasing; Does the licensee's affiliates have any licensing rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ALCOSTORESINC_12_14_2005-EX-10.26-AGENCY AGREEMENT.txt",
+          "span": [
+            5588,
+            6131
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2560",
+      "query": "Consider the Agency Agreement between General Electric Capital Corporation and Duckwall-Alco Stores, Inc. for Equipment Leasing; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ALCOSTORESINC_12_14_2005-EX-10.26-AGENCY AGREEMENT.txt",
+          "span": [
+            5588,
+            6130
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2562",
+      "query": "Consider the Agency Agreement between General Electric Capital Corporation and Duckwall-Alco Stores, Inc. for Equipment Leasing; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/ALCOSTORESINC_12_14_2005-EX-10.26-AGENCY AGREEMENT.txt",
+          "span": [
+            9172,
+            9484
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1766",
+      "query": "Consider the Endorsement Agreement between Holiday RV Superstores, Inc. and Affinity Group, Inc. for Good Sam Branding; Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+          "span": [
+            9302,
+            9542
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1779",
+      "query": "Consider the Endorsement Agreement between Holiday RV Superstores, Inc. and Affinity Group, Inc. for Good Sam Branding; Does the licensee's affiliates have any licensing rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+          "span": [
+            1596,
+            2040
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1783",
+      "query": "Consider the Endorsement Agreement between Holiday RV Superstores, Inc. and Affinity Group, Inc. for Good Sam Branding; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+          "span": [
+            1596,
+            2040
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1791",
+      "query": "Consider the Endorsement Agreement between Holiday RV Superstores, Inc. and Affinity Group, Inc. for Good Sam Branding; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+          "span": [
+            10557,
+            10708
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1799",
+      "query": "Consider the Endorsement Agreement between Holiday RV Superstores, Inc. and Affinity Group, Inc. for Good Sam Branding; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+          "span": [
+            5116,
+            5490
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1806",
+      "query": "Consider the Endorsement Agreement between Holiday RV Superstores, Inc. and Affinity Group, Inc. for Good Sam Branding; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+          "span": [
+            10347,
+            10528
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1815",
+      "query": "Consider the Endorsement Agreement between Holiday RV Superstores, Inc. and Affinity Group, Inc. for Good Sam Branding; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+          "span": [
+            4885,
+            5115
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2628",
+      "query": "Consider the Business Affiliate Agreement between Dr. George D. Green and UNION DENTAL CORP.; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/UnionDentalHoldingsInc_20050204_8-KA_EX-10_3345577_EX-10_Affiliate Agreement.txt",
+          "span": [
+            3636,
+            4076
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2633",
+      "query": "Consider the Business Affiliate Agreement between Dr. George D. Green and UNION DENTAL CORP.; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/UnionDentalHoldingsInc_20050204_8-KA_EX-10_3345577_EX-10_Affiliate Agreement.txt",
+          "span": [
+            6029,
+            6252
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2638",
+      "query": "Consider the Business Affiliate Agreement between Dr. George D. Green and UNION DENTAL CORP.; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/UnionDentalHoldingsInc_20050204_8-KA_EX-10_3345577_EX-10_Affiliate Agreement.txt",
+          "span": [
+            6029,
+            6252
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3482",
+      "query": "Consider the Support and Maintenance Agreement between On2 Technologies, Inc. and Wildform, Inc.; How is intellectual property ownership assigned in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            22240,
+            22686
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3489",
+      "query": "Consider the Support and Maintenance Agreement between On2 Technologies, Inc. and Wildform, Inc.; Does this contract include any volume restrictions?",
+      "snippets": [
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            38814,
+            38986
+          ]
+        },
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            40429,
+            40642
+          ]
+        },
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            41664,
+            41880
+          ]
+        },
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            47604,
+            47776
+          ]
+        },
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            53585,
+            53758
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3497",
+      "query": "Consider the Support and Maintenance Agreement between On2 Technologies, Inc. and Wildform, Inc.; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            34514,
+            34980
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3503",
+      "query": "Consider the Support and Maintenance Agreement between On2 Technologies, Inc. and Wildform, Inc.; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            30507,
+            30781
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3510",
+      "query": "Consider the Support and Maintenance Agreement between On2 Technologies, Inc. and Wildform, Inc.; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/ON2TECHNOLOGIES,INC_11_17_2006-EX-10.3-SUPPORT AND MAINTENANCE AGREEMENT.txt",
+          "span": [
+            25851,
+            25992
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1606",
+      "query": "Consider the Co-Branding and Services Agreement between RSL COM PrimeCall, Inc. and deltathree.com, Inc.; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            15192,
+            15684
+          ]
+        },
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            16101,
+            16592
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1613",
+      "query": "Consider the Co-Branding and Services Agreement between RSL COM PrimeCall, Inc. and deltathree.com, Inc.; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            3574,
+            3840
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1621",
+      "query": "Consider the Co-Branding and Services Agreement between RSL COM PrimeCall, Inc. and deltathree.com, Inc.; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            25061,
+            25157
+          ]
+        },
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            25348,
+            25490
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1629",
+      "query": "Consider the Co-Branding and Services Agreement between RSL COM PrimeCall, Inc. and deltathree.com, Inc.; What happens in the event of a change of control of one of the parties in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            1515,
+            2043
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1638",
+      "query": "Consider the Co-Branding and Services Agreement between RSL COM PrimeCall, Inc. and deltathree.com, Inc.; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            26053,
+            26224
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1645",
+      "query": "Consider the Co-Branding and Services Agreement between RSL COM PrimeCall, Inc. and deltathree.com, Inc.; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/DeltathreeInc_19991102_S-1A_EX-10.19_6227850_EX-10.19_Co-Branding Agreement_ Service Agreement.txt",
+          "span": [
+            1515,
+            2043
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1504",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            11885,
+            12465
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1516",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            15044,
+            15960
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1524",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; Are the licenses granted under this contract non-transferable?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            2109,
+            2426
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1530",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            2109,
+            2426
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1541",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            15974,
+            16290
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1548",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            13593,
+            13737
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1556",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            19144,
+            19603
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1564",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; What is the notice period required to terminate the renewal?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            13593,
+            13737
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1575",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; What is the renewal term for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            13434,
+            13592
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1580",
+      "query": "Consider the Walabot HOME Reseller Agreement between Vayyar Imaging Ltd. and Inde Living Holdings, Inc.; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+          "span": [
+            13297,
+            13433
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3764",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; What are the insurance requirements under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            19086,
+            19364
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3774",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            18787,
+            19063
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3778",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            5188,
+            5452
+          ]
+        },
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            6746,
+            7081
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3785",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            16180,
+            16461
+          ]
+        },
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            16463,
+            16710
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3791",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            14636,
+            14717
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3799",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            9312,
+            9406
+          ]
+        },
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            9408,
+            9570
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3806",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            863,
+            1007
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3814",
+      "query": "Consider the Joint Venture Agreement between MJ Syndicated, Inc. and Simply Herbals for Manufacturing and Selling Health-Related Products; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/MJBIOTECH,INC_12_06_2018-EX-99.01-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            1341,
+            1491
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3190",
+      "query": "Consider the Non-Competition Agreement and Right of First Offer between Glamis Gold Ltd. and Western Copper Corporation; Does this contract include any right of first refusal, right of first offer, or right of first negotiation?",
+      "snippets": [
+        {
+          "file_path": "cuad/WESTERN COPPER - NON-COMPETITION AGREEMENT.txt",
+          "span": [
+            6475,
+            8155
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3198",
+      "query": "Consider the Non-Competition Agreement and Right of First Offer between Glamis Gold Ltd. and Western Copper Corporation; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/WESTERN COPPER - NON-COMPETITION AGREEMENT.txt",
+          "span": [
+            15318,
+            15537
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0962",
+      "query": "Consider the Agency Agreement for Asset Sale between The Bon-Ton Stores, Inc., GA Retail, Inc., Tiger Capital Group, LLC, and Wilmington Savings Fund Society, FSB; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT.txt",
+          "span": [
+            21941,
+            22018
+          ]
+        },
+        {
+          "file_path": "cuad/BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT.txt",
+          "span": [
+            64464,
+            64836
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0969",
+      "query": "Consider the Agency Agreement for Asset Sale between The Bon-Ton Stores, Inc., GA Retail, Inc., Tiger Capital Group, LLC, and Wilmington Savings Fund Society, FSB; Are there any services to be provided after the termination of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT.txt",
+          "span": [
+            36330,
+            36852
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0978",
+      "query": "Consider the Agency Agreement for Asset Sale between The Bon-Ton Stores, Inc., GA Retail, Inc., Tiger Capital Group, LLC, and Wilmington Savings Fund Society, FSB; What licenses are granted under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT.txt",
+          "span": [
+            20642,
+            20809
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0985",
+      "query": "Consider the Agency Agreement for Asset Sale between The Bon-Ton Stores, Inc., GA Retail, Inc., Tiger Capital Group, LLC, and Wilmington Savings Fund Society, FSB; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT.txt",
+          "span": [
+            105765,
+            106250
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0992",
+      "query": "Consider the Agency Agreement for Asset Sale between The Bon-Ton Stores, Inc., GA Retail, Inc., Tiger Capital Group, LLC, and Wilmington Savings Fund Society, FSB; Can this contract be terminated for convenience, and under what conditions?",
+      "snippets": [
+        {
+          "file_path": "cuad/BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT.txt",
+          "span": [
+            67047,
+            67461
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-1002",
+      "query": "Consider the Agency Agreement for Asset Sale between The Bon-Ton Stores, Inc., GA Retail, Inc., Tiger Capital Group, LLC, and Wilmington Savings Fund Society, FSB; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/BONTONSTORESINC_04_20_2018-EX-99.3-AGENCY AGREEMENT.txt",
+          "span": [
+            104235,
+            104447
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3821",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Are there any third-party beneficiaries designated in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            57755,
+            58142
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3827",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            62830,
+            62977
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3834",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; How is intellectual property ownership assigned in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            11250,
+            11458
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3841",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Is there a minimum commitment required under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            13653,
+            13922
+          ]
+        },
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            20181,
+            20459
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3848",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            53872,
+            54724
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3855",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Does this contract include any right of first refusal, right of first offer, or right of first negotiation?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            25059,
+            25887
+          ]
+        },
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            27242,
+            28070
+          ]
+        },
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            40245,
+            40959
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3861",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Does this contract include an exclusivity agreement?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            24262,
+            24820
+          ]
+        },
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            26058,
+            26566
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3869",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Is there a non-compete clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            22174,
+            23289
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3877",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Are there any exceptions to competitive restrictions in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            23695,
+            24217
+          ]
+        },
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            24821,
+            25052
+          ]
+        },
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            26058,
+            26565
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3883",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Is there a most favored nation clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            28071,
+            28291
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-3891",
+      "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            57535,
+            57701
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2730",
+      "query": "Consider the Amendment and Termination of Joint Venture Agreement between Veoneer and Nissin Parties; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/VEONEER,INC_02_21_2020-EX-10.11-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            6650,
+            6737
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2734",
+      "query": "Consider the Amendment and Termination of Joint Venture Agreement between Veoneer and Nissin Parties; What is the expiration date of this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/VEONEER,INC_02_21_2020-EX-10.11-JOINT VENTURE AGREEMENT.txt",
+          "span": [
+            6764,
+            7055
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0664",
+      "query": "Consider the Strategic Alliance Agreement between Sucampo Pharmaceuticals, Inc., Sucampo Pharma, LLC, and R-Tech Ueno, Ltd.; Are there any third-party beneficiaries designated in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/SUCAMPOPHARMACEUTICALS,INC_11_04_2015-EX-10.2-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            61284,
+            61470
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0672",
+      "query": "Consider the Strategic Alliance Agreement between Sucampo Pharmaceuticals, Inc., Sucampo Pharma, LLC, and R-Tech Ueno, Ltd.; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/SUCAMPOPHARMACEUTICALS,INC_11_04_2015-EX-10.2-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            50371,
+            50988
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0680",
+      "query": "Consider the Strategic Alliance Agreement between Sucampo Pharmaceuticals, Inc., Sucampo Pharma, LLC, and R-Tech Ueno, Ltd.; What are the audit rights under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/SUCAMPOPHARMACEUTICALS,INC_11_04_2015-EX-10.2-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            41036,
+            41985
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0688",
+      "query": "Consider the Strategic Alliance Agreement between Sucampo Pharmaceuticals, Inc., Sucampo Pharma, LLC, and R-Tech Ueno, Ltd.; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/SUCAMPOPHARMACEUTICALS,INC_11_04_2015-EX-10.2-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            55169,
+            55560
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-0696",
+      "query": "Consider the Strategic Alliance Agreement between Sucampo Pharmaceuticals, Inc., Sucampo Pharma, LLC, and R-Tech Ueno, Ltd.; What is the governing law for this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/SUCAMPOPHARMACEUTICALS,INC_11_04_2015-EX-10.2-STRATEGIC ALLIANCE AGREEMENT.txt",
+          "span": [
+            52644,
+            52760
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2127",
+      "query": "Consider the Marketing Agreement between Loop Industries, Inc. and Indorama Loop Technologies, LLC for Product Supply and Development; Is there a cap on liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/Loop Industries, Inc. - Marketing Agreement.txt",
+          "span": [
+            13741,
+            14384
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2130",
+      "query": "Consider the Marketing Agreement between Loop Industries, Inc. and Indorama Loop Technologies, LLC for Product Supply and Development; Is there uncapped liability under this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/Loop Industries, Inc. - Marketing Agreement.txt",
+          "span": [
+            14564,
+            14875
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2135",
+      "query": "Consider the Marketing Agreement between Loop Industries, Inc. and Indorama Loop Technologies, LLC for Product Supply and Development; Is there an anti-assignment clause in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/Loop Industries, Inc. - Marketing Agreement.txt",
+          "span": [
+            26013,
+            26472
+          ]
+        },
+        {
+          "file_path": "cuad/Loop Industries, Inc. - Marketing Agreement.txt",
+          "span": [
+            32995,
+            33264
+          ]
+        }
+      ]
+    },
+    {
+      "query_id": "cuad-2138",
+      "query": "Consider the Marketing Agreement between Loop Industries, Inc. and Indorama Loop Technologies, LLC for Product Supply and Development; How is intellectual property ownership assigned in this contract?",
+      "snippets": [
+        {
+          "file_path": "cuad/Loop Industries, Inc. - Marketing Agreement.txt",
+          "span": [
+            30432,
+            30726
+          ]
+        }
+      ]
+    }
+  ]
+}
