@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from urllib.parse import unquote
 
 
 class LegalBenchGroundTruth:
@@ -61,7 +62,7 @@ class LegalBenchGroundTruth:
     def doc_text(self, doc_id: str) -> str:
         """Return the full document text for *doc_id*."""
         if doc_id not in self._doc_texts:
-            doc_path = self._corpus_dir / doc_id
+            doc_path = self._corpus_dir / unquote(doc_id)
             with open(doc_path, encoding="utf-8") as f:
                 self._doc_texts[doc_id] = f.read()
         return self._doc_texts[doc_id]

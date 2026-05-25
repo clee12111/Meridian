@@ -8,6 +8,7 @@ then run these tests.
 from __future__ import annotations
 
 import hashlib
+from collections import Counter
 from pathlib import Path
 
 import pandas as pd
@@ -80,8 +81,8 @@ def test_offset_integrity(corpus_df):
 def test_no_duplicate_chunk_ids(corpus_df):
     """Every chunk_id must be unique."""
     chunk_ids = corpus_df["chunk_id"].tolist()
-    dupes = [cid for cid in chunk_ids if chunk_ids.count(cid) > 1]
-    assert len(set(dupes)) == 0, f"Duplicate chunk_ids: {set(dupes)}"
+    dupes = {cid for cid, cnt in Counter(chunk_ids).items() if cnt > 1}
+    assert len(dupes) == 0, f"Duplicate chunk_ids: {dupes}"
 
 
 # ==================================================================
