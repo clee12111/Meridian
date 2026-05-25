@@ -59,6 +59,10 @@ class LegalBenchGroundTruth:
         """Return all query IDs (deterministic order)."""
         return sorted(self._queries.keys())
 
+    def get_query_text(self, query_id: str) -> str:
+        """Return the query text for *query_id*."""
+        return self._queries[query_id]["query"]
+
     def doc_text(self, doc_id: str) -> str:
         """Return the full document text for *doc_id*."""
         if doc_id not in self._doc_texts:

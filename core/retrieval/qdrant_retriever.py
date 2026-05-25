@@ -86,18 +86,29 @@ class QdrantRetriever:
         collection_name: str,
         corpus_df: pd.DataFrame,
         top_k: int = 8,
+        multi_dataset: bool = False,
     ) -> None:
         self._client = client
         self._collection = collection_name
         self._corpus_df = corpus_df.reset_index(drop=True)
         self._top_k = top_k
         self._voyage = voyageai.Client()
+        self._multi_dataset = multi_dataset
+        self._has_dataset_index = self._check_dataset_index()
 
         # Build lookup from chunk_id -> row index
         self._id_to_idx: dict[str, int] = {
             row["chunk_id"]: i
             for i, row in self._corpus_df.iterrows()
         }
+
+    def _check_dataset_index(self) -> bool:
+        """Check whether this collection has a keyword index on dataset_name."""
+        try:
+            info = self._client.get_collection(self._collection)
+            return "dataset_name" in info.payload_schema
+        except Exception:
+            return False
 
     def collection_point_count(self) -> int:
         """Return the number of points in the collection, or 0 if it doesn't exist."""
@@ -175,9 +186,20 @@ class QdrantRetriever:
 
         query_filter = None
         if dataset_name is not None:
-            query_filter = Filter(
-                must=[FieldCondition(key="dataset_name", match=MatchValue(value=dataset_name))]
-            )
+            if not self._multi_dataset:
+                # Single-dataset collection: nothing to filter, skip.
+                pass
+            else:
+                # Multi-dataset collection: filter is REQUIRED.
+                if not self._has_dataset_index:
+                    raise RuntimeError(
+                        f"dataset_name filter required on multi-dataset collection "
+                        f"'{self._collection}' but no dataset_name payload index exists. "
+                        f"Create one with client.create_payload_index()."
+                    )
+                query_filter = Filter(
+                    must=[FieldCondition(key="dataset_name", match=MatchValue(value=dataset_name))]
+                )
 
         hits = self._client.query_points(
             collection_name=self._collection,

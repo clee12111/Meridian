@@ -30,6 +30,10 @@ class GroundTruth(Protocol):
         """Return all evaluation query IDs."""
         ...
 
+    def get_query_text(self, query_id: str) -> str:
+        """Return the query text for *query_id*."""
+        ...
+
     def doc_text(self, doc_id: str) -> str:
         """Return the full document text for *doc_id*."""
         ...

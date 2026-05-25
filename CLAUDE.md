@@ -155,6 +155,49 @@ The GroundTruth Protocol is the only interface between core and campaign.
 The ChunkerConfig strategy enum is the only place domain-specific
 chunking strategies are registered.
 
+## Cross-dataset contamination (spine of this campaign)
+
+ContractNLI P@1 dropped 8.84% (isolated index) → 3.38% (full 4-dataset
+corpus) because a combined index lets ContractNLI queries retrieve CUAD
+chunks. Hard Rule 15 (dataset filter mandatory on every Qdrant query)
+exists because of this.
+
+### Qdrant dataset filtering — two independent facts
+
+Filtering depends on TWO independent facts, never collapsed into one
+boolean:
+
+1. **Must filter**: whether the collection is multi-dataset
+   (contamination risk). Single-dataset collections skip the filter
+   (nothing to separate). Multi-dataset collections filter-or-RAISE,
+   never silently skip.
+
+2. **Can filter**: whether a `dataset_name` keyword payload index
+   physically exists on that Qdrant collection. Without it, Qdrant
+   rejects filter queries with HTTP 400.
+
+### Locked baseline values are GATES, not targets
+
+ContractNLI hybrid: P@1 8.84%, R@8 49.88%, failure dist DRM 38.7% /
+CBF 18.0% / OK 24.7%. Any refactor must reproduce these exactly or it
+changed behavior.
+
+### Experiment 1 partial verification
+
+Experiment 1 was only half-verified until 2026-05-25: the 8.84%
+recovery came from BM25 per-dataset indexing; the Qdrant payload filter
+could not execute until the `dataset_name` keyword index was created on
+`legalbench_rag_full`. The full-collection contamination test has not
+yet been run with the filter genuinely applied.
+
+### Process rule
+
+When reporting a fix, show the file content on disk and the real
+terminal output, never a description of intended changes. Summaries
+have diverged from actual file state in this session — always verify.
+
+---
+
 ## Hard rules
 1. Do not hand-roll anything in the BUY stack without explicit instruction.
 2. Do not add dependencies without asking first.
@@ -168,3 +211,8 @@ chunking strategies are registered.
 10. RetrievalResult.spans populated from parquet join — never text reconstruction.
 11. BM25Retrieval instantiated once per run, not per query.
 12. Scribe writes decision_log entries. Human writes the autopsy. Never reversed.
+13. Campaign vs. core boundary is non-negotiable (see section above).
+14. No AutoRAG VectorDBRetrieval, HybridRetrieval, MetricInput, or @autorag_metric.
+15. Dataset filter mandatory on every Qdrant query to a multi-dataset collection.
+    Single-dataset collections skip. Multi-dataset collections RAISE if the
+    payload index is missing — never silently skip.

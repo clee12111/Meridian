@@ -72,7 +72,7 @@ class BM25Retriever:
         k = top_k if top_k is not None else self._top_k
         tokenized_query = _tokenize(query)
 
-        if dataset_name is not None:
+        if dataset_name is not None and self._dataset_indexes:
             if dataset_name not in self._dataset_indexes:
                 raise KeyError(
                     f"No BM25 index for dataset {dataset_name!r}. "

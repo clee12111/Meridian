@@ -45,14 +45,15 @@ def check_spend(state: ExperimentState) -> dict:
 
 def run_eval(state: ExperimentState) -> dict:
     """Build index, run retrieval + measurement over all queries."""
-    from core.measurement.metrics import MetricResult
+    from core.evaluation.run_eval import evaluate_config
+
+    config = dict(state["config"])
+    metric_result, failure_counts = evaluate_config(config)
 
     return {
-        "metric_result": MetricResult(
-            p_at_k={1: 0.0}, r_at_k={1: 0.0}, eval_mode="SPAN_OVERLAP"
-        ),
-        "failure_counts": {},
-        "trace_id": "stub-trace-id",
+        "metric_result": metric_result,
+        "failure_counts": failure_counts,
+        "trace_id": "TODO-langfuse-trace-id",
     }
 
 

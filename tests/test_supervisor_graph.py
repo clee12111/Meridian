@@ -53,12 +53,32 @@ class TestGraphCompilation:
 
 
 class TestHappyPath:
-    def test_full_run_completes(self):
+    def test_full_run_completes(self, monkeypatch):
+        from core.supervisor import nodes
+        from core.measurement.metrics import MetricResult
+
+        monkeypatch.setattr(nodes, "run_eval", lambda s: {
+            "metric_result": MetricResult(
+                p_at_k={1: 0.0}, r_at_k={1: 0.0}, eval_mode="SPAN_OVERLAP"
+            ),
+            "failure_counts": {},
+            "trace_id": "stub-trace-id",
+        })
         result = _run_graph()
         assert result["status"] == "completed"
         assert result["notified"] is True
 
-    def test_all_state_fields_populated(self):
+    def test_all_state_fields_populated(self, monkeypatch):
+        from core.supervisor import nodes
+        from core.measurement.metrics import MetricResult
+
+        monkeypatch.setattr(nodes, "run_eval", lambda s: {
+            "metric_result": MetricResult(
+                p_at_k={1: 0.0}, r_at_k={1: 0.0}, eval_mode="SPAN_OVERLAP"
+            ),
+            "failure_counts": {},
+            "trace_id": "stub-trace-id",
+        })
         result = _run_graph()
         assert result["run_number"] == 1
         assert result["config"]["chunk_size"] == 512
@@ -108,7 +128,15 @@ class TestConditionalEdges:
     def test_quarantine_skips_log_results(self, monkeypatch):
         """When sanity_check quarantines, skip log_results and write_entry."""
         from core.supervisor import nodes
+        from core.measurement.metrics import MetricResult
 
+        monkeypatch.setattr(nodes, "run_eval", lambda s: {
+            "metric_result": MetricResult(
+                p_at_k={1: 0.0}, r_at_k={1: 0.0}, eval_mode="SPAN_OVERLAP"
+            ),
+            "failure_counts": {},
+            "trace_id": "stub-trace-id",
+        })
         monkeypatch.setattr(nodes, "sanity_check", lambda s: {
             "sanity": {"passed": False, "violations": ["R@k not monotonic"], "quarantined": True},
         })
@@ -124,7 +152,17 @@ class TestConditionalEdges:
 
 
 class TestCheckpointing:
-    def test_state_persisted_to_sqlite(self, tmp_path: Path):
+    def test_state_persisted_to_sqlite(self, monkeypatch, tmp_path: Path):
+        from core.supervisor import nodes
+        from core.measurement.metrics import MetricResult
+
+        monkeypatch.setattr(nodes, "run_eval", lambda s: {
+            "metric_result": MetricResult(
+                p_at_k={1: 0.0}, r_at_k={1: 0.0}, eval_mode="SPAN_OVERLAP"
+            ),
+            "failure_counts": {},
+            "trace_id": "stub-trace-id",
+        })
         db = str(tmp_path / "cp.sqlite")
         result = _run_graph(db_path=db)
         assert result["status"] == "completed"

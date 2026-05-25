@@ -131,3 +131,54 @@ at scale. To be tested in cross-dataset expansion.
 
 **Verdict: CONFIRMED.** Phase 2 closed. Expanding to all four 
 LegalBench-RAG datasets before Phase 3.
+
+---
+
+## Experiment 1 — Full 4-dataset baseline (contamination fix)
+
+### Correction (2026-05-25): Qdrant filter was latent
+
+The Qdrant `dataset_name` payload filter was never actually exercised
+during Experiment 1's initial run. Investigation confirmed that
+`legalbench_rag_full` (293,323 points) had `payload_schema: {}` —
+no payload index on `dataset_name`. Without a keyword index, Qdrant
+rejects filter queries with HTTP 400; the filter code path was
+unreachable.
+
+The 8.84% ContractNLI P@1 recovery reported in Experiment 1 came
+entirely from **BM25 per-dataset indexing** (`BM25Retriever` builds
+separate BM25Okapi instances per `dataset_name` value in the corpus
+DataFrame, `core/retrieval/bm25_retriever.py:52-57`). The Qdrant
+dense retrieval half ran unfiltered — cross-dataset contamination
+in the dense retrieval results was suppressed only by RRF fusion
+weighting BM25's correctly-filtered results above Qdrant's
+unfiltered results.
+
+### Actions taken this session
+
+1. Created keyword payload index on `dataset_name` for
+   `legalbench_rag_full` (293,323 points indexed, confirmed via
+   `payload_schema`).
+2. Redesigned `QdrantRetriever` filtering: `multi_dataset` flag set
+   at construction; single-dataset collections skip the filter;
+   multi-dataset collections RAISE if the index is missing (see
+   `docs/architecture.md` for the full invariant).
+3. `contractnli_baseline` (single-dataset, no index) now correctly
+   skips filtering, reproducing the locked 8.84%/50.41%.
+
+### Status
+
+Experiment 1 is now fully built — both BM25 and Qdrant filtering
+are wired and the payload index exists. However, the full-collection
+contamination test has **not yet been re-run** with the Qdrant filter
+genuinely applied. Until that run completes and metrics are compared
+against the latent-filter run, the Experiment 1 results should be
+considered provisional.
+
+### Proposed next step
+
+Re-run `scripts/run_baseline.py --full --persist --eval-only` with
+the filter active. Compare per-dataset metrics against the prior
+(latent-filter) run. If R@k improves on non-ContractNLI datasets
+(CUAD, MAUD, PrivacyQA), that confirms cross-dataset contamination
+was present in the dense retrieval path.
