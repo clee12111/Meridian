@@ -126,6 +126,126 @@ def _format_ledger(entries: list[LedgerEntry]) -> str:
     return "\n\n".join(_format_ledger_entry(e) for e in entries)
 
 
+# ── Calibration summary helpers ──────────────────────────────────────────
+
+
+def _lever_for_entry(entry: LedgerEntry, prior: LedgerEntry | None) -> str:
+    """Derive the primary lever changed from prior to this entry."""
+    if prior is None:
+        return "initial"
+    cfg, pcfg = entry.config, prior.config
+    if cfg.target_dataset != pcfg.target_dataset:
+        return "dataset_switch"
+    if cfg.chunk_size != pcfg.chunk_size or cfg.chunk_overlap != pcfg.chunk_overlap:
+        return "chunking"
+    if cfg.retrieval_mode != pcfg.retrieval_mode:
+        return "retrieval_mode"
+    if (
+        cfg.bm25_top_k != pcfg.bm25_top_k
+        or cfg.dense_top_k != pcfg.dense_top_k
+        or cfg.fusion_top_n != pcfg.fusion_top_n
+    ):
+        return "top_k"
+    return "same_config"
+
+
+def _floor_verdict(entry: LedgerEntry) -> str:
+    """SIGNAL / NOISE / WRONG_DIR / no_ref based on actual_delta_pp."""
+    if entry.actual_delta_pp is None:
+        return "no_ref"
+    metric = entry.predicted_delta.metric
+    floor = VARIANCE_FLOOR_PP.get(metric, 0.52)
+    adp = entry.actual_delta_pp
+    if abs(adp) <= floor:
+        return "NOISE"
+    if (entry.predicted_delta.delta_pp > 0 and adp < 0) or (
+        entry.predicted_delta.delta_pp < 0 and adp > 0
+    ):
+        return "WRONG_DIR"
+    return "SIGNAL"
+
+
+def _detect_saturated_levers(
+    ledger: list[LedgerEntry], consecutive_threshold: int = 2
+) -> list[str]:
+    """Return lever names tried >= threshold consecutive times without SIGNAL.
+
+    Only looks at the trailing window — saturation must be CURRENT, not
+    something that happened mid-ledger and was already resolved.
+    """
+    if len(ledger) < consecutive_threshold:
+        return []
+
+    pairs: list[tuple[str, str]] = []
+    for i, entry in enumerate(ledger):
+        prior = ledger[i - 1] if i > 0 else None
+        pairs.append((_lever_for_entry(entry, prior), _floor_verdict(entry)))
+
+    tail = pairs[-consecutive_threshold:]
+    levers = [p[0] for p in tail]
+    verdicts = [p[1] for p in tail]
+
+    if len(set(levers)) == 1 and all(v != "SIGNAL" for v in verdicts):
+        return [levers[0]]
+    return []
+
+
+def _build_calibration_summary(ledger: list[LedgerEntry], n: int = 5) -> str:
+    """Compact calibration table for the last N runs — injected into user message."""
+    if not ledger:
+        return "(no prior runs -- this is the first experiment)"
+
+    recent = ledger[-n:]
+
+    header = (
+        f"{'run':>3} | {'dataset':<11} | {'lever':<14} | "
+        f"{'predicted':>11} | {'actual':>8} | {'error':>8} | verdict"
+    )
+    sep = "-" * len(header)
+    lines = [header, sep]
+
+    for entry in recent:
+        idx = next(
+            (i for i, e in enumerate(ledger) if e.run_number == entry.run_number), -1
+        )
+        prior = ledger[idx - 1] if idx > 0 else None
+        lever = _lever_for_entry(entry, prior)
+        verdict = _floor_verdict(entry)
+        metric = entry.predicted_delta.metric if entry.predicted_delta else "?"
+        pred = (
+            f"{entry.predicted_delta.delta_pp:+.1f}pp({metric})"
+            if entry.predicted_delta
+            else "?"
+        )
+        actual = (
+            f"{entry.actual_delta_pp:+.1f}pp"
+            if entry.actual_delta_pp is not None
+            else "no_ref"
+        )
+        error = (
+            f"{entry.prediction_error_pp:+.1f}pp"
+            if entry.prediction_error_pp is not None
+            else "no_ref"
+        )
+        lines.append(
+            f"{entry.run_number:>3} | {entry.config.target_dataset:<11} | "
+            f"{lever:<14} | {pred:>11} | {actual:>8} | {error:>8} | {verdict}"
+        )
+
+    saturated = _detect_saturated_levers(ledger)
+    if saturated:
+        lines.append("")
+        lines.append(
+            f"SATURATED (>= 2 consecutive non-SIGNAL): {', '.join(saturated)}"
+        )
+        lines.append(
+            "You MUST NOT propose these levers again. Pivot to a different"
+            " intervention class."
+        )
+
+    return "\n".join(lines)
+
+
 def _estimate_table() -> str:
     """Show chunk estimates at several sizes for cost reasoning."""
     sizes = [256, 512, 768, 1024, 2048]
@@ -178,7 +298,9 @@ Respond with a single JSON object matching this schema EXACTLY:
    percentage is the dominant failure.
 
 2. DRM (Document Retrieval Miss) is a routing/query-time failure.
-   Fix with: top_k changes, hybrid weighting, retrieval_mode switch.
+   Fix with: retrieval_mode switch (bm25-only vs hybrid), hybrid weight
+   skew (bm25_top_k >> dense_top_k), lower fusion_top_n.
+   BLOCKED: top_k increases for DRM on ContractNLI -- see Finding 2 below.
    These are query_time experiments -- ZERO embedding cost.
 
 3. SGP (Span Gap) is a coverage/diversity failure -- retriever
@@ -228,6 +350,45 @@ Respond with a single JSON object matching this schema EXACTLY:
    "locked" (the permanent Phase 2 baselines below) or a specific
    prior run_number (e.g. "3").  The Supervisor computes actual
    improvement against THAT reference, not the adjacent row.
+
+## Anti-repetition rules (enforced, not advisory)
+
+11. DEPRIORITIZE AFTER FAILURE.  If the last run targeted a lever and
+    actual_delta was NOISE or WRONG_DIR, that lever is deprioritized.
+    Propose a different lever or failure type next.
+
+12. SATURATED LEVER = BLOCKED.  If the calibration history (provided
+    in your user message each call) shows a lever tried >= 2 consecutive
+    times with no SIGNAL, it is SATURATED.  The summary will say
+    "SATURATED: <lever>".  You MUST NOT propose that lever again.
+
+13. PIVOT AFTER SATURATION.  Priority order:
+    - DRM dominant + top_k saturated:
+        first try retrieval_mode="bm25" (isolate dense noise);
+        then try bm25_top_k >> dense_top_k (e.g., 64/16) to skew hybrid;
+        then try lower fusion_top_n (tighter discrimination window).
+    - CBF/ICR dominant: pivot to chunk_size / chunk_overlap changes.
+    - OVR dominant: reduce fusion_top_n or chunk_size.
+    - SGP dominant: increase fusion_top_n or try MMR-style diverse retrieval.
+
+## Finding 2 — DRM on ContractNLI is discrimination-bound (HARD RULE)
+
+Evidence: top_k experiments ran at 64 / 96 / 128.  DRM count was
+72 / 72 / 73 across all three -- completely flat.  OVR rose from 21 to 26.
+P@1 gained one step (8.84 -> 11.44) at the 32->64 transition, then held.
+
+Conclusion: the correct document IS in the candidate set at top_k=64.
+The retriever fails to RANK it first, not to include it.  Adding more
+candidates does not fix a ranking failure.
+
+RULE: top_k increases for DRM reduction on ContractNLI are BLOCKED.
+Next DRM experiments in priority order:
+  1. retrieval_mode="bm25" -- isolate whether Voyage dense embeddings
+     are hurting discrimination on legal near-duplicate documents.
+  2. bm25_top_k >> dense_top_k (e.g., 64/16, fusion_top_n=32) -- reduce
+     the fraction of dense noise entering RRF.
+  3. Lower fusion_top_n (e.g., 32) at current bm25_k/dense_k -- tighter
+     fusion window may improve rank-1 precision.
 
 ## Cost model
 
@@ -280,6 +441,14 @@ def propose(ledger_path: Path = LEDGER_PATH) -> ExperimentProposal:
 
     ledger = load_ledger(ledger_path)
     system_prompt = _build_prompt(ledger)
+    calibration_block = _build_calibration_summary(ledger)
+
+    user_message = (
+        "## Recent calibration history (last 5 runs)\n\n"
+        f"{calibration_block}\n\n"
+        "Propose the next experiment. Respond with a single JSON object, "
+        "no markdown fences, no commentary."
+    )
 
     client = OpenAI(api_key=api_key, base_url=DEEPSEEK_BASE_URL)
 
@@ -287,13 +456,7 @@ def propose(ledger_path: Path = LEDGER_PATH) -> ExperimentProposal:
         model=DEEPSEEK_MODEL,
         messages=[
             {"role": "system", "content": system_prompt},
-            {
-                "role": "user",
-                "content": (
-                    "Propose the next experiment.  Respond with a single "
-                    "JSON object, no markdown fences, no commentary."
-                ),
-            },
+            {"role": "user", "content": user_message},
         ],
         response_format={"type": "json_object"},
         temperature=0.3,
