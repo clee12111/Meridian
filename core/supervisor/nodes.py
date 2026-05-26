@@ -16,17 +16,22 @@ def read_ledger(state: ExperimentState) -> dict:
 
 
 def propose_config(state: ExperimentState) -> dict:
-    """Proposer agent: read ledger, emit config + hypothesis."""
+    """Proposer agent: call DeepSeek, emit config + hypothesis + predicted delta.
+
+    Reads the experiment ledger from disk, constructs a prompt with the
+    full history and cost model, and returns a validated ExperimentProposal.
+    """
+    from core.supervisor.proposer import propose
+
+    proposal = propose()
+
     return {
-        "config": {
-            "chunk_size": 512,
-            "chunk_overlap": 128,
-            "bm25_top_k": 32,
-            "dense_top_k": 32,
-            "fusion_top_n": 64,
-        },
-        "hypothesis": "stub hypothesis",
-        "predicted_delta": 0.0,
+        "config": proposal.config.model_dump(),
+        "hypothesis": proposal.hypothesis,
+        "predicted_delta": proposal.predicted_delta.model_dump(),
+        "experiment_type": proposal.experiment_type,
+        "estimated_embedding_chunks": proposal.estimated_embedding_chunks,
+        "cost_reasoning": proposal.cost_reasoning,
     }
 
 
@@ -74,8 +79,41 @@ def log_results(state: ExperimentState) -> dict:
 
 
 def write_entry(state: ExperimentState) -> dict:
-    """Scribe: write a decision_log.md entry."""
-    return {"decision_entry": "stub entry"}
+    """Scribe: call DeepSeek to write a decision_log.md entry.
+
+    Reads the completed experiment from state, resolves the baseline
+    reference, computes significance verdicts deterministically, and
+    calls the Scribe LLM to narrate the entry.
+    """
+    from core.supervisor.proposer import load_ledger
+    from core.supervisor.schemas import (
+        FailureVector, LedgerEntry, PredictedDelta, RagConfig,
+    )
+    from core.supervisor.scribe import write_decision_entry
+
+    # Build a LedgerEntry from current state
+    entry = LedgerEntry(
+        run_number=state["run_number"],
+        experiment_id=state.get("config_hash", ""),
+        config=RagConfig(**state["config"]),
+        hypothesis=state["hypothesis"],
+        predicted_delta=PredictedDelta(**state["predicted_delta"]),
+        experiment_type=state.get("experiment_type", "ingestion_time"),
+        estimated_embedding_chunks=state.get("estimated_embedding_chunks", 0),
+        p_at_k=state["metric_result"].p_at_k,
+        r_at_k=state["metric_result"].r_at_k,
+        failure_vector=FailureVector.from_counts(state["failure_counts"]),
+        n_queries=sum(state["failure_counts"].values()),
+        actual_embedding_chunks=state.get("estimated_embedding_chunks", 0),
+        actual_delta_pp=None,   # filled by Supervisor after comparison
+        prediction_error_pp=None,
+        trace_id=state.get("trace_id", ""),
+    )
+
+    ledger = load_ledger()
+    decision_text = write_decision_entry(entry, ledger)
+
+    return {"decision_entry": decision_text}
 
 
 def notify(state: ExperimentState) -> dict:

@@ -23,6 +23,7 @@ def evaluate_config(
     config: dict,
     dataset_name: str | None = None,
     data_dir: str | Path | None = None,
+    skip_index: bool = False,
 ) -> tuple[MetricResult, dict[str, int]]:
     """Run the full retrieval evaluation pipeline for a given config.
 
@@ -74,9 +75,24 @@ def evaluate_config(
     else:
         data_dir = Path(data_dir)
 
-    # --- Ingest ---
+    # --- Ingest (per-dataset to avoid unnecessary work) ---
     if dataset_name == "contractnli":
         corpus_df, _ = ingest_contractnli(
+            data_dir, chunk_size, chunk_overlap, max_queries=194
+        )
+    elif dataset_name == "maud":
+        from campaigns.legalbench_rag.ingestion.maud_loader import ingest_maud
+        corpus_df, _ = ingest_maud(
+            data_dir, chunk_size, chunk_overlap, max_queries=194
+        )
+    elif dataset_name == "cuad":
+        from campaigns.legalbench_rag.ingestion.cuad_loader import ingest_cuad
+        corpus_df, _ = ingest_cuad(
+            data_dir, chunk_size, chunk_overlap, max_queries=194
+        )
+    elif dataset_name == "privacy_qa":
+        from campaigns.legalbench_rag.ingestion.privacyqa_loader import ingest_privacyqa
+        corpus_df, _ = ingest_privacyqa(
             data_dir, chunk_size, chunk_overlap, max_queries=194
         )
     else:
@@ -130,7 +146,8 @@ def evaluate_config(
             top_k=dense_top_k,
             multi_dataset=is_multi,
         )
-        qdrant.index()
+        if not skip_index:
+            qdrant.index()
 
     # --- Per-query eval loop ---
     all_p: dict[int, list[float]] = {k: [] for k in K_VALUES}

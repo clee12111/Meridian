@@ -44,7 +44,10 @@ class ExperimentState(TypedDict, total=False):
     # --- proposer outputs ---
     config: RagConfig
     hypothesis: str             # verbatim from proposer
-    predicted_delta: float      # predicted metric improvement
+    predicted_delta: dict       # PredictedDelta as dict (metric, delta_pp, baseline_ref, above_variance_floor)
+    experiment_type: str        # "query_time" | "ingestion_time"
+    estimated_embedding_chunks: int
+    cost_reasoning: str
 
     # --- guard rails ---
     config_hash: str            # SHA-256 of canonical config JSON
