@@ -144,8 +144,11 @@ Phase 2 — ContractNLI ingestion + baseline replication. GATE PASSED.
 Locked baseline (7-run measured band, 194 queries, 95 docs, 3797 chunks):
   P@1 = 8.84% (deterministic — zero run-to-run variance)
   R@8 = 50.29% ± 0.16pp (1σ), range [49.95, 50.41] across 7 runs
-  Failure: DRM 76 / CBF 35 / SGP 21 / ICR 6 / OVR 21 / OK 35 (deterministic)
+  Failure counts: DRM 76 / CBF 35 / SGP 21 / ICR 6 / OVR 21 / OK 35 (deterministic)
+  Failure vector (%): DRM 39.2% / CBF 18.0% / SGP 10.8% / ICR 3.1% / OVR 10.8% / OK 18.0%
   Variance source: Voyage query-embedding nondeterminism (~1-2 queries/run)
+  Variance floors (3σ, measured): P@1 0.00pp, R@8 0.50pp, failure-type % 0.52pp
+  Sub-floor deltas are NOISE — never narrate as improvements.
 Permanent gate: P@1 [6.8, 10.8], R@8 [47.4, 53.4].
 If subsequent experiment regresses outside gate, QUARANTINE.
 
@@ -228,6 +231,30 @@ yet been run with the filter genuinely applied.
 When reporting a fix, show the file content on disk and the real
 terminal output, never a description of intended changes. Summaries
 have diverged from actual file state in this session — always verify.
+
+---
+
+## Campaign findings (permanent record)
+
+### Finding 1 — Multi-doc precondition (hard gate on multi-hop expansion)
+
+The failure classifier in taxonomy.py collapses cross-document character
+offsets. It is CORRECT ONLY for single-document ground truth. All 4
+current datasets (ContractNLI, CUAD, MAUD, PrivacyQA) are 0% cross-doc.
+Any multi-document / multi-hop dataset (HotpotQA, MuSiQue, etc.) requires
+per-document span grouping FIRST before the classifier is valid.
+This is a hard gate on multi-hop expansion — do not add such datasets
+without implementing per-document span grouping.
+
+### Finding 2 — top_k is a P@1 lever, NOT a DRM lever
+
+Scaling top_k from 32→64 yielded a one-time P@1 gain (8.84→11.44) but
+DRM saturated completely (~72 across top_k 64/96/128) while OVR spiked.
+Evidence: DRM on ContractNLI is discrimination-bound, not coverage-bound.
+The near-duplicate legal document structure means the correct doc is
+already in the candidate set; the retriever fails to rank it first.
+The DRM lever is query expansion / better discrimination — NOT larger
+candidate sets. Further top_k increases are BLOCKED as cost-ineffective.
 
 ---
 

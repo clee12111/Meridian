@@ -146,7 +146,15 @@ def evaluate_config(
             top_k=dense_top_k,
             multi_dataset=is_multi,
         )
-        if not skip_index:
+        if skip_index:
+            point_count = qdrant.collection_point_count()
+            if point_count == 0:
+                raise RuntimeError(
+                    f"skip_index=True (query_time experiment) but collection "
+                    f"'{collection}' has 0 points. Run an ingestion_time "
+                    f"experiment first to populate the index."
+                )
+        else:
             qdrant.index()
 
     # --- Per-query eval loop ---

@@ -62,6 +62,10 @@ class ExperimentState(TypedDict, total=False):
     # --- sanity ---
     sanity: SanityVerdict
 
+    # --- calibration (set by log_results) ---
+    actual_delta_pp: float      # observed delta on predicted metric vs baseline
+    prediction_error_pp: float  # predicted - actual (positive = over-predicted)
+
     # --- scribe ---
     decision_entry: str         # markdown for decision_log.md
     notified: bool              # True after Apprise fires
