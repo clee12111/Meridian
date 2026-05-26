@@ -89,8 +89,22 @@ class RetrievalResult:
 - Every MetricResult carries a Langfuse trace_id — no result without a trace
 
 ## Failure taxonomy
-Phase 1 (span-computable — implement now):
-DRM, CBF, ICR, OVR. No chunk text parsing required.
+Classification uses PER-SPAN coverage analysis: each ground-truth
+span is individually scored against retrieved spans.  This correctly
+handles multi-span queries (43% of LegalBench-RAG).
+
+Phase 1 (span-computable, precedence order — first match wins):
+1. DRM — no retrieved doc matches any gt doc
+2. CBF — correct doc, zero overlap on ALL gt spans
+3. SGP — >=1 span covered (>=50%) AND >=1 span entirely missed (0%)
+         "Found some, missed others." Fix: diversity/coverage in top-k.
+4. ICR — total overlap > 0 but < 50% of total gt chars
+5. OVR — total retrieved chars >= 3x total gt chars
+6. OK  — none of the above
+
+SGP requires parent-document reachability (DRM checked first).
+For single-span queries SGP is impossible — behavior identical to
+the pre-SGP classifier.
 
 Phase 2 (chunk text parsing — stubs only until explicitly added):
 DTM, XRF. Raise NotImplementedError in stubs.
@@ -178,9 +192,13 @@ boolean:
 
 ### Locked baseline values are GATES, not targets
 
-ContractNLI hybrid: P@1 8.84%, R@8 49.88%, failure dist DRM 38.7% /
-CBF 18.0% / OK 24.7%. Any refactor must reproduce these exactly or it
-changed behavior.
+ContractNLI hybrid (per-span taxonomy): P@1 8.84%, R@8 50.41%,
+failure dist DRM 39.2% / CBF 18.0% / SGP 10.8% / ICR 3.1% /
+OVR 10.8% / OK 18.0% (194 queries). Any refactor must reproduce
+these exactly or it changed behavior.
+
+Note: pre-SGP baseline had OK 24.2% — 12 false-OK queries were
+reclassified to SGP (had a span entirely missed).
 
 ### Experiment 1 partial verification
 

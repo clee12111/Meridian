@@ -33,9 +33,9 @@ LOCKED_BASELINES: dict[str, dict] = {
     "contractnli": {
         "chunk_size": 512, "chunk_overlap": 128,
         "retrieval_mode": "hybrid",
-        "p_at_1": 9.24, "r_at_8": 50.41,
-        "drm_pct": 39.7, "cbf_pct": 18.0, "icr_pct": 5.7,
-        "ovr_pct": 12.4, "ok_pct": 24.2,
+        "p_at_1": 8.84, "r_at_8": 50.41,
+        "drm_pct": 39.2, "cbf_pct": 18.0, "sgp_pct": 10.8,
+        "icr_pct": 3.1, "ovr_pct": 10.8, "ok_pct": 18.0,
         "n_queries": 194,
     },
 }
@@ -161,7 +161,7 @@ Respond with a single JSON object matching this schema EXACTLY:
   }},
   "hypothesis": "<one paragraph>",
   "predicted_delta": {{
-    "metric": "<one of: p_at_1, r_at_8, drm_pct, cbf_pct, icr_pct, ovr_pct, ok_pct>",
+    "metric": "<one of: p_at_1, r_at_8, drm_pct, cbf_pct, sgp_pct, icr_pct, ovr_pct, ok_pct>",
     "delta_pp": <float, signed percentage points>,
     "baseline_ref": "<'locked' or a prior run_number as string, e.g. '3'>",
     "above_variance_floor": <bool>
@@ -174,14 +174,20 @@ Respond with a single JSON object matching this schema EXACTLY:
 ## Decision policy
 
 1. TARGET THE DOMINANT FAILURE on the dataset where it dominates.
-   Read the failure vector (DRM/CBF/ICR/OVR/OK).  The largest
+   Read the failure vector (DRM/CBF/SGP/ICR/OVR/OK).  The largest
    percentage is the dominant failure.
 
 2. DRM (Document Retrieval Miss) is a routing/query-time failure.
    Fix with: top_k changes, hybrid weighting, retrieval_mode switch.
    These are query_time experiments -- ZERO embedding cost.
 
-3. CBF/ICR/OVR are chunking/ingestion failures.
+3. SGP (Span Gap) is a coverage/diversity failure -- retriever
+   found some required spans but missed others entirely (same doc).
+   Fix with: diversity-aware retrieval, MMR reranking, higher top_k
+   to surface more distinct chunks.  Can be query_time (top_k) or
+   ingestion_time (chunk size/overlap to create more distinct chunks).
+
+5. CBF/ICR/OVR are chunking/ingestion failures.
    Fix with: chunk_size, chunk_overlap changes.
    These are ingestion_time experiments -- cost is proportional to
    chunk count (real Voyage API tokens).
@@ -195,18 +201,18 @@ Respond with a single JSON object matching this schema EXACTLY:
      - Above 1024 expect diminishing returns and OVR spikes,
        especially on MAUD's huge docs.  2048 is the hard ceiling.
 
-4. OPTIMIZE ROUTING (DRM) FIRST.  Chunking failures can't be
+6. OPTIMIZE ROUTING (DRM) FIRST.  Chunking failures can't be
    addressed until the retriever is finding the right documents.
    Routing fixes are cheap.  Do them first.
 
-5. PREFER CHEAP EXPERIMENTS.
+7. PREFER CHEAP EXPERIMENTS.
    - query_time = free (reuses existing index).
    - ingestion_time = costs Voyage tokens (chunk count below).
    Always ask: "Can I falsify this cheaply on ContractNLI (~3,800
    chunks) or PrivacyQA (~620 chunks) before paying to confirm on
    MAUD (~192,000 chunks)?"
 
-6. RESPECT THE VARIANCE FLOOR.
+8. RESPECT THE VARIANCE FLOOR.
    These values are PROVISIONAL (not yet measured at statistical rigor):
 {variance_floor}
    If abs(delta_pp) <= floor for the predicted metric, the experiment
@@ -214,11 +220,11 @@ Respond with a single JSON object matching this schema EXACTLY:
    or target a different metric.  Set above_variance_floor=false if
    the predicted delta is below the floor -- the Supervisor will reject.
 
-7. MOVE TO THE NEXT DATASET only when the dominant failure on the
+9. MOVE TO THE NEXT DATASET only when the dominant failure on the
    current dataset has been addressed (cleared a gate or shifted to
    a different dominant type).
 
-8. NAME YOUR BASELINE.  predicted_delta.baseline_ref must be either
+10. NAME YOUR BASELINE.  predicted_delta.baseline_ref must be either
    "locked" (the permanent Phase 2 baselines below) or a specific
    prior run_number (e.g. "3").  The Supervisor computes actual
    improvement against THAT reference, not the adjacent row.

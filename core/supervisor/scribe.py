@@ -29,8 +29,8 @@ from core.supervisor.schemas import (
 
 SignificanceVerdict = Literal["significant", "within_noise"]
 
-FAILURE_FIELDS = ["drm", "cbf", "icr", "ovr", "ok"]
-METRIC_KEYS = ["p_at_1", "r_at_8", "drm_pct", "cbf_pct", "icr_pct", "ovr_pct", "ok_pct"]
+FAILURE_FIELDS = ["drm", "cbf", "sgp", "icr", "ovr", "ok"]
+METRIC_KEYS = ["p_at_1", "r_at_8", "drm_pct", "cbf_pct", "sgp_pct", "icr_pct", "ovr_pct", "ok_pct"]
 
 
 def _resolve_baseline_metric(

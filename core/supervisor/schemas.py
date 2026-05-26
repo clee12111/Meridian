@@ -40,6 +40,7 @@ VARIANCE_FLOOR_PP: dict[str, float] = {
     # Use 0.6pp as the floor for failure-type deltas.
     "drm_pct": 0.6,   # PROVISIONAL
     "cbf_pct": 0.6,   # PROVISIONAL
+    "sgp_pct": 0.6,   # PROVISIONAL
     "icr_pct": 0.6,   # PROVISIONAL
     "ovr_pct": 0.6,   # PROVISIONAL
     "ok_pct":  0.6,   # PROVISIONAL
@@ -89,7 +90,7 @@ DatasetName = Literal["contractnli", "cuad", "maud", "privacy_qa"]
 
 MetricName = Literal[
     "p_at_1", "r_at_8",
-    "drm_pct", "cbf_pct", "icr_pct", "ovr_pct", "ok_pct",
+    "drm_pct", "cbf_pct", "sgp_pct", "icr_pct", "ovr_pct", "ok_pct",
 ]
 
 ExperimentType = Literal["query_time", "ingestion_time"]
@@ -214,13 +215,14 @@ class FailureVector(BaseModel):
 
     drm: int = Field(ge=0, description="Document Retrieval Miss")
     cbf: int = Field(ge=0, description="Correct But Failed (right doc, zero overlap)")
+    sgp: int = Field(default=0, ge=0, description="Span Gap (some spans covered, others entirely missed)")
     icr: int = Field(ge=0, description="Incomplete Retrieval (overlap < 50%)")
     ovr: int = Field(ge=0, description="Over-Retrieval (retrieved >= 3x gt)")
     ok:  int = Field(ge=0, description="No failure")
 
     @property
     def total(self) -> int:
-        return self.drm + self.cbf + self.icr + self.ovr + self.ok
+        return self.drm + self.cbf + self.sgp + self.icr + self.ovr + self.ok
 
     def pct(self, field: str) -> float:
         """Percentage for one failure type.  Returns 0.0 if total is 0."""
@@ -234,6 +236,7 @@ class FailureVector(BaseModel):
         return cls(
             drm=counts.get("DRM", 0),
             cbf=counts.get("CBF", 0),
+            sgp=counts.get("SGP", 0),
             icr=counts.get("ICR", 0),
             ovr=counts.get("OVR", 0),
             ok=counts.get("OK", 0),
