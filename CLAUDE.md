@@ -82,7 +82,10 @@ class RetrievalResult:
 - P@k/R@k property-tested with Hypothesis, min 10k examples
 - Ingestion: doc_text[start:end] == chunk_text — HARD HALT on mismatch
 - Sanity invariants (all thresholds configurable, never hardcoded):
-  R@k non-decreasing in k; P@k non-increasing in k;
+  R@k non-decreasing in k (mathematical invariant, always checked);
+  P@k monotonicity is NOT checked (char-level P@k can legitimately
+  increase — a relevant chunk at rank 2 raises P@2 over an irrelevant
+  chunk at rank 1);
   no metric improves >SANITY_THRESHOLD pts over prior best (default 15.0)
 - On invariant violation: QUARANTINE + flag + notify. Never silently accept.
 - eval_mode must be explicit on every MetricResult: SPAN_OVERLAP or LLM_JUDGE
@@ -138,7 +141,11 @@ Phase 1 — measurement library + property tests. No agents, no Qdrant,
 no ingestion. Gate: 10k Hypothesis examples pass, known-answer tests pass.
 
 Phase 2 — ContractNLI ingestion + baseline replication. GATE PASSED.
-Locked baseline: P@1 8.84%, R@8 50.41% on 194 queries (95 docs, 3797 chunks).
+Locked baseline (7-run measured band, 194 queries, 95 docs, 3797 chunks):
+  P@1 = 8.84% (deterministic — zero run-to-run variance)
+  R@8 = 50.29% ± 0.16pp (1σ), range [49.95, 50.41] across 7 runs
+  Failure: DRM 76 / CBF 35 / SGP 21 / ICR 6 / OVR 21 / OK 35 (deterministic)
+  Variance source: Voyage query-embedding nondeterminism (~1-2 queries/run)
 Permanent gate: P@1 [6.8, 10.8], R@8 [47.4, 53.4].
 If subsequent experiment regresses outside gate, QUARANTINE.
 
@@ -190,15 +197,23 @@ boolean:
    physically exists on that Qdrant collection. Without it, Qdrant
    rejects filter queries with HTTP 400.
 
-### Locked baseline values are GATES, not targets
+### Locked baseline values are BANDS, not point values
 
-ContractNLI hybrid (per-span taxonomy): P@1 8.84%, R@8 50.41%,
-failure dist DRM 39.2% / CBF 18.0% / SGP 10.8% / ICR 3.1% /
-OVR 10.8% / OK 18.0% (194 queries). Any refactor must reproduce
-these exactly or it changed behavior.
+ContractNLI hybrid (per-span taxonomy, 7-run measurement):
+  P@1 = 8.84% (deterministic)
+  R@8 = 50.29% ± 0.16pp (1σ), variance floor 0.50pp (3σ)
+  Failure counts: DRM 76 / CBF 35 / SGP 21 / ICR 6 / OVR 21 / OK 35
+  (deterministic — identical across all 7 runs)
 
-Note: pre-SGP baseline had OK 24.2% — 12 false-OK queries were
-reclassified to SGP (had a span entirely missed).
+Any refactor must reproduce P@1 exactly and R@8 within the measured
+band [49.79, 50.79] (mean ± 3σ).  Failure counts must be identical.
+Deltas below VARIANCE_FLOOR_PP are noise, not signal.
+
+Variance root cause: Voyage API query-embedding nondeterminism.
+Same text occasionally returns a slightly different vector
+(max_diff ~6.5e-3, cosine ~0.9988), reordering 1-2 borderline
+chunks at RRF positions 4-8 per run.  P@1 and failure counts
+are immune.  This is external and unfixable.
 
 ### Experiment 1 partial verification
 

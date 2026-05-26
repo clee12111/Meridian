@@ -16,15 +16,19 @@ class SanityResult:
 
 
 def check_monotonicity(metric_result: MetricResult) -> bool:
-    """R@k must be non-decreasing; P@k must be non-increasing as k grows."""
+    """R@k must be non-decreasing as k grows.
+
+    P@k monotonicity is NOT checked: character-level precision can
+    legitimately increase when a later chunk overlaps ground truth
+    while an earlier chunk does not.  This is not a bug — it reflects
+    the character-set semantics of RCTP.
+    """
     sorted_ks = sorted(metric_result.r_at_k.keys())
 
     for i in range(1, len(sorted_ks)):
         prev_k, cur_k = sorted_ks[i - 1], sorted_ks[i]
 
         if metric_result.r_at_k[cur_k] < metric_result.r_at_k[prev_k]:
-            return False
-        if metric_result.p_at_k[cur_k] > metric_result.p_at_k[prev_k]:
             return False
 
     return True
@@ -62,7 +66,7 @@ def run_sanity_checks(
     violations: list[str] = []
     sorted_ks = sorted(metric_result.r_at_k.keys())
 
-    # Monotonicity checks
+    # Monotonicity checks (recall only — char-level P@k is not monotonic)
     for i in range(1, len(sorted_ks)):
         prev_k, cur_k = sorted_ks[i - 1], sorted_ks[i]
 
@@ -71,12 +75,6 @@ def run_sanity_checks(
                 f"R@{cur_k} ({metric_result.r_at_k[cur_k]:.4f}) < "
                 f"R@{prev_k} ({metric_result.r_at_k[prev_k]:.4f}): "
                 f"recall is not non-decreasing"
-            )
-        if metric_result.p_at_k[cur_k] > metric_result.p_at_k[prev_k]:
-            violations.append(
-                f"P@{cur_k} ({metric_result.p_at_k[cur_k]:.4f}) > "
-                f"P@{prev_k} ({metric_result.p_at_k[prev_k]:.4f}): "
-                f"precision is not non-increasing"
             )
 
     # Improvement checks

@@ -174,14 +174,14 @@ def test_non_monotonic_recall():
     assert check_monotonicity(bad) is False
 
 
-def test_non_monotonic_precision():
-    """Precision increases at higher k (shouldn't happen in practice)."""
-    bad = MetricResult(
-        p_at_k={1: 0.5, 2: 0.8},  # precision increased
+def test_precision_increase_not_checked():
+    """P@k monotonicity is not checked — char-level P@k can legitimately increase."""
+    ok = MetricResult(
+        p_at_k={1: 0.5, 2: 0.8},  # precision increased — valid for char-level
         r_at_k={1: 0.5, 2: 0.8},
         eval_mode="SPAN_OVERLAP",
     )
-    assert check_monotonicity(bad) is False
+    assert check_monotonicity(ok) is True
 
 
 # ===================================================================
@@ -214,9 +214,8 @@ def test_sanity_result_violations_named():
     )
     result = run_sanity_checks(bad)
     assert result.passed is False
-    assert len(result.violations) >= 2
+    assert len(result.violations) >= 1
     assert any("recall" in v for v in result.violations)
-    assert any("precision" in v for v in result.violations)
 
 
 # ===================================================================

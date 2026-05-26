@@ -37,14 +37,19 @@ def _per_span_coverage(
 ) -> list[dict]:
     """Compute per-span coverage against retrieved character set.
 
-    Returns a list of dicts, one per gt span:
+    Returns a list of dicts, one per gt span (zero-width spans filtered):
       - length: span length in chars
       - overlap: chars overlapping with retrieved
       - coverage: overlap / length (0.0 to 1.0)
       - status: "covered" (>=50%), "partial" (<50% >0), "missed" (0%)
+
+    Zero-width spans (start == end) are silently dropped: they cover zero
+    characters and cannot be meaningfully missed or covered.
     """
     results = []
     for start, end in gt_spans:
+        if start >= end:
+            continue
         span_chars = set(range(start, end))
         length = len(span_chars)
         overlap = len(span_chars & retrieved_chars) if length > 0 else 0

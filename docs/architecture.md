@@ -50,3 +50,37 @@ non-empty only when the corpus had multiple datasets indexed
 (`core/retrieval/bm25_retriever.py:52-57`). If `dataset_name` is passed
 but `_dataset_indexes` is empty, it falls back to the full-corpus index
 (line 75). This is correct for single-dataset corpora.
+
+---
+
+## Failure classifier: single-document-ground-truth precondition
+
+**HARD PRECONDITION**: The failure classifier (`core/measurement/taxonomy.py:
+classify`) does NOT support multi-document ground truth.
+
+`_per_span_coverage` (taxonomy.py:34) operates on raw `(start, end)` tuples
+after doc_ids are stripped at line 112. When ground-truth spans from different
+documents share character offsets, retrieved characters from one document
+falsely satisfy another document's span — the per-span coverage merges
+character positions into a single flat namespace with no per-document
+isolation.
+
+**Example**: gt = `[("doc_a", 0, 100), ("doc_b", 0, 100)]`, retrieved =
+`[("doc_a", 0, 100)]`. The classifier reports OK (both spans "covered")
+even though doc_b's span is never retrieved. Correct answer: SGP.
+
+**Why this is acceptable today**: All four LegalBench-RAG datasets
+(ContractNLI, CUAD, MAUD, PrivacyQA) have zero multi-document queries
+(verified 2025-05-25: 0/776 queries across all benchmarks). The
+`GroundTruth.get_doc_id()` protocol returns a single doc_id per query,
+and `run_eval.py:184` constructs gt_with_docs using that single doc_id.
+
+**Gate for future datasets**: ANY multi-document or multi-hop dataset
+(e.g. HotpotQA, FEVER, BEIR-multihop) requires fixing this with
+per-document span grouping BEFORE it can be measured correctly. Until
+fixed, only single-document-ground-truth datasets produce valid
+classifications. The fix: group gt_spans by doc_id in `classify()` and
+run `_per_span_coverage` separately per document, then aggregate the
+per-span verdicts.
+
+Discovered: measurement audit 2025-05-25, test_multi_doc_char_offset_collision.

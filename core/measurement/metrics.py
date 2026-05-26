@@ -53,6 +53,11 @@ def precision_at_k(
     for start, end in gt_spans:
         gt_chars.update(range(start, end))
 
+    if not gt_chars:
+        raise MissingGroundTruthError(
+            "Cannot compute precision: ground-truth spans cover zero characters"
+        )
+
     retrieved_chars: set[int] = set()
     for start, end in top_k:
         retrieved_chars.update(range(start, end))

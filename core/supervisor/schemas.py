@@ -24,26 +24,37 @@ from pydantic import BaseModel, Field, model_validator
 
 # ── Constants ────────────────────────────────────────────────────────────
 
-# PROVISIONAL — these are single-session observations, NOT measured at
-# 2-3 sigma from repeated runs.  Before trusting these in production,
-# run one config ~5x on the same dataset and set the floor at 2-3 sigma
-# of the resulting distribution.
+# MEASURED — 7 runs of the locked 512/128 hybrid config on ContractNLI
+# (194 queries, same Qdrant Cloud index).
 #
-# Observed this session (3 repeat runs, same 512/128 hybrid config):
-#   P@1 drifted ~0.12pp, R@8 drifted ~0.52pp.
-# Sources of noise: Voyage embedding non-determinism, RRF tie-breaking,
-# Qdrant HNSW approximate search.
+# Root cause of R@8 variance: Voyage API query-time embedding
+# nondeterminism.  Same text occasionally returns a slightly different
+# vector (max_diff ~6.5e-3, cosine ~0.9988), reordering borderline
+# chunks at RRF positions 4-8.  Affects 1-2 of 194 queries per run.
+#
+# P@1 is immune: rank-1 chunk is never displaced.
+# Failure counts are immune: same chunks retrieved, only order at
+# the R@8 boundary shifts.
+#
+# Measured (7 runs):
+#   P@1: 8.84% every run (zero variance)
+#   R@8: mean 50.29%, stdev 0.16pp, range [49.95, 50.41]
+#   Failure counts: identical every run (DRM 76, CBF 35, SGP 21,
+#                   ICR 6, OVR 21, OK 35)
+#
+# Floor set at 3-sigma (99.7% of run-to-run noise absorbed).
 VARIANCE_FLOOR_PP: dict[str, float] = {
-    "p_at_1": 0.15,   # PROVISIONAL — observed 0.12pp, padded
-    "r_at_8": 0.60,   # PROVISIONAL — observed 0.52pp, padded
-    # Failure-vector percentages: 1 query flip on 194 queries = 0.52pp.
-    # Use 0.6pp as the floor for failure-type deltas.
-    "drm_pct": 0.6,   # PROVISIONAL
-    "cbf_pct": 0.6,   # PROVISIONAL
-    "sgp_pct": 0.6,   # PROVISIONAL
-    "icr_pct": 0.6,   # PROVISIONAL
-    "ovr_pct": 0.6,   # PROVISIONAL
-    "ok_pct":  0.6,   # PROVISIONAL
+    "p_at_1": 0.00,   # deterministic (zero observed variance)
+    "r_at_8": 0.50,   # 3-sigma = 0.48pp, rounded up to 0.50
+    # Failure-vector percentages: zero observed variance across
+    # 7 runs (all counts identical).  Floor set to the minimum
+    # detectable change: 1 query on 194 = 0.52pp.
+    "drm_pct": 0.52,
+    "cbf_pct": 0.52,
+    "sgp_pct": 0.52,
+    "icr_pct": 0.52,
+    "ovr_pct": 0.52,
+    "ok_pct":  0.52,
 }
 
 # Exact chunk counts at 512/128 per dataset (from Qdrant point counts).
