@@ -28,13 +28,21 @@ def read_ledger(state: ExperimentState) -> dict:
 
 
 def propose_config(state: ExperimentState) -> dict:
-    """Proposer agent: call DeepSeek, emit config + hypothesis + predicted delta."""
+    """Proposer agent: call DeepSeek, emit family + hypothesis + predicted delta.
+
+    The LLM now emits a ProposalFamily (categorical direction + index params).
+    We expand it to a full RagConfig here using default knobs — Optuna will
+    supply the knobs next pass.  Downstream nodes (check_hash, run_eval,
+    log_results) still receive a complete config dict and are unchanged.
+    """
     from core.supervisor.proposer import propose
+    from core.supervisor.schemas import RagConfig
 
     proposal = propose()
+    full_config = RagConfig.from_family(proposal.family)
 
     return {
-        "config": proposal.config.model_dump(),
+        "config": full_config.model_dump(),
         "hypothesis": proposal.hypothesis,
         "predicted_delta": proposal.predicted_delta.model_dump(),
         "experiment_type": proposal.experiment_type,

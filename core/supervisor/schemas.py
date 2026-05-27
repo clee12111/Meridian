@@ -19,7 +19,7 @@ import math
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 # ── Constants ────────────────────────────────────────────────────────────
@@ -107,6 +107,35 @@ MetricName = Literal[
 ExperimentType = Literal["query_time", "ingestion_time"]
 
 
+class ProposalFamily(BaseModel):
+    """What the Proposer LLM emits: categorical direction + index-time params.
+
+    Intentionally excludes query-time knobs (bm25_top_k, dense_top_k,
+    fusion_top_n).  Those are owned by Optuna (next pass) — the LLM
+    must not emit them, and extra='forbid' enforces that at parse time.
+
+    A ProposalFamily is the LLM's vote on WHAT to test.
+    A RagConfig is the full runnable spec, built from a ProposalFamily
+    + a knob dict supplied by Optuna (or class defaults in this pass).
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    chunk_size: int = Field(default=512, ge=128, le=2048)
+    chunk_overlap: int = Field(default=128, ge=0)
+    retrieval_mode: Literal["bm25", "hybrid"] = "hybrid"
+    target_dataset: DatasetName
+
+    @model_validator(mode="after")
+    def _overlap_lt_size(self) -> "ProposalFamily":
+        if self.chunk_overlap >= self.chunk_size:
+            raise ValueError(
+                f"chunk_overlap ({self.chunk_overlap}) must be < "
+                f"chunk_size ({self.chunk_size})"
+            )
+        return self
+
+
 class RagConfig(BaseModel):
     """Retrieval parameters for one experiment.
 
@@ -143,6 +172,29 @@ class RagConfig(BaseModel):
         """Deterministic JSON for hashing (sorted keys, no whitespace)."""
         return self.model_dump_json(exclude_none=True)
 
+    @classmethod
+    def from_family(
+        cls,
+        family: "ProposalFamily",
+        knobs: dict | None = None,
+    ) -> "RagConfig":
+        """Build a full runnable config from a ProposalFamily + optional knob overrides.
+
+        knobs keys: bm25_top_k, dense_top_k, fusion_top_n.
+        Unspecified knobs fall back to class field defaults (32, 32, 64).
+        Optuna will supply knobs next pass; this pass uses defaults.
+        """
+        k = knobs or {}
+        return cls(
+            chunk_size=family.chunk_size,
+            chunk_overlap=family.chunk_overlap,
+            retrieval_mode=family.retrieval_mode,
+            target_dataset=family.target_dataset,
+            bm25_top_k=k.get("bm25_top_k", 32),
+            dense_top_k=k.get("dense_top_k", 32),
+            fusion_top_n=k.get("fusion_top_n", 64),
+        )
+
 
 class PredictedDelta(BaseModel):
     """Quantitative prediction: which metric moves, by how much,
@@ -178,11 +230,13 @@ class PredictedDelta(BaseModel):
 class ExperimentProposal(BaseModel):
     """Full structured output of the Proposer LLM.
 
-    The Supervisor validates experiment_type and cost against
-    the actual index state before running.
+    family holds only the LLM's categorical choices + index-time params.
+    The Supervisor builds a full RagConfig via RagConfig.from_family()
+    before running evaluate_config — the LLM never sees or emits
+    bm25_top_k / dense_top_k / fusion_top_n.
     """
 
-    config: RagConfig
+    family: ProposalFamily
 
     hypothesis: str = Field(
         description=(

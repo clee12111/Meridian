@@ -165,13 +165,24 @@ def _floor_verdict(entry: LedgerEntry) -> str:
     return "SIGNAL"
 
 
+# Levers owned by Optuna — excluded from LLM saturation flagging.
+# The LLM can no longer propose these knobs, so flagging them as
+# "saturated" to the LLM is meaningless.  _lever_for_entry() still
+# returns "top_k" for historical display in the calibration table.
+_OPTUNA_LEVERS: frozenset[str] = frozenset({"top_k"})
+
+
 def _detect_saturated_levers(
     ledger: list[LedgerEntry], consecutive_threshold: int = 2
 ) -> list[str]:
-    """Return lever names tried >= threshold consecutive times without SIGNAL.
+    """Return FAMILY-level lever names tried >= threshold consecutive times
+    without SIGNAL.
 
     Only looks at the trailing window — saturation must be CURRENT, not
     something that happened mid-ledger and was already resolved.
+
+    Levers in _OPTUNA_LEVERS (top_k) are excluded: they are now owned
+    by Optuna and are not actionable by the LLM.
     """
     if len(ledger) < consecutive_threshold:
         return []
@@ -185,7 +196,11 @@ def _detect_saturated_levers(
     levers = [p[0] for p in tail]
     verdicts = [p[1] for p in tail]
 
-    if len(set(levers)) == 1 and all(v != "SIGNAL" for v in verdicts):
+    if (
+        len(set(levers)) == 1
+        and levers[0] not in _OPTUNA_LEVERS
+        and all(v != "SIGNAL" for v in verdicts)
+    ):
         return [levers[0]]
     return []
 
@@ -268,14 +283,13 @@ to run.  You do NOT run experiments -- you decide WHAT to run and WHY.
 
 ## Output format
 
-Respond with a single JSON object matching this schema EXACTLY:
+Respond with a single JSON object matching this schema EXACTLY.
+DO NOT include bm25_top_k, dense_top_k, or fusion_top_n — those are
+owned by the optimizer and will be rejected if present.
 {{
-  "config": {{
+  "family": {{
     "chunk_size": <int 128-2048>,
     "chunk_overlap": <int, must be < chunk_size>,
-    "bm25_top_k": <int 1-128>,
-    "dense_top_k": <int 1-128>,
-    "fusion_top_n": <int 1-128>,
     "retrieval_mode": "bm25" or "hybrid",
     "target_dataset": "contractnli" | "cuad" | "maud" | "privacy_qa"
   }},
@@ -481,14 +495,14 @@ def _validate_experiment_type(
 
     If chunk_size or chunk_overlap differ from the most recent run
     on the same dataset, it MUST be ingestion_time.  If the Proposer
-    claims query_time but changed chunking params, override.
+    claims query_time but changed chunking params, raise.
     """
-    cfg = proposal.config
+    family = proposal.family
 
     # Find most recent run on same dataset
     prior = None
     for entry in reversed(ledger):
-        if entry.config.target_dataset == cfg.target_dataset:
+        if entry.config.target_dataset == family.target_dataset:
             prior = entry
             break
 
@@ -497,20 +511,20 @@ def _validate_experiment_type(
         # (need to build the index from scratch)
         if proposal.experiment_type == "query_time":
             raise ValueError(
-                f"No prior run on {cfg.target_dataset} -- cannot be query_time "
+                f"No prior run on {family.target_dataset} -- cannot be query_time "
                 f"(no index exists to reuse)."
             )
         return
 
     chunking_changed = (
-        cfg.chunk_size != prior.config.chunk_size
-        or cfg.chunk_overlap != prior.config.chunk_overlap
+        family.chunk_size != prior.config.chunk_size
+        or family.chunk_overlap != prior.config.chunk_overlap
     )
 
     if chunking_changed and proposal.experiment_type == "query_time":
         raise ValueError(
             f"Proposer claimed query_time but chunk_size/overlap changed "
             f"({prior.config.chunk_size}/{prior.config.chunk_overlap} -> "
-            f"{cfg.chunk_size}/{cfg.chunk_overlap}).  "
+            f"{family.chunk_size}/{family.chunk_overlap}).  "
             f"This requires re-embedding (ingestion_time)."
         )

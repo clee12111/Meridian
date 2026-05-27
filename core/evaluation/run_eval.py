@@ -156,6 +156,16 @@ def evaluate_config(
                 )
         else:
             qdrant.index()
+            # Persist fingerprint so future query_time runs can assert the
+            # live index matches their family's index-time params.
+            from core.evaluation.fingerprint import write_fingerprint
+            write_fingerprint(
+                data_dir=data_dir,
+                collection_name=collection,
+                target_dataset=dataset_name or "all",
+                chunk_size=chunk_size,
+                chunk_overlap=chunk_overlap,
+            )
 
     # --- Per-query eval loop ---
     all_p: dict[int, list[float]] = {k: [] for k in K_VALUES}
