@@ -90,6 +90,13 @@ def query_understanding(state: ExperimentState, context: PipelineContext) -> dic
         logger.warning("Phase 3 (query_understanding): empty raw_query, skipping")
         return {}
 
+    # A/B toggle: skip rewriting when MERIDIAN_NO_REWRITE=1
+    if os.environ.get("MERIDIAN_NO_REWRITE") == "1":
+        logger.info("Phase 3: passthrough (MERIDIAN_NO_REWRITE=1)")
+        result = {"rewritten_query": raw}
+        end_span(span, result)
+        return result
+
     api_key = os.environ.get("DEEPSEEK_API_KEY")
     if not api_key:
         logger.warning("Phase 3 (query_understanding): DEEPSEEK_API_KEY not set, passthrough")
@@ -146,9 +153,12 @@ def retrieval(state: ExperimentState, context: PipelineContext) -> dict:
     ds = context.dataset_name
     span = start_span(trace, "phase_4_retrieval", {"query": query, "dataset": ds})
 
+    top_k_override = os.environ.get("MERIDIAN_TOP_K")
+    top_k = int(top_k_override) if top_k_override else None
+
     logger.info("Phase 4 (retrieval): dense + sparse on dataset=%r", ds)
-    dense_result = context.qdrant_retriever.retrieve(query, dataset_name=ds)
-    sparse_result = context.bm25_retriever.retrieve(query, dataset_name=ds)
+    dense_result = context.qdrant_retriever.retrieve(query, top_k=top_k, dataset_name=ds)
+    sparse_result = context.bm25_retriever.retrieve(query, top_k=top_k, dataset_name=ds)
 
     result = {
         "retrieval_bundle": {
@@ -176,7 +186,9 @@ def fusion(state: ExperimentState, context: PipelineContext) -> dict:
     dense_rr = _deserialize_result(dense_d)
     sparse_rr = _deserialize_result(sparse_d)
 
-    fused = rrf(sparse_rr, dense_rr, top_n=50)
+    top_n_override = os.environ.get("MERIDIAN_FUSION_TOP_N")
+    top_n = int(top_n_override) if top_n_override else 50
+    fused = rrf(sparse_rr, dense_rr, top_n=top_n)
     logger.info("Phase 5 (fusion): RRF produced %d results", len(fused.ids))
     result = {"fused_result": _serialize_result(fused)}
     end_span(span, {"fused_count": len(fused.ids)})
@@ -190,6 +202,18 @@ def reranking(state: ExperimentState, context: PipelineContext) -> dict:
     if not fused:
         logger.warning("Phase 6 (reranking): no fused_result, skipping")
         return {}
+
+    # A/B: skip reranker, pass RRF top-8 directly
+    if os.environ.get("MERIDIAN_NO_RERANK") == "1":
+        logger.info("Phase 6: passthrough (MERIDIAN_NO_RERANK=1)")
+        return {
+            "reranked_result": {
+                "contents": fused.get("contents", [])[:8],
+                "ids":      fused.get("ids", [])[:8],
+                "scores":   fused.get("scores", [])[:8],
+                "spans":    fused.get("spans", [])[:8],
+            }
+        }
 
     query = state.get("rewritten_query") or state.get("raw_query", "")
 
@@ -234,6 +258,24 @@ def reranking(state: ExperimentState, context: PipelineContext) -> dict:
         logger.info(
             "Phase 6 (reranking): reranked %d -> %d, top score: %.4f",
             n_in, n_out, top_score,
+        )
+
+        # Log reranker span to Phoenix (no-op if PHOENIX_ENABLED!=1)
+        from core.supervisor.phoenix_tracing import log_reranker_span
+
+        log_reranker_span(
+            query=query,
+            candidates_in=[
+                {"chunk_id": cid, "score": s, "text": t[:100]}
+                for cid, s, t in zip(ids, scores, contents)
+            ],
+            candidates_out=[
+                {"chunk_id": cid, "score": s, "text": t[:100]}
+                for cid, s, t in zip(
+                    reranked_ids, reranked_scores, reranked_contents
+                )
+            ],
+            model="rerank-2.5",
         )
 
         result = {

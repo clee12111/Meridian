@@ -105,3 +105,102 @@ signal is premature optimization.
 **Precludes:** Adding new pipeline phases or swapping
 implementations before Stage 3 eval harness runs and produces
 comparative numbers.
+
+---
+
+### 2026-05-27 — Finding 5 (v2): DRM is discrimination-bound, reproduced and worsened
+
+**Decision:** Document that the v2 pipeline reproduces v1's Finding 2
+("DRM is discrimination-bound, not coverage-bound") and appears to
+WORSEN it. Treat the 80.3% DRM rate as a real finding, not a
+measurement bug. Diagnosis precedes any fix.
+
+**The data (full 194-query ContractNLI run, 193 completed):**
+- v2 DRM: 155/193 = 80.3%
+- v1 DRM (locked baseline): 76/194 = 39.2%
+- DRM roughly doubled despite v2 adding a reranker and query rewriting
+- All other failure types collapsed (CBF 18%→1%, OVR 10.8%→2.6%,
+  SGP 10.8%→3.6%) because DRM is checked first in the priority chain
+  and starves the later branches
+- Verification score 0.85 is NOT contradictory: the pipeline produces
+  well-cited answers about the WRONG document. ContractNLI queries
+  name a specific NDA but ask generic legal questions; the retriever
+  matches topical legal language and returns clause-perfect chunks
+  from other NDAs.
+
+**Investigation confirmed (recon):**
+- NOT a doc_id format bug. The #chunk suffix is stripped correctly
+  (cid.split("#")[0]); GT and retrieved doc_ids match format.
+  Hypothesis tested and refuted.
+- The DRM labels are genuine document-level retrieval failures.
+- Verified on contractnli-0134: query asks about Seeed's NDA,
+  retriever returned chunks from NSK/Aspiegel/TabunKitchen/ONSemi/
+  NCDG/ADVANIDE — none from NDA-Seeed.txt.
+
+**Hypotheses for WHY v2 worsened DRM (ranked, each testable A/B):**
+1. Query rewriting (Phase 3) erases discriminating signal —
+   normalizes party-specific terms toward generic legal vocabulary,
+   strengthening topical match and washing out document identity.
+   v1 had no rewriter. LEADING hypothesis. Test: eval with Phase 3
+   passthrough vs active.
+2. BM25/dense balance buries exact-match document signal — BM25
+   catches party names as tokens; if RRF weights dense too heavily,
+   the discriminating signal drowns. This is the lever Finding 2
+   named directly. Test: shift fusion weighting.
+3. Reranker optimizes relevance over discrimination — scores
+   query-chunk semantic relevance, ranks topically-perfect
+   wrong-document chunks above right-document chunks. Counterintuitive
+   (reranker doing its job well makes DRM worse). Test: eval with
+   reranker on vs off.
+4. Phase 10 loop amplifies but does not cause — 74% of queries were
+   single-shot, so the loop cannot produce 80% DRM. All 5 slowest
+   queries were iteration-3 DRM (loop tried, failed to fix
+   discrimination). Ruled out as primary cause.
+
+**Why this matters:** A more sophisticated pipeline produced WORSE
+document discrimination on the metric that matters most. If confirmed,
+this is a genuine finding: relevance-optimizing components (rewriter,
+reranker) can degrade document discrimination when corpus documents
+are topically homogeneous (many similar NDAs). The headline deltas
+(P@1 +5.66pp, R@8 +2.11pp) are misleading — they average over a
+pipeline answering 80% of queries about the wrong document.
+
+**Precludes:** Trusting the v2 headline metrics until DRM is
+diagnosed. Treating top_k as a DRM lever (Finding 2 — confirmed,
+top_k=50 did not help). "Fixing" the pipeline before isolating which
+component caused the regression via single-variable A/B runs.
+
+**Next step:** A/B run with Phase 3 rewriting disabled (passthrough)
+vs enabled, holding everything else constant. If DRM drops with
+rewriting off → hypothesis 1 confirmed. If DRM holds at ~80% →
+rewriter exonerated, test reranker next.
+
+---
+
+### 2026-05-28 — DRM measurement scope clarified: top-8 not top-64
+
+**Decision:** V2 measures DRM at top-8 (final context window). 
+V1 measured DRM at top-64 (full fused candidate set). Both are 
+correct measurements of different questions. V2's top-8 DRM is 
+the operationally meaningful metric.
+
+**Why:** A document outside the top-8 context window cannot 
+contribute to the LLM's answer regardless of retrieval rank. 
+The right question is "did the right document reach the LLM" 
+not "did the retriever find it somewhere in top-64."
+
+**Evidence:** V2 single-shot (top_k=32, no reranker, no loop) 
+shows DRM 61.9% vs V1's ~24.7% (encoding-corrected). R@8 matches 
+within 0.25pp — retrieval recall is equivalent. The gap is purely 
+the top-8 vs top-64 scope difference. 72 of 120 V2 DRM queries 
+had the right document retrieved but ranked 9th or lower.
+
+**Implication for SAC:** SAC must improve top-8 document 
+discrimination, not just top-64 recall. Document identity baked 
+into embeddings at index time is the mechanism that keeps 
+right-document chunks at the top of the ranking through 
+RRF fusion and reranking.
+
+**Precludes:** Comparing V1 and V2 DRM rates as equivalent 
+measurements. V1 DRM is a recall metric; V2 DRM is a precision 
+metric. They measure different things.

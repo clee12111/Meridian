@@ -20,6 +20,19 @@ build/
 # Qdrant
 .qdrant_cache/
 
+# Binary checkpoint files — change every run, do not track
+data/pipeline.sqlite
+data/eval_pipeline.sqlite
+data/eval_checkpoints.sqlite
+*.sqlite
+
+# Eval outputs — regenerated, not source
+data/eval_results_*.jsonl
+data/eval_run_*.txt
+
+# SAC artifacts — regenerated from corpus
+data/sac_summaries.json
+
 # Local data (large files, downloaded datasets, generated parquets)
 data/raw_data/
 data/corpus/

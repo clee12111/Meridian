@@ -22,7 +22,10 @@ logging.basicConfig(
 
 from core.supervisor.context import PipelineContext
 from core.supervisor.graph import compile_graph
+from core.supervisor.phoenix_tracing import setup_phoenix
 from core.supervisor.tracing import start_trace, end_trace, flush
+
+setup_phoenix(project_name="meridian-debug")
 
 
 def main() -> None:

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from urllib.parse import unquote
 
 
 class ContractNLIGroundTruth:
@@ -32,6 +33,9 @@ class ContractNLIGroundTruth:
         for test in data["tests"]:
             qid = test["query_id"]
             self._queries[qid] = test["query"]
+            # Normalize URL-encoded file_paths (%20 → space) at load time
+            for snippet in test["snippets"]:
+                snippet["file_path"] = unquote(snippet["file_path"])
             self._snippets[qid] = test["snippets"]
 
     def get_spans(self, query_id: str) -> list[tuple[int, int]]:
@@ -47,7 +51,7 @@ class ContractNLIGroundTruth:
         """
         if query_id not in self._snippets:
             raise KeyError(f"Unknown query_id: {query_id!r}")
-        return self._snippets[query_id][0]["file_path"]
+        return unquote(self._snippets[query_id][0]["file_path"])
 
     def all_query_ids(self) -> list[str]:
         """Return sorted list of all query IDs."""
