@@ -156,9 +156,20 @@ def retrieval(state: ExperimentState, context: PipelineContext) -> dict:
     top_k_override = os.environ.get("MERIDIAN_TOP_K")
     top_k = int(top_k_override) if top_k_override else None
 
+    # Document routing: hard-filter retrieval to top-N documents
+    routing_topk = os.environ.get("MERIDIAN_ROUTING_TOPK")
+    routed_docs = None
+    if routing_topk:
+        from core.retrieval.routing import route_query
+        routed_docs = route_query(query, top_k=int(routing_topk))
+        logger.info("Phase 4 (routing): query routed to %d docs: %s",
+                     len(routed_docs), [d.split("/")[-1][:30] for d in routed_docs])
+
     logger.info("Phase 4 (retrieval): dense + sparse on dataset=%r", ds)
-    dense_result = context.qdrant_retriever.retrieve(query, top_k=top_k, dataset_name=ds)
-    sparse_result = context.bm25_retriever.retrieve(query, top_k=top_k, dataset_name=ds)
+    dense_result = context.qdrant_retriever.retrieve(
+        query, top_k=top_k, dataset_name=ds, doc_ids=routed_docs)
+    sparse_result = context.bm25_retriever.retrieve(
+        query, top_k=top_k, dataset_name=ds, doc_ids=routed_docs)
 
     result = {
         "retrieval_bundle": {
@@ -166,6 +177,8 @@ def retrieval(state: ExperimentState, context: PipelineContext) -> dict:
             "sparse": _serialize_result(sparse_result),
         },
     }
+    if routed_docs is not None:
+        result["routed_docs"] = routed_docs
     end_span(span, {"dense_count": len(dense_result.ids), "sparse_count": len(sparse_result.ids)})
     return result
 

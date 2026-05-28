@@ -172,6 +172,13 @@ def _print_summary(results: list[dict]) -> None:
     print()
     print(f"Avg verification score: {avg_vscore:.2f}")
     print(f"Avg iterations:         {avg_iter:.2f}")
+
+    # Routing recall (if routing was active)
+    routed_results = [r for r in results if r.get("routing_hit") is not None]
+    if routed_results:
+        hits = sum(1 for r in routed_results if r["routing_hit"])
+        print(f"Routing recall:         {hits}/{len(routed_results)} "
+              f"({hits/len(routed_results)*100:.1f}%)")
     print("=" * 50)
 
     # ── Cited-span measurement comparison ────────────────────────────
@@ -415,7 +422,15 @@ def run(
                 cited_failure.name if cited_failure else None
             ),
             "cited_extraction_failed": cited_extraction_failed,
+            "routing_hit": None,
+            "routed_docs": None,
         }
+
+        # ── Routing recall logging ────────────────────────────────────
+        routed_docs = final_state.get("routed_docs")
+        if routed_docs is not None:
+            record["routed_docs"] = routed_docs
+            record["routing_hit"] = gt_doc_id in routed_docs
 
         p1 = record["p_at_1"]
         r8 = record["r_at_8"]
@@ -489,6 +504,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p.add_argument("--wrrf-sparse", type=float, default=None,
                    help="Use weighted RRF with this sparse weight "
                         "(0.0-1.0). 0.25 = 25%% BM25 / 75%% dense.")
+    p.add_argument("--routing-topk", type=int, default=None,
+                   help="Document routing: filter retrieval to top-N "
+                        "documents by summary match. Unset = no routing.")
     p.add_argument("--workers", type=int, default=8,
                    help="Parallel workers (default: 8, max: 12 for API rate limit safety)")
     return p.parse_args(argv)
@@ -519,6 +537,8 @@ def main(argv: list[str] | None = None) -> None:
         os.environ["MERIDIAN_CC_ALPHA"] = str(args.cc_alpha)
     if args.wrrf_sparse is not None:
         os.environ["MERIDIAN_WRRF_SPARSE"] = str(args.wrrf_sparse)
+    if args.routing_topk is not None:
+        os.environ["MERIDIAN_ROUTING_TOPK"] = str(args.routing_topk)
 
     run(
         limit=args.limit,

@@ -700,3 +700,52 @@ extraction / document-scoping at retrieval time.
 
 **Precludes:** Any reranker use on topically-homogeneous corpora
 without document-scoping, regardless of fusion method.
+
+---
+
+### Finding 22 — Hybrid document routing: best config, e2e correctness 56.7%, the OVR artifact confirmed harmless
+
+**Config:** SAC + NoRerank + CC(0.3) + hybrid-routing(top-3)
++ single-shot. Routing = standalone SAC summaries as a document
+index, scored by CC fusion of dense (summary semantics) + BM25
+(filename/abbreviation tokens, NDA-structural stopwords removed).
+
+**Full campaign progression (e2e answer correctness, LLM-judged):**
+  baseline            DRM 79.9%  R@8 50.5%  CORRECT 14.9%
+  SAC (rerank ON)     DRM 76.8%  R@8 51.4%  CORRECT 19.1%
+  SAC+NoRerank(RRF)   DRM 48.5%  R@8 56.8%  CORRECT 29.4%
+  SAC+NoRerank+CC     DRM 26.8%  R@8 73.7%  CORRECT 45.4%
+  + hybrid routing    DRM 17.5%  R@8 80.6%  CORRECT 56.7%
+Routing added +11.3pp correctness — largest single-step gain.
+Rescued 19 queries from DRM+INCORRECT to CORRECT.
+
+**Routing mechanism (two-level CC fusion):**
+SAC put document identity into chunk vectors but diluted it with
+clause content (weak). Routing embeds the SAME summaries STANDALONE
+(undiluted document fingerprints) + BM25 on filename tokens to catch
+query abbreviations (CEII, SE_NDCA) that dense embeddings can't
+bridge to full party names. Same CC insight as chunk fusion
+(Findings 11-13), reapplied at document granularity. Routing recall
+73.7% (dense only) -> 84.5% (hybrid).
+
+**OVR artifact CONFIRMED harmless (closes Finding 19):**
+Routing concentrated retrieval -> OVR rose to 54.6%. But OVR queries
+convert at 70% correct (74/106) — HIGHER than OK queries did without
+routing. The chunk-span taxonomy's OVR alarm is a measurement
+artifact; the ground-truth answer correctness is what matters.
+Verified: judge the output, not the diagnostic.
+
+**Correctness by retrieval failure type:**
+  DRM 0%, ICR 11%, OK 73%, SGP 88%, OVR 70%, CBF 50%
+DRM = wrong doc = 0% correct, no exceptions (confirms Finding 20).
+
+**Remaining failures decompose cleanly:**
+  - 30 DRM = routing misses -> routing-alpha tuning + remaining
+    abbreviation cases (Seeed, Kenway, ResConnect, FNHA)
+  - ICR cluster -> conditional-clause boundary chunking (re-index)
+  - ~7 OK+INCORRECT -> Phase 8 synthesis quality
+
+**Principle confirmed:** The measurement layer diagnoses; the e2e
+answer-correctness rate is the ground truth. Retrieval metrics
+overpredict and the chunk-span taxonomy can false-alarm (OVR);
+only the judged output is the observable that matters.

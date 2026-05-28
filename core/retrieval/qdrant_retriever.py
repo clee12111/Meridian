@@ -13,7 +13,7 @@ import voyageai
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
     PointStruct, VectorParams, Distance,
-    Filter, FieldCondition, MatchValue,
+    Filter, FieldCondition, MatchValue, MatchAny,
 )
 
 from core.retrieval.base import RetrievalResult
@@ -165,7 +165,11 @@ class QdrantRetriever:
         print(f"Indexed {len(texts)} chunks into '{self._collection}'", flush=True)
 
     def retrieve(
-        self, query: str, top_k: int | None = None, dataset_name: str | None = None
+        self,
+        query: str,
+        top_k: int | None = None,
+        dataset_name: str | None = None,
+        doc_ids: list[str] | None = None,
     ) -> RetrievalResult:
         """Retrieve top-k chunks for *query*.
 
@@ -177,6 +181,9 @@ class QdrantRetriever:
         dataset_name : str, optional
             If provided, restrict search to chunks with this dataset_name
             in their Qdrant payload.
+        doc_ids : list[str], optional
+            If provided, hard-filter to chunks whose chunk_id starts with
+            one of these doc_ids (document-level routing filter).
         """
         k = top_k if top_k is not None else self._top_k
 
@@ -184,22 +191,31 @@ class QdrantRetriever:
             self._voyage, [query], VOYAGE_MODEL, input_type="query"
         )[0]
 
-        query_filter = None
+        must_conditions = []
+
         if dataset_name is not None:
-            if not self._multi_dataset:
-                # Single-dataset collection: nothing to filter, skip.
-                pass
-            else:
-                # Multi-dataset collection: filter is REQUIRED.
+            if self._multi_dataset:
                 if not self._has_dataset_index:
                     raise RuntimeError(
                         f"dataset_name filter required on multi-dataset collection "
                         f"'{self._collection}' but no dataset_name payload index exists. "
                         f"Create one with client.create_payload_index()."
                     )
-                query_filter = Filter(
-                    must=[FieldCondition(key="dataset_name", match=MatchValue(value=dataset_name))]
+                must_conditions.append(
+                    FieldCondition(key="dataset_name", match=MatchValue(value=dataset_name))
                 )
+
+        if doc_ids is not None:
+            # Convert doc_ids to matching chunk_ids via corpus_df
+            matching_chunk_ids = self._corpus_df.loc[
+                self._corpus_df["doc_id"].isin(doc_ids), "chunk_id"
+            ].tolist()
+            if matching_chunk_ids:
+                must_conditions.append(
+                    FieldCondition(key="chunk_id", match=MatchAny(any=matching_chunk_ids))
+                )
+
+        query_filter = Filter(must=must_conditions) if must_conditions else None
 
         hits = self._client.query_points(
             collection_name=self._collection,

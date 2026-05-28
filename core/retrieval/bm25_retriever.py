@@ -57,7 +57,11 @@ class BM25Retriever:
                 self._dataset_indexes[ds_name] = (BM25Okapi(ds_tokenized), ds_df)
 
     def retrieve(
-        self, query: str, top_k: int | None = None, dataset_name: str | None = None
+        self,
+        query: str,
+        top_k: int | None = None,
+        dataset_name: str | None = None,
+        doc_ids: list[str] | None = None,
     ) -> RetrievalResult:
         """Retrieve top-k chunks for *query*.
 
@@ -68,6 +72,8 @@ class BM25Retriever:
         ----------
         dataset_name : str, optional
             If provided, search only that dataset's BM25 index.
+        doc_ids : list[str], optional
+            If provided, filter results to chunks from these documents.
         """
         k = top_k if top_k is not None else self._top_k
         tokenized_query = _tokenize(query)
@@ -83,6 +89,14 @@ class BM25Retriever:
             bm25_index, df = self._bm25, self._corpus_df
 
         scores = bm25_index.get_scores(tokenized_query)
+
+        # Apply doc_id filter: mask out scores for non-matching docs
+        if doc_ids is not None:
+            doc_id_set = set(doc_ids)
+            for i in range(len(scores)):
+                if df.iloc[i]["doc_id"] not in doc_id_set:
+                    scores[i] = -1.0
+
         top_indices = np.argsort(scores)[::-1][:k]
 
         contents: list[str] = []
@@ -91,6 +105,8 @@ class BM25Retriever:
         spans: list[tuple[int, int]] = []
 
         for idx in top_indices:
+            if scores[idx] < 0:
+                continue
             row = df.iloc[idx]
             contents.append(row["content"])
             ids.append(row["chunk_id"])

@@ -37,6 +37,9 @@ class ExperimentState(TypedDict, total=False):
     raw_query: str           # original query, never mutated
     rewritten_query: str     # Phase 3 output; falls back to raw_query if Phase 3 is stub
 
+    # --- routing (Phase 4 pre-filter) ---
+    routed_docs: list[str]   # doc_ids selected by document routing (or None)
+
     # --- retrieval (Phase 4 output) ---
     retrieval_bundle: RetrievalBundle
 
