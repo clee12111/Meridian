@@ -1,266 +1,654 @@
-"""Supervisor graph nodes — real implementations for Phase 3 integration.
+"""Supervisor graph nodes — v2 thin implementations.
 
-Each function takes ExperimentState, returns a partial dict that
-LangGraph merges back into state.
+Phases 3–9: minimum viable logic that passes real data through the pipeline.
+Phase 10: stub only (agentic loop not yet implemented).
+
+Phase map:
+  3  query_understanding   — passthrough (raw_query → rewritten_query)
+  4  retrieval             — dense + sparse channels via context retrievers
+  5  fusion                — RRF via core.retrieval.fusion.rrf()
+  6  reranking             — passthrough (no reranker yet)
+  7  context_construction  — top 8 chunks from reranked result
+  8  synthesis             — DeepSeek-pro structured answer + claim-citations
+  9  verification          — stub (requires Phase 8 structured output)
+  10 agentic_loop          — stub (not implemented)
 """
 
 from __future__ import annotations
 
-import hashlib
-import uuid
+import logging
+import os
 
+from core.retrieval.base import RetrievalResult
+from core.retrieval.fusion import rrf
+from core.supervisor.context import PipelineContext
 from core.supervisor.state import ExperimentState
+from core.supervisor.tracing import start_span, end_span
+
+logger = logging.getLogger(__name__)
 
 
-# ── Configurable caps ──────────────────────────────────────────────────
-
-SPEND_CAP_CHUNKS = 50_000  # total embedding chunks across all runs
-SANITY_IMPROVEMENT_THRESHOLD = 0.15  # 15pp — any single k improving more is suspicious
-
-
-def read_ledger(state: ExperimentState) -> dict:
-    """Read the experiment ledger and assign the next run_number."""
-    from core.supervisor.proposer import load_ledger
-
-    ledger = load_ledger()
-    next_run = max((e.run_number for e in ledger), default=0) + 1
-    return {"run_number": next_run, "status": "running"}
+def _get_trace(state: ExperimentState, context: PipelineContext):
+    """Get Langfuse trace from context — returns None if unavailable."""
+    if not context.langfuse_client:
+        return None
+    trace_id = state.get("trace_id")
+    if not trace_id or trace_id == "local":
+        return None
+    try:
+        return context.langfuse_client.trace(id=trace_id)
+    except Exception:
+        return None
 
 
-def propose_config(state: ExperimentState) -> dict:
-    """Proposer agent: call DeepSeek, emit family + hypothesis + predicted delta.
+# ── Serialization helpers ─────────────────────────────────────────────────
 
-    The LLM now emits a ProposalFamily (categorical direction + index params).
-    We expand it to a full RagConfig here using default knobs — Optuna will
-    supply the knobs next pass.  Downstream nodes (check_hash, run_eval,
-    log_results) still receive a complete config dict and are unchanged.
-    """
-    from core.supervisor.proposer import propose
-    from core.supervisor.schemas import RagConfig
-
-    proposal = propose()
-    full_config = RagConfig.from_family(proposal.family)
-
+def _serialize_result(r: RetrievalResult) -> dict:
+    """Convert RetrievalResult to a JSON-serializable dict."""
     return {
-        "config": full_config.model_dump(),
-        "hypothesis": proposal.hypothesis,
-        "predicted_delta": proposal.predicted_delta.model_dump(),
-        "experiment_type": proposal.experiment_type,
-        "estimated_embedding_chunks": proposal.estimated_embedding_chunks,
-        "cost_reasoning": proposal.cost_reasoning,
+        "contents": list(r.contents),
+        "ids": list(r.ids),
+        "scores": [float(s) for s in r.scores],
+        "spans": [[int(s), int(e)] for s, e in r.spans],
     }
 
 
-def check_hash(state: ExperimentState) -> dict:
-    """Hash the proposed config and check for duplicates in the ledger."""
-    from core.supervisor.proposer import load_ledger
-    from core.supervisor.schemas import RagConfig
-
-    cfg = RagConfig(**state["config"])
-    config_hash = hashlib.sha256(cfg.canonical_json().encode()).hexdigest()
-
-    ledger = load_ledger()
-    duplicate = any(e.experiment_id == config_hash for e in ledger)
-
-    return {
-        "experiment_id": config_hash,
-        "config_hash": config_hash,
-        "duplicate": duplicate,
-    }
-
-
-def check_spend(state: ExperimentState) -> dict:
-    """Verify cumulative embedding budget allows this experiment run."""
-    from core.supervisor.proposer import load_ledger
-
-    ledger = load_ledger()
-    spent = sum(e.actual_embedding_chunks for e in ledger)
-    estimated = state.get("estimated_embedding_chunks", 0)
-
-    spend_ok = (spent + estimated) <= SPEND_CAP_CHUNKS
-    return {"spend_ok": spend_ok}
-
-
-def run_eval(state: ExperimentState) -> dict:
-    """Build index, run retrieval + measurement over all queries.
-
-    query_time experiments (top_k / fusion / retrieval_mode changes only)
-    skip re-embedding — the Qdrant collection is reused as-is.
-    ingestion_time experiments always re-embed (chunk_size / overlap / embedder
-    change means the index is stale).
-    """
-    from core.evaluation.run_eval import evaluate_config
-
-    config = dict(state["config"])
-    dataset_name = config.pop("target_dataset", None)
-    experiment_type = state.get("experiment_type", "ingestion_time")
-    skip_index = experiment_type == "query_time"
-
-    metric_result, failure_counts = evaluate_config(
-        config, dataset_name=dataset_name, skip_index=skip_index
+def _deserialize_result(d: dict) -> RetrievalResult:
+    """Reconstruct RetrievalResult from a serialized dict."""
+    return RetrievalResult(
+        contents=d["contents"],
+        ids=d["ids"],
+        scores=d["scores"],
+        spans=[tuple(s) for s in d["spans"]],
     )
 
-    trace_id = f"integration-{uuid.uuid4().hex[:12]}"
+
+# ── Phase nodes ───────────────────────────────────────────────────────────
+
+def query_understanding(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 3 — DeepSeek-flash query rewriting for retrieval."""
+    raw = state.get("raw_query", "")
+    if not raw:
+        logger.warning("Phase 3 (query_understanding): empty raw_query, skipping")
+        return {}
+
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
+    if not api_key:
+        logger.warning("Phase 3 (query_understanding): DEEPSEEK_API_KEY not set, passthrough")
+        return {"rewritten_query": raw}
+
+    try:
+        from openai import OpenAI
+
+        client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a query rewriter for a legal document retrieval system.\n"
+                        "Your job is to rewrite the user's query to improve retrieval quality.\n"
+                        "Rules:\n"
+                        "- Fix spelling and grammar errors\n"
+                        "- Expand abbreviations and informal language to formal legal terminology\n"
+                        "- Keep the same meaning and scope — do not add or remove information needs\n"
+                        "- Return ONLY the rewritten query as plain text, no explanation, "
+                        "no preamble, no punctuation changes beyond what is necessary"
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": f"Rewrite this query for retrieval: {raw}",
+                },
+            ],
+            max_tokens=128,
+            extra_body={"thinking": {"type": "disabled"}},
+        )
+        rewritten = (response.choices[0].message.content or "").strip()
+        if not rewritten:
+            rewritten = raw
+
+        logger.info("Phase 3: '%s' -> '%s'", raw, rewritten)
+        return {"rewritten_query": rewritten}
+
+    except Exception as exc:
+        logger.warning("Phase 3 (query_understanding): rewrite failed (%s), passthrough", exc)
+        return {"rewritten_query": raw}
+
+
+def retrieval(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 4 — call dense + sparse retrieval channels."""
+    query = state.get("rewritten_query") or state.get("raw_query", "")
+    ds = context.dataset_name
+
+    logger.info("Phase 4 (retrieval): dense + sparse on dataset=%r", ds)
+    dense_result = context.qdrant_retriever.retrieve(query, dataset_name=ds)
+    sparse_result = context.bm25_retriever.retrieve(query, dataset_name=ds)
+
     return {
-        "metric_result": metric_result,
-        "failure_counts": failure_counts,
-        "trace_id": trace_id,
-    }
-
-
-def sanity_check(state: ExperimentState) -> dict:
-    """Post-eval sanity invariants (R@k monotonic, delta cap, etc.)."""
-    from core.measurement.sanity import run_sanity_checks
-
-    metric_result = state["metric_result"]
-    sanity_result = run_sanity_checks(
-        metric_result,
-        baseline=None,  # no per-MetricResult baseline stored yet
-        improvement_threshold=SANITY_IMPROVEMENT_THRESHOLD,
-    )
-
-    return {
-        "sanity": {
-            "passed": sanity_result.passed,
-            "violations": sanity_result.violations,
-            "quarantined": not sanity_result.passed,
+        "retrieval_bundle": {
+            "dense": _serialize_result(dense_result),
+            "sparse": _serialize_result(sparse_result),
         },
     }
 
 
-def log_results(state: ExperimentState) -> dict:
-    """Compute calibration, build LedgerEntry, append to ledger on disk."""
-    from core.supervisor.proposer import LOCKED_BASELINES, append_ledger, load_ledger
-    from core.supervisor.schemas import (
-        FailureVector, LedgerEntry, PredictedDelta, RagConfig,
-    )
+def fusion(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 5 — RRF fusion of dense + sparse results."""
+    bundle = state.get("retrieval_bundle", {})
+    dense_d = bundle.get("dense")
+    sparse_d = bundle.get("sparse")
 
-    cfg = RagConfig(**state["config"])
-    predicted = PredictedDelta(**state["predicted_delta"])
-    metric_result = state["metric_result"]
+    if not dense_d or not sparse_d:
+        logger.warning("Phase 5 (fusion): missing retrieval bundle, skipping")
+        return {}
 
-    # --- Resolve baseline for calibration ---
-    ledger = load_ledger()
-    baseline_ref = predicted.baseline_ref
+    dense_rr = _deserialize_result(dense_d)
+    sparse_rr = _deserialize_result(sparse_d)
 
-    actual_delta_pp = None
-    prediction_error_pp = None
+    fused = rrf(sparse_rr, dense_rr, top_n=50)
+    logger.info("Phase 5 (fusion): RRF produced %d results", len(fused.ids))
+    return {"fused_result": _serialize_result(fused)}
 
-    if baseline_ref == "locked":
-        locked = LOCKED_BASELINES.get(cfg.target_dataset)
-        if locked is not None:
-            baseline_val = locked.get(predicted.metric)
-            if baseline_val is not None:
-                current_val = _extract_metric(predicted.metric, metric_result, state["failure_counts"])
-                actual_delta_pp = round(current_val - baseline_val, 2)
-                prediction_error_pp = round(predicted.delta_pp - actual_delta_pp, 2)
-    else:
-        try:
-            ref_num = int(baseline_ref)
-            ref_entry = next((e for e in ledger if e.run_number == ref_num), None)
-            if ref_entry is not None:
-                baseline_val = _extract_metric_from_entry(predicted.metric, ref_entry)
-                current_val = _extract_metric(predicted.metric, metric_result, state["failure_counts"])
-                actual_delta_pp = round(current_val - baseline_val, 2)
-                prediction_error_pp = round(predicted.delta_pp - actual_delta_pp, 2)
-        except ValueError:
-            pass
 
-    # --- Build and append ---
-    entry = LedgerEntry(
-        run_number=state["run_number"],
-        experiment_id=state.get("config_hash", state.get("experiment_id", "")),
-        config=cfg,
-        hypothesis=state["hypothesis"],
-        predicted_delta=predicted,
-        experiment_type=state.get("experiment_type", "ingestion_time"),
-        estimated_embedding_chunks=state.get("estimated_embedding_chunks", 0),
-        p_at_k=metric_result.p_at_k,
-        r_at_k=metric_result.r_at_k,
-        failure_vector=FailureVector.from_counts(state["failure_counts"]),
-        n_queries=sum(state["failure_counts"].values()),
-        actual_embedding_chunks=(
-            state.get("estimated_embedding_chunks", 0)
-            if state.get("experiment_type") == "ingestion_time" else 0
-        ),
-        actual_delta_pp=actual_delta_pp,
-        prediction_error_pp=prediction_error_pp,
-        trace_id=state.get("trace_id", ""),
-    )
+def reranking(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 6 — Voyage rerank-2.5 over all fused candidates."""
+    fused = state.get("fused_result")
+    if not fused:
+        logger.warning("Phase 6 (reranking): no fused_result, skipping")
+        return {}
 
-    append_ledger(entry)
+    query = state.get("rewritten_query") or state.get("raw_query", "")
 
+    contents = fused.get("contents", [])
+    ids = fused.get("ids", [])
+    scores = fused.get("scores", [])
+    spans = fused.get("spans", [])
+    n_in = len(contents)
+
+    if not contents:
+        logger.warning("Phase 6 (reranking): fused_result empty, skipping")
+        return {"reranked_result": fused}
+
+    try:
+        import voyageai
+
+        vo = voyageai.Client()
+        result = vo.rerank(
+            query=query,
+            documents=contents,
+            model="rerank-2.5",
+            top_k=8,
+        )
+
+        # Reconstruct reranked result using .index to map back to original positions
+        reranked_contents = []
+        reranked_ids = []
+        reranked_scores = []
+        reranked_spans = []
+
+        for rr in result.results:
+            idx = rr.index
+            reranked_contents.append(contents[idx])
+            reranked_ids.append(ids[idx])
+            reranked_scores.append(float(rr.relevance_score))
+            reranked_spans.append(spans[idx])
+
+        n_out = len(reranked_ids)
+        top_score = reranked_scores[0] if reranked_scores else 0.0
+        logger.info(
+            "Phase 6 (reranking): reranked %d -> %d, top score: %.4f",
+            n_in, n_out, top_score,
+        )
+
+        return {
+            "reranked_result": {
+                "contents": reranked_contents,
+                "ids": reranked_ids,
+                "scores": reranked_scores,
+                "spans": reranked_spans,
+            },
+        }
+
+    except Exception as exc:
+        logger.warning(
+            "Phase 6 (reranking): reranker failed (%s), falling back to fused top 8",
+            exc,
+        )
+        # Graceful degradation: pass fused top 8 through unchanged
+        return {
+            "reranked_result": {
+                "contents": contents[:8],
+                "ids": ids[:8],
+                "scores": scores[:8],
+                "spans": spans[:8],
+            },
+        }
+
+
+def context_construction(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 7 — take top 8 chunks from reranked result."""
+    reranked = state.get("reranked_result")
+    if not reranked:
+        logger.warning("Phase 7 (context_construction): no reranked_result, skipping")
+        return {}
+
+    top_n = 8
+    contents = reranked.get("contents", [])[:top_n]
+    ids = reranked.get("ids", [])[:top_n]
+
+    logger.info("Phase 7 (context_construction): %d chunks selected", len(contents))
     return {
-        "actual_delta_pp": actual_delta_pp,
-        "prediction_error_pp": prediction_error_pp,
+        "context_chunks": contents,
+        "context_ids": ids,
     }
 
 
-def write_entry(state: ExperimentState) -> dict:
-    """Scribe: call DeepSeek to write a decision_log.md entry."""
-    from core.supervisor.proposer import load_ledger
-    from core.supervisor.schemas import (
-        FailureVector, LedgerEntry, PredictedDelta, RagConfig,
-    )
-    from core.supervisor.scribe import write_decision_entry
+def synthesis(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 8 — structured DeepSeek call with claim-citation pairs."""
+    query = state.get("rewritten_query") or state.get("raw_query", "")
+    chunks = state.get("context_chunks", [])
+    chunk_ids = state.get("context_ids", [])
 
-    # Build a LedgerEntry from current state (including calibration from log_results)
-    entry = LedgerEntry(
-        run_number=state["run_number"],
-        experiment_id=state.get("config_hash", ""),
-        config=RagConfig(**state["config"]),
-        hypothesis=state["hypothesis"],
-        predicted_delta=PredictedDelta(**state["predicted_delta"]),
-        experiment_type=state.get("experiment_type", "ingestion_time"),
-        estimated_embedding_chunks=state.get("estimated_embedding_chunks", 0),
-        p_at_k=state["metric_result"].p_at_k,
-        r_at_k=state["metric_result"].r_at_k,
-        failure_vector=FailureVector.from_counts(state["failure_counts"]),
-        n_queries=sum(state["failure_counts"].values()),
-        actual_embedding_chunks=(
-            state.get("estimated_embedding_chunks", 0)
-            if state.get("experiment_type") == "ingestion_time" else 0
-        ),
-        actual_delta_pp=state.get("actual_delta_pp"),
-        prediction_error_pp=state.get("prediction_error_pp"),
-        trace_id=state.get("trace_id", ""),
+    if not chunks or not chunk_ids:
+        logger.warning("Phase 8 (synthesis): no context chunks, skipping")
+        return {"answer": "[no context]", "claims": []}
+
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
+    if not api_key:
+        logger.warning("Phase 8 (synthesis): DEEPSEEK_API_KEY not set, skipping")
+        return {"answer": "[Phase 8 skipped: no API key]", "claims": []}
+
+    # Build context string with chunk IDs as explicit labels
+    context_string = "\n---\n".join(
+        f"[{cid}]\n{text}" for cid, text in zip(chunk_ids, chunks)
     )
 
-    ledger = load_ledger()
-    decision_text = write_decision_entry(entry, ledger)
+    system_prompt = (
+        "You are a legal document analyst. Answer the query using ONLY the "
+        "provided document chunks.\n\n"
+        "Rules:\n"
+        "- Every factual claim in your answer must cite a specific chunk\n"
+        "- cited_chunk_id must be one of the chunk IDs provided in context\n"
+        "- cited_text must be copied verbatim from the cited chunk\n"
+        "- One atomic fact per claim — do not bundle multiple facts\n"
+        "- Do not invent information not present in the chunks\n"
+        "- If the answer cannot be found in the chunks, say so explicitly"
+    )
 
-    return {"decision_entry": decision_text}
+    user_prompt = (
+        f"Query: {query}\n\n"
+        f"Document chunks:\n{context_string}\n\n"
+        "Answer the query and provide claim-citation pairs for every "
+        "factual assertion."
+    )
+
+    try:
+        import instructor
+        from openai import OpenAI
+
+        from core.supervisor.schemas_phase8 import StructuredAnswer
+
+        client = instructor.from_openai(
+            OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+        )
+
+        logger.info("Phase 8 (synthesis): calling deepseek-v4-flash (structured)")
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
+            response_model=StructuredAnswer,
+            max_retries=3,
+            max_tokens=1024,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            extra_body={"thinking": {"type": "disabled"}},
+        )
+
+        # Validate cited_chunk_ids against context_ids
+        valid_ids = set(chunk_ids)
+        n_valid = sum(1 for c in response.claims if c.cited_chunk_id in valid_ids)
+        for c in response.claims:
+            if c.cited_chunk_id not in valid_ids:
+                logger.warning(
+                    "Phase 8: claim cites unknown chunk_id %r", c.cited_chunk_id
+                )
+
+        logger.info(
+            "Phase 8: %d claims extracted, %d chunk IDs valid",
+            len(response.claims), n_valid,
+        )
+
+        return {
+            "answer": response.answer,
+            "claims": [c.model_dump() for c in response.claims],
+        }
+
+    except Exception as exc:
+        logger.error("Phase 8 (synthesis): structured call failed: %s", exc)
+        return {"answer": "[Phase 8 failed]", "claims": []}
 
 
-def notify(state: ExperimentState) -> dict:
-    """Log completion (no Apprise in integration mode)."""
-    return {"notified": True, "status": "completed"}
+_STOPWORDS = frozenset({
+    "the", "a", "an", "is", "are", "was", "were",
+    "of", "in", "on", "at", "to", "for", "with",
+    "that", "this", "it", "be", "has", "have",
+    "and", "or", "but", "not", "by", "from",
+})
+
+_NEGATION_PATTERNS = (
+    "does not", "is not", "are not", "was not", "were not",
+    "shall not", "cannot", "never", "no ", "prohibited",
+    "not permitted", "not allowed", "will not",
+)
 
 
-# ── Helpers ────────────────────────────────────────────────────────────
-
-def _extract_metric(metric: str, metric_result, failure_counts: dict) -> float:
-    """Extract a named metric value from MetricResult + failure_counts."""
-    if metric == "p_at_1":
-        return metric_result.p_at_k.get(1, 0) * 100
-    elif metric == "r_at_8":
-        return metric_result.r_at_k.get(8, 0) * 100
-    elif metric.endswith("_pct"):
-        field = metric.removesuffix("_pct").upper()
-        total = sum(failure_counts.values())
-        if total == 0:
-            return 0.0
-        return failure_counts.get(field, 0) / total * 100
-    return 0.0
+def _normalize_text(text: str) -> str:
+    """Collapse whitespace and lowercase for comparison."""
+    return " ".join(text.lower().split())
 
 
-def _extract_metric_from_entry(metric: str, entry) -> float:
-    """Extract a named metric value from a LedgerEntry."""
-    if metric == "p_at_1":
-        return entry.p_at_k.get(1, 0) * 100
-    elif metric == "r_at_8":
-        return entry.r_at_k.get(8, 0) * 100
-    elif metric.endswith("_pct"):
-        field = metric.removesuffix("_pct")
-        return entry.failure_vector.pct(field)
-    return 0.0
+def _detect_contradiction(claim_text: str, chunk_content: str) -> bool:
+    """Conservative contradiction check: negation proximate to claim terms.
+
+    Only flags CONTRADICTED when a negation pattern appears in the chunk
+    near (same sentence) key terms from the claim.
+    """
+    norm_claim = claim_text.lower()
+    norm_chunk = chunk_content.lower()
+
+    # Extract non-stopword terms from claim (key content words)
+    claim_tokens = set(norm_claim.split()) - _STOPWORDS
+    if not claim_tokens:
+        return False
+
+    # Find sentences in chunk that contain negation
+    sentences = norm_chunk.replace("\n", " ").split(".")
+    for sentence in sentences:
+        has_negation = any(neg in sentence for neg in _NEGATION_PATTERNS)
+        if not has_negation:
+            continue
+        # Check if claim's key terms appear in this negated sentence
+        sentence_tokens = set(sentence.split()) - _STOPWORDS
+        overlap = claim_tokens & sentence_tokens
+        # Need at least 2 overlapping content words to be proximate
+        if len(overlap) >= 2:
+            return True
+
+    return False
+
+
+def verification(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 9 — three-way deterministic citation-traceability verification.
+
+    No LLM calls. Produces ENTAILED / CONTRADICTED / BASELESS verdicts
+    per claim using normalized text matching against chunk content.
+
+    NOTE: cited_chunk_id is singular now. When NLI model lands in
+    Stage 3, this becomes cited_chunk_ids (list) for multi-chunk support.
+    """
+    claims = state.get("claims", [])
+    context_chunks = state.get("context_chunks", [])
+    context_ids = state.get("context_ids", [])
+
+    if not claims:
+        logger.info("Phase 9 (verification): no claims to verify")
+        return {
+            "verification_result": {
+                "entailed": 0,
+                "contradicted": 0,
+                "baseless": 0,
+                "total": 0,
+                "score": 0.0,
+                "has_contradiction": False,
+                "note": "no claims to verify",
+                "details": [],
+            },
+        }
+
+    chunk_text_by_id = dict(zip(context_ids, context_chunks))
+    total = len(claims)
+    entailed_count = 0
+    contradicted_count = 0
+    baseless_count = 0
+    details: list[dict] = []
+
+    for i, claim in enumerate(claims):
+        cited_chunk_id = claim.get("cited_chunk_id", "")
+        cited_text = claim.get("cited_text", "").strip()
+        claim_text = claim.get("claim", "").strip()
+
+        # CHECK 1 — Chunk ID exists?
+        if cited_chunk_id not in chunk_text_by_id:
+            baseless_count += 1
+            reason = "chunk_id not in context"
+            logger.info(
+                "Phase 9: claim %d/%d [BASELESS] — %s (chunk: %s)",
+                i + 1, total, reason, cited_chunk_id[:50],
+            )
+            details.append({
+                "claim": claim_text,
+                "cited_chunk_id": cited_chunk_id,
+                "verdict": "BASELESS",
+                "reason": reason,
+            })
+            continue
+
+        chunk_content = chunk_text_by_id[cited_chunk_id]
+
+        # CHECK 2 — Contradiction detection
+        if _detect_contradiction(claim_text, chunk_content):
+            contradicted_count += 1
+            reason = "chunk explicitly contradicts claim"
+            logger.info(
+                "Phase 9: claim %d/%d [CONTRADICTED] — %s (chunk: %s)",
+                i + 1, total, reason, cited_chunk_id[:50],
+            )
+            details.append({
+                "claim": claim_text,
+                "cited_chunk_id": cited_chunk_id,
+                "verdict": "CONTRADICTED",
+                "reason": reason,
+            })
+            continue
+
+        # CHECK 3 — Text presence (entailment)
+        norm_cited = _normalize_text(cited_text)
+        norm_chunk = _normalize_text(chunk_content)
+
+        # Test A — substring match
+        if norm_cited and norm_cited in norm_chunk:
+            entailed_count += 1
+            reason = "exact"
+            logger.info(
+                "Phase 9: claim %d/%d [ENTAILED] — %s (chunk: %s)",
+                i + 1, total, reason, cited_chunk_id[:50],
+            )
+            details.append({
+                "claim": claim_text,
+                "cited_chunk_id": cited_chunk_id,
+                "verdict": "ENTAILED",
+                "reason": reason,
+            })
+            continue
+
+        # Test B — token overlap (after stopword removal)
+        cited_tokens = set(norm_cited.split()) - _STOPWORDS
+        chunk_tokens = set(norm_chunk.split()) - _STOPWORDS
+        overlap = cited_tokens & chunk_tokens
+        denom = max(len(cited_tokens), 1)
+        ratio = len(overlap) / denom
+
+        if ratio >= 0.75:
+            entailed_count += 1
+            reason = "token_overlap"
+            logger.info(
+                "Phase 9: claim %d/%d [ENTAILED] — %s (%.2f) (chunk: %s)",
+                i + 1, total, reason, ratio, cited_chunk_id[:50],
+            )
+            details.append({
+                "claim": claim_text,
+                "cited_chunk_id": cited_chunk_id,
+                "verdict": "ENTAILED",
+                "reason": reason,
+            })
+        else:
+            baseless_count += 1
+            reason = "cited_text not found in chunk"
+            logger.info(
+                "Phase 9: claim %d/%d [BASELESS] — %s (overlap %.2f) (chunk: %s)",
+                i + 1, total, reason, ratio, cited_chunk_id[:50],
+            )
+            details.append({
+                "claim": claim_text,
+                "cited_chunk_id": cited_chunk_id,
+                "verdict": "BASELESS",
+                "reason": reason,
+            })
+
+    score = entailed_count / total if total > 0 else 0.0
+    has_contradiction = contradicted_count > 0
+
+    logger.info(
+        "Phase 9: %d/%d entailed, %d contradicted, %d baseless, score=%.2f, has_contradiction=%s",
+        entailed_count, total, contradicted_count, baseless_count, score, has_contradiction,
+    )
+
+    return {
+        "verification_result": {
+            "entailed": entailed_count,
+            "contradicted": contradicted_count,
+            "baseless": baseless_count,
+            "total": total,
+            "score": score,
+            "has_contradiction": has_contradiction,
+            "details": details,
+        },
+    }
+
+
+def agentic_loop(state: ExperimentState, context: PipelineContext) -> dict:
+    """Phase 10 — per-query agentic loop.
+
+    Checks Phase 9 verification score. If below threshold and iterations
+    remain, refines the query via DeepSeek-flash and clears stale state
+    so the graph loops back through phases 4-9.
+
+    This is the INNER per-query loop only — it answers ONE question by
+    retrieving multiple times. It does NOT decide what to test tomorrow.
+    """
+    verification_result = state.get("verification_result", {})
+    score = verification_result.get("score", 0.0)
+    iteration = state.get("iteration", 1)
+    max_iterations = state.get("max_iterations", 3)
+    raw_query = state.get("raw_query", "")
+    answer = state.get("answer", "")
+
+    # ── Stopping conditions ───────────────────────────────────────────────
+    if score >= 0.75:
+        reason = f"score {score:.2f} >= 0.75"
+        logger.info(
+            "Phase 10: stopping — score=%.2f, iteration=%d/%d, reason=%s",
+            score, iteration, max_iterations, reason,
+        )
+        return {"loop_complete": True}
+
+    if iteration >= max_iterations:
+        reason = f"max iterations reached ({iteration}/{max_iterations})"
+        logger.info(
+            "Phase 10: stopping — score=%.2f, iteration=%d/%d, reason=%s",
+            score, iteration, max_iterations, reason,
+        )
+        return {"loop_complete": True}
+
+    if not answer or answer.startswith("[Phase 8"):
+        reason = "error state — no valid answer"
+        logger.info(
+            "Phase 10: stopping — score=%.2f, iteration=%d/%d, reason=%s",
+            score, iteration, max_iterations, reason,
+        )
+        return {"loop_complete": True}
+
+    # ── Identify failed claims ────────────────────────────────────────────
+    failed_claims = [
+        d["claim"]
+        for d in verification_result.get("details", [])
+        if d.get("verdict") != "ENTAILED"
+    ]
+
+    if not failed_claims:
+        logger.info(
+            "Phase 10: stopping — no failed claims despite score %.2f", score,
+        )
+        return {"loop_complete": True}
+
+    # ── Refine query via DeepSeek-flash ───────────────────────────────────
+    api_key = os.environ.get("DEEPSEEK_API_KEY")
+    if not api_key:
+        logger.warning("Phase 10: DEEPSEEK_API_KEY not set, stopping")
+        return {"loop_complete": True}
+
+    system_prompt = (
+        "You are a query refinement assistant for a legal document "
+        "retrieval system. A retrieval attempt failed to find evidence "
+        "for some claims. Your job is to write a better search query "
+        "that targets the missing evidence.\n\n"
+        "Rules:\n"
+        "- Return ONLY the refined query as plain text\n"
+        "- Make it more specific than the original\n"
+        "- Focus on the unverified claims\n"
+        "- Do not add information not present in the original query "
+        "or failed claims\n"
+        "- Maximum 2 sentences"
+    )
+
+    failed_list = "\n".join(f"- {c}" for c in failed_claims)
+    user_prompt = (
+        f"Original query: {raw_query}\n\n"
+        f"Claims that could not be verified:\n{failed_list}\n\n"
+        "Write a refined search query to find evidence for these claims."
+    )
+
+    try:
+        from openai import OpenAI
+
+        client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
+        response = client.chat.completions.create(
+            model="deepseek-v4-flash",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            max_tokens=128,
+            extra_body={"thinking": {"type": "disabled"}},
+        )
+        refined_query = (response.choices[0].message.content or "").strip()
+    except Exception as exc:
+        logger.warning("Phase 10: query refinement failed (%s), stopping", exc)
+        return {"loop_complete": True}
+
+    if not refined_query:
+        logger.warning("Phase 10: empty refined query, stopping")
+        return {"loop_complete": True}
+
+    logger.info(
+        "Phase 10: iterating — score=%.2f, iteration=%d/%d, "
+        "refined query: '%s'",
+        score, iteration, max_iterations, refined_query[:100],
+    )
+
+    # ── Clear stale state and loop back to retrieval ──────────────────────
+    return {
+        "rewritten_query": refined_query,
+        "iteration": iteration + 1,
+        "loop_complete": False,
+        "retrieval_bundle": {},
+        "fused_result": {},
+        "reranked_result": {},
+        "context_chunks": [],
+        "context_ids": [],
+        "claims": [],
+        "verification_result": {},
+    }

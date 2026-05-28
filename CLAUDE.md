@@ -1,278 +1,220 @@
-# Meridian — Project Spec
+# CLAUDE.md — Meridian
 
-## What this is
-Personal autonomous research platform. First campaign: LegalBench-RAG 
-retrieval forensics on ContractNLI. Domain-agnostic by design.
-Primary output is the forensic document — decision log, failure mode 
-writeups, autopsy PDF. The agent loop is infrastructure, not the artifact.
-
-## Hard boundary
-The loop runs ONLY on retrieval experiments. Generation API calls are 
-GATED — never called autonomously. Enforced at the Pydantic schema layer,
-not by convention. AutoRAG nodes that call LLMs (HyDE, query decomposition,
-LLM-as-reranker, RAGAS) are BLOCKED in the config schema.
+The whole project, condensed. Read this first, every session.
 
 ---
 
-## Stack (locked — do not substitute without explicit instruction)
-- Vector store: Qdrant (Docker, self-hosted)
-- Embeddings: voyage-4-large (Voyage SDK)
-  voyage-4-large shares embedding space with voyage-4 and voyage-4-lite.
-  Phase 3 optimization: embed corpus with voyage-4-large, query with
-  voyage-4-lite to reduce per-query embedding cost.
-- Sparse retrieval: rank_bm25.BM25Okapi (same engine AutoRAG wraps internally)
-- Dense retrieval: core/retrieval/qdrant_retriever.py — hand-rolled (~50 LOC)
-  AutoRAG's VectorDBRetrieval wraps ChromaDB — do NOT use it
-- Hybrid fusion: hand-rolled RRF in core/retrieval/fusion.py (~10 LOC)
-  AutoRAG's HybridRetrieval assumes ChromaDB — do NOT use it
-- Tracing: Langfuse (self-hosted) — real-time, per-span, verbatim I/O
-- Orchestration: LangGraph StateGraph + SqliteSaver
-- HPO: Optuna TPE sampler (Phase 3+)
-- Config validation: Pydantic v2 discriminated unions
-- Notifications: Apprise (Gmail SMTP + Discord/Slack)
-- Generation: GPT-5 Nano Batch API — GATED, never called by the loop
-- Infra: VPS + systemd + Docker
+## What Meridian is
 
-## AutoRAG — Outcome B (resolved)
-AutoRAG's eval loop does not expose character offsets. Use it as a 
-component library only. Safe imports: BM25Retrieval. Do NOT use 
-VectorDBRetrieval, HybridRetrieval, MetricInput, or @autorag_metric.
-BM25Retrieval must be instantiated ONCE per experiment run, not per query.
+A best-in-class agentic retrieval system instrumented by a deterministic,
+domain-transferable forensic measurement layer. The agent is the proving
+ground; the measurement layer is the product.
 
-## AutoRAG BM25 deviation (resolved)
-autorag.nodes.retrieval.bm25.BM25Retrieval is not importable without
-llama_index (~500MB). Use rank_bm25.BM25Okapi directly — the same
-engine AutoRAG wraps internally. This is not a hand-roll deviation;
-it is using the underlying library AutoRAG itself uses.
+**Not** an autonomous research agent. **Not** another production RAG bot.
+The autonomous-outer-loop direction from v1 was explored and abandoned —
+do not bring it back.
+
+**Positioning:** v1 (RAG Forensics) stays on resume as the shipped project
+until v2 is demonstrably better. Three conditions: (1) agent runs all 10
+phases on LegalBench, (2) Tier A measurement produces signal on a non-
+annotated corpus (FiQA or NFCorpus), (3) Phase 10 measurably beats single-
+shot retrieval with trajectories traced. Until all three: v1 ships, v2 builds.
 
 ---
 
-## The four components
-1. Measurement library (core/measurement/) — pure functions, no side effects,
-   no logging, no API calls. Called by the Supervisor. Never by the Proposer.
-2. Proposer agent — reads ledger, outputs RagConfig + hypothesis + predicted delta.
-3. Forensic Writer agent — ledger + traces → decision_log entry + nightly email.
-4. Supervisor agent — LangGraph StateGraph, loop, checkpoints, kill-switch.
+## The architecture
 
-## GroundTruth Protocol (do not extend without a concrete second-domain use case)
-```python
-class GroundTruth(Protocol):
-    def get_spans(self, query_id: str) -> list[tuple[int, int]]: ...
-    def get_doc_id(self, query_id: str) -> str: ...
-    def all_query_ids(self) -> list[str]: ...
-    def doc_text(self, doc_id: str) -> str: ...
+### The agent (Phases 1-10)
+
+Phases 1-2 run once per corpus. Phases 3-10 run per query.
+
+  1. Chunking              — fixed-size / semantic / section-aware / agentic
+  2. Indexing              — Qdrant + voyage-4-large + BM25 + HNSW
+  3. Query Understanding   — rewriting / expansion / decomposition / HyDE
+  4. Retrieval             — dense + sparse channels
+  5. Fusion                — RRF or convex combination
+  6. Reranking             — cross-encoder over top 25-50
+  7. Context Construction  — count, order, metadata, compression
+  8. Synthesis             — LLM call; structured claim-citation output
+  9. Verification          — deterministic citation-traceability
+  10. Agentic Retrieval Loop — plan-retrieve-evaluate, PER QUERY
+
+**Phase 10 is the research focus.** "Agentic" means the INNER per-query
+loop only — the agent iterates retrieval until evidence is sufficient.
+Phase 9's verification provides the deterministic stopping signal.
+This is NOT a research-campaign loop. The agent answers ONE question by
+retrieving multiple times. It does NOT decide what to test tomorrow.
+
+### The measurement layer (two tiers)
+
+Deterministic. No LLM judges in scoring. Ever.
+
+**Tier A — corpus-agnostic (work on any corpus):**
+- Robustness — output stability under input perturbation
+- Drift — output stability over repeated identical inputs
+- Systems perf — latency, throughput, per-phase
+- Economic — cost per query, per phase, per correct retrieval
+- Trajectory — Phase 10 behavior: iterations, tool calls, termination reasons
+- Groundedness (citation-traceable) — from Phase 9 output
+
+**Tier B — span-forensic (where ground-truth spans exist):**
+- Per-span taxonomy: DRM / CBF / SGP / ICR / OVR / OK
+- Per-step failure attribution along agent trajectory
+- Multi-span handling (per-span scoring, not merged — Finding 3)
+
+### Where measurement lives
+
+```
+core/measurement/
+  tier_a/     robustness, drift, systems, economic, trajectory, groundedness
+  tier_b/     taxonomy, per_step, multi_span
 ```
 
-## RetrievalResult (all retrievers must return this)
-```python
-@dataclass
-class RetrievalResult:
-    contents: list[str]
-    ids: list[str]
-    scores: list[float]
-    spans: list[tuple[int, int]]  # joined from corpus.parquet start_end_idx
-                                   # never None, never reconstructed from text
+All pure functions. No I/O. No Langfuse. No LLM calls.
+
+### Dependency direction (bottom-to-top, clean)
+
+```
+measurement  ←  agent  ←  retrieval primitives  ←  corpus
 ```
 
----
+Measurement never depends on the agent. Agent never bypasses measurement.
 
-## Measurement requirements
-- Spans are half-open [start, end) — verify against LegalBench ground truth before implementing
-- span_overlap raises MissingGroundTruthError on empty/None gt — never returns 0.0
-- P@k/R@k property-tested with Hypothesis, min 10k examples
-- Ingestion: doc_text[start:end] == chunk_text — HARD HALT on mismatch
-- Sanity invariants (all thresholds configurable, never hardcoded):
-  R@k non-decreasing in k (mathematical invariant, always checked);
-  P@k monotonicity is NOT checked (char-level P@k can legitimately
-  increase — a relevant chunk at rank 2 raises P@2 over an irrelevant
-  chunk at rank 1);
-  no metric improves >SANITY_THRESHOLD pts over prior best (default 15.0)
-- On invariant violation: QUARANTINE + flag + notify. Never silently accept.
-- eval_mode must be explicit on every MetricResult: SPAN_OVERLAP or LLM_JUDGE
-- Every MetricResult carries a Langfuse trace_id — no result without a trace
+### Testbeds
 
-## Failure taxonomy
-Classification uses PER-SPAN coverage analysis: each ground-truth
-span is individually scored against retrieved spans.  This correctly
-handles multi-span queries (43% of LegalBench-RAG).
-
-Phase 1 (span-computable, precedence order — first match wins):
-1. DRM — no retrieved doc matches any gt doc
-2. CBF — correct doc, zero overlap on ALL gt spans
-3. SGP — >=1 span covered (>=50%) AND >=1 span entirely missed (0%)
-         "Found some, missed others." Fix: diversity/coverage in top-k.
-4. ICR — total overlap > 0 but < 50% of total gt chars
-5. OVR — total retrieved chars >= 3x total gt chars
-6. OK  — none of the above
-
-SGP requires parent-document reachability (DRM checked first).
-For single-span queries SGP is impossible — behavior identical to
-the pre-SGP classifier.
-
-Phase 2 (chunk text parsing — stubs only until explicitly added):
-DTM, XRF. Raise NotImplementedError in stubs.
+- LegalBench-RAG — Tier A + Tier B, 293k chunks indexed (starting testbed)
+- FiQA — Tier A only, validates the transferability bet
+- NFCorpus — Tier A only, vocabulary mismatch stress
+- MultiHop (HotpotQA) — BLOCKED on Finding 1 fix
 
 ---
 
-## Tracing requirements
-The Supervisor owns all Langfuse calls. The measurement library has zero 
-Langfuse dependency. Every span captures verbatim JSON inputs and outputs —
-never summarized. Per-query spans are mandatory. The Proposer's full prompt 
-and full LLM response must be captured verbatim, not just the extracted config.
+## Hard rules (never violate)
 
-Span hierarchy: EXPERIMENT TRACE → PROPOSER → INDEX BUILD → EVAL LOOP 
-→ (per query: RETRIEVAL + MEASUREMENT) → SANITY CHECK → SCRIBE.
-
----
-
-## Documentation (parallel to all phases)
-Inherits RagForensics structure. Scribe writes decision_log.md entries 
-nightly. Human edits them next morning. Human writes autopsy.md at 
-campaign end — Scribe never writes the autopsy.
-
-Each decision_log entry: hypothesis (verbatim) → config diff → metric 
-delta → failure type shift → forensic interpretation → verdict 
-(CONFIRMED / PARTIALLY CONFIRMED / FALSIFIED) → proposed next question.
+1. **No LLM judges in scoring.** Measurement is deterministic. The agent
+   uses LLMs (rewriter, synthesizer) — those are PART of what's measured.
+2. **Per-span scoring, not merged-character-set.** Finding 3 fix; do not regress.
+3. **Sub-floor deltas are noise.** R@8 has 0.50pp variance floor (Voyage
+   embedding nondeterminism). Never narrate sub-floor changes as improvements.
+4. **Dataset filter mandatory on every Qdrant query** (multi-corpus collection).
+5. **Do not rebuild legalbench_rag_full** without budget approval (~20M tokens).
+6. **No autonomous outer research loop.** Phase 10 is per-query only.
+7. **Finding 1 is a hard gate on MultiHop.** Multi-doc classifier bug in
+   `taxonomy.py` is latent on current data; must fix before MultiHop.
+8. **Finding 2 — top_k is not a DRM lever.** DRM is discrimination-bound;
+   real DRM levers are query expansion, BM25/dense ratio, hybrid weighting.
 
 ---
 
-## Build order (phases are gates)
-Phase 1 — measurement library + property tests. No agents, no Qdrant, 
-no ingestion. Gate: 10k Hypothesis examples pass, known-answer tests pass.
+## Dual-Claude workflow
 
-Phase 2 — ContractNLI ingestion + baseline replication. GATE PASSED.
-Locked baseline (7-run measured band, 194 queries, 95 docs, 3797 chunks):
-  P@1 = 8.84% (deterministic — zero run-to-run variance)
-  R@8 = 50.29% ± 0.16pp (1σ), range [49.95, 50.41] across 7 runs
-  Failure counts: DRM 76 / CBF 35 / SGP 21 / ICR 6 / OVR 21 / OK 35 (deterministic)
-  Failure vector (%): DRM 39.2% / CBF 18.0% / SGP 10.8% / ICR 3.1% / OVR 10.8% / OK 18.0%
-  Variance source: Voyage query-embedding nondeterminism (~1-2 queries/run)
-  Variance floors (3σ, measured): P@1 0.00pp, R@8 0.50pp, failure-type % 0.52pp
-  Sub-floor deltas are NOISE — never narrate as improvements.
-Permanent gate: P@1 [6.8, 10.8], R@8 [47.4, 53.4].
-If subsequent experiment regresses outside gate, QUARANTINE.
+Three roles. The human bridges the two Claudes.
 
-Phase 3 — autonomous loop: Supervisor → Measurement integration → 
-Proposer → Writer → VPS deploy. Wired in that order.
+- **Human (operator, decider)** — holds the goal, decides interpretive
+  questions, verifies relays, has final authority.
+- **Claude.ai (advisor)** — interprets, frames, makes architectural calls.
+  Has project context, NOT the live repo. Writes prompts FOR the engineer.
+- **Claude Code (engineer)** — reads, writes, runs. Has live ground truth,
+  lacks accumulated project framing. Solves what's asked, surfaces what's missing.
 
-Phase 4 — MCP forensic layer (after >20 runs exist worth querying).
+Two failure modes to actively counter:
 
-Conditional (add when scope demands, not before):
-RAGAS only if span-overlap saturates. Docling only for raw PDF datasets.
-Qdrant native BM25 only when expanding past ~50k docs.
-DTM/XRF only when they become the dominant unresolved failure type.
+- **Engineer context starvation** — Claude Code circles a problem 3+ times
+  when missing the WHY. Counter: every non-trivial prompt carries the
+  constraint/finding/gate inline. State the WHY, not just the task.
+- **Advisor stale assumptions** — Claude.ai writes a confident spec from
+  design intent that doesn't match code reality. Counter: recon round
+  before any invasive build. Engineer reads the actual code and reports;
+  advisor builds prompts against the report, not the docs.
 
----
+### Standard cycle for non-trivial changes
 
-## Campaign vs. core boundary (non-negotiable)
+1. Advisor proposes direction with tradeoffs
+2. Human decides direction
+3. Recon round — engineer READS ONLY and reports back
+4. Advisor writes build prompt grounded in the recon
+5. Engineer executes and reports (quoted code, executed checks vs reasoned)
+6. Advisor verifies the report, flags silent-failure modes
+7. Human approves or sends back
 
-Core (core/) is domain-agnostic. It has zero knowledge of:
-- ContractNLI, LegalBench-RAG, or any specific dataset
-- Legal text, NDAs, or any domain-specific structure
-- Specific chunking strategies or retrieval techniques
+### Prompt rules (advisor → engineer)
 
-All domain knowledge lives in campaigns/<campaign_name>/.
-A new campaign is: one new folder + one GroundTruth adapter.
-The core never changes when a new campaign is added.
+- Tight, not dense — state goal, constraints, decisions, acceptance checks
+- WHY inline — every meaningful instruction has a one-line reason
+- Lock real decisions, leave implementation open
+- Acceptance checks test the DETERMINISTIC part (winning knobs,
+  classifications) — never raw noisy scores
+- Don't ask the engineer to make interpretive calls — surface to human instead
 
-The GroundTruth Protocol is the only interface between core and campaign.
-The ChunkerConfig strategy enum is the only place domain-specific
-chunking strategies are registered.
+### Reporting rules (engineer → advisor)
 
-## Cross-dataset contamination (spine of this campaign)
-
-ContractNLI P@1 dropped 8.84% (isolated index) → 3.38% (full 4-dataset
-corpus) because a combined index lets ContractNLI queries retrieve CUAD
-chunks. Hard Rule 15 (dataset filter mandatory on every Qdrant query)
-exists because of this.
-
-### Qdrant dataset filtering — two independent facts
-
-Filtering depends on TWO independent facts, never collapsed into one
-boolean:
-
-1. **Must filter**: whether the collection is multi-dataset
-   (contamination risk). Single-dataset collections skip the filter
-   (nothing to separate). Multi-dataset collections filter-or-RAISE,
-   never silently skip.
-
-2. **Can filter**: whether a `dataset_name` keyword payload index
-   physically exists on that Qdrant collection. Without it, Qdrant
-   rejects filter queries with HTTP 400.
-
-### Locked baseline values are BANDS, not point values
-
-ContractNLI hybrid (per-span taxonomy, 7-run measurement):
-  P@1 = 8.84% (deterministic)
-  R@8 = 50.29% ± 0.16pp (1σ), variance floor 0.50pp (3σ)
-  Failure counts: DRM 76 / CBF 35 / SGP 21 / ICR 6 / OVR 21 / OK 35
-  (deterministic — identical across all 7 runs)
-
-Any refactor must reproduce P@1 exactly and R@8 within the measured
-band [49.79, 50.79] (mean ± 3σ).  Failure counts must be identical.
-Deltas below VARIANCE_FLOOR_PP are noise, not signal.
-
-Variance root cause: Voyage API query-embedding nondeterminism.
-Same text occasionally returns a slightly different vector
-(max_diff ~6.5e-3, cosine ~0.9988), reordering 1-2 borderline
-chunks at RRF positions 4-8 per run.  P@1 and failure counts
-are immune.  This is external and unfixable.
-
-### Experiment 1 partial verification
-
-Experiment 1 was only half-verified until 2026-05-25: the 8.84%
-recovery came from BM25 per-dataset indexing; the Qdrant payload filter
-could not execute until the `dataset_name` keyword index was created on
-`legalbench_rag_full`. The full-collection contamination test has not
-yet been run with the filter genuinely applied.
-
-### Process rule
-
-When reporting a fix, show the file content on disk and the real
-terminal output, never a description of intended changes. Summaries
-have diverged from actual file state in this session — always verify.
+- Quote real code, not paraphrase
+- Distinguish executed checks from reasoned ones — say which
+- Flag assumption mismatches explicitly ("pre-existing mismatch found...")
+- State what was REMOVED and what was KEPT, especially in surgical edits
+- Stop and surface if circling 3+ times — don't write more code hoping it sticks
 
 ---
 
-## Campaign findings (permanent record)
+## Current view (update when focus shifts)
 
-### Finding 1 — Multi-doc precondition (hard gate on multi-hop expansion)
+**Phase:** v2 — Stage 2 complete. Full 10-phase pipeline running
+end-to-end on LegalBench-RAG (ContractNLI corpus).
 
-The failure classifier in taxonomy.py collapses cross-document character
-offsets. It is CORRECT ONLY for single-document ground truth. All 4
-current datasets (ContractNLI, CUAD, MAUD, PrivacyQA) are 0% cross-doc.
-Any multi-document / multi-hop dataset (HotpotQA, MuSiQue, etc.) requires
-per-document span grouping FIRST before the classifier is valid.
-This is a hard gate on multi-hop expansion — do not add such datasets
-without implementing per-document span grouping.
+**What was built in Stage 2:**
+- Phase 3: DeepSeek-flash query rewriting
+- Phase 4: Qdrant dense + BM25 sparse retrieval (top_k=50 each)
+- Phase 5: RRF fusion (top_n=50)
+- Phase 6: Voyage rerank-2.5 (50→8 candidates)
+- Phase 7: Context construction (top 8 chunks)
+- Phase 8: DeepSeek-flash structured synthesis
+  (instructor + Pydantic claim-citation pairs)
+- Phase 9: Three-way deterministic verification
+  (ENTAILED / CONTRADICTED / BASELESS)
+- Phase 10: Score-gated agentic loop
+  (threshold=0.75, max_iterations=3, loops back to Phase 4)
 
-### Finding 2 — top_k is a P@1 lever, NOT a DRM lever
+**Chunking baseline (Phases 1-2):**
+Fixed-size 512 tokens, 128 overlap. Pre-indexed as
+contractnli_baseline in Qdrant. RagForensics section-aware
+chunker transplanted to core/ingestion/chunker.py but not yet
+wired. Switch deferred until CBF failure rates from eval harness
+justify a deliberate re-index. See docs/DECISIONS.md.
 
-Scaling top_k from 32→64 yielded a one-time P@1 gain (8.84→11.44) but
-DRM saturated completely (~72 across top_k 64/96/128) while OVR spiked.
-Evidence: DRM on ContractNLI is discrimination-bound, not coverage-bound.
-The near-duplicate legal document structure means the correct doc is
-already in the candidate set; the retriever fails to rank it first.
-The DRM lever is query expansion / better discrimination — NOT larger
-candidate sets. Further top_k increases are BLOCKED as cost-ineffective.
+**Resume swap conditions (from CLAUDE.md positioning statement):**
+1. Agent runs all 10 phases on LegalBench  ✓ COMPLETE
+2. Tier A measurement on non-annotated corpus  — not started
+3. Phase 10 measurably beats single-shot  — not measured yet
+
+**Stage 3 — next (in order):**
+1. Wire eval harness — connect harness.py to v2 pipeline entry
+   point, replacing unresolved run_query import from RagForensics
+2. Baseline comparison — run max_iterations=1 (single-shot) vs
+   max_iterations=3 (agentic) on ContractNLI query set, compare
+   P@1 and R@8 against locked baseline (8.84% / 50.29%)
+3. Tier A measurement — port FiQA or NFCorpus testbed, run
+   corpus-agnostic metrics (robustness, drift, economic, systems)
+4. NLI model for Phase 9 — DeBERTa-MNLI local model, fixes
+   CONTRADICTED false positive rate on legal negation patterns
+5. Section-aware chunker — swap when CBF is dominant failure type,
+   re-index with voyage-law-2 simultaneously (one deliberate pass)
+6. Phase 3 query decomposition — builds on rewriting pattern,
+   directly attacks SGP failures (43% of queries are multi-span)
+
+**Known issues / open flags:**
+- Phase 9 CONTRADICTED: false positive rate on legal negation
+  ("shall not") — conservative by design, NLI model fixes in Stage 3
+- harness.py line 161: unresolved run_query import from RagForensics,
+  blocks batch eval until Stage 3 wiring pass
+- state.py fields: iteration/max_iterations not in initial state
+  schema — set in run_query.py directly, acceptable for now
+- graph.py: loop-back path tested structurally but not yet exercised
+  on a real query that scores below 0.75
 
 ---
 
-## Hard rules
-1. Do not hand-roll anything in the BUY stack without explicit instruction.
-2. Do not add dependencies without asking first.
-3. Do not write Phase N+1 code before Phase N passes its gate.
-4. Measurement functions are pure — no side effects of any kind.
-5. No MetricResult without a trace_id.
-6. span_overlap raises on empty gt — never fabricates a number.
-7. Sanity violation → QUARANTINE, never silent acceptance.
-8. Every Langfuse span: verbatim inputs + outputs, never summarized.
-9. Per-query spans mandatory — aggregate-only logging is not sufficient.
-10. RetrievalResult.spans populated from parquet join — never text reconstruction.
-11. BM25Retrieval instantiated once per run, not per query.
-12. Scribe writes decision_log entries. Human writes the autopsy. Never reversed.
-13. Campaign vs. core boundary is non-negotiable (see section above).
-14. No AutoRAG VectorDBRetrieval, HybridRetrieval, MetricInput, or @autorag_metric.
-15. Dataset filter mandatory on every Qdrant query to a multi-dataset collection.
-    Single-dataset collections skip. Multi-dataset collections RAISE if the
-    payload index is missing — never silently skip.
+## Decision log
+
+Decisions are recorded in docs/DECISIONS.md. Append new entries there.
+Format: date, decision, why, precludes. See that file for full history
+and format instructions.

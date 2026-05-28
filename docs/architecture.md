@@ -1,3 +1,5 @@
+> Decision log: see docs/DECISIONS.md
+
 # Architecture Notes
 
 ## Qdrant dataset-filtering invariant

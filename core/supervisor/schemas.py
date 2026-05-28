@@ -135,6 +135,16 @@ class ProposalFamily(BaseModel):
             )
         return self
 
+    def canonical_json(self) -> str:
+        """Deterministic JSON for hashing — covers 4 family fields only.
+
+        Intentionally excludes bm25_top_k / dense_top_k / fusion_top_n
+        so that the dedup key is family-level, not final-config level.
+        Two studies on the same family with different winning knobs must
+        produce the same hash (they are the same experiment).
+        """
+        return self.model_dump_json(exclude_none=True)
+
 
 class RagConfig(BaseModel):
     """Retrieval parameters for one experiment.
@@ -320,10 +330,34 @@ class LedgerEntry(BaseModel):
     # ── identity ──
     run_number: int = Field(ge=1)
     experiment_id: str = Field(
-        description="SHA-256 of config.canonical_json()"
+        description=(
+            "SHA-256 of ProposalFamily.canonical_json() — covers "
+            "target_dataset, chunk_size, chunk_overlap, retrieval_mode ONLY. "
+            "The query-time knobs (bm25_top_k, dense_top_k, fusion_top_n) "
+            "are NOT part of this hash. Dedup is family-level: the same "
+            "family re-proposed is a duplicate regardless of which knobs "
+            "Optuna happened to win last time. See winning_knobs for the "
+            "specific knobs Optuna selected for this row."
+        )
     )
     timestamp: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc)
+    )
+
+    # ── what Optuna selected ──
+    # experiment_id (above) is the FAMILY hash — it does NOT depend on these.
+    # These are stored for forensics: which specific knobs Optuna found best
+    # for this family on this run.  Two runs of the same family will typically
+    # show different winning_knobs due to noise (Finding 4).
+    winning_knobs: dict[str, int] = Field(
+        default_factory=dict,
+        description=(
+            "Optuna's best knobs for this family: bm25_top_k, dense_top_k, "
+            "fusion_top_n.  Separate from experiment_id — the same family "
+            "may win different knobs on each run (noise floor).  "
+            "config contains these same values; this field makes them "
+            "explicit so no reader confuses them for the dedup key."
+        ),
     )
 
     # ── what was proposed ──

@@ -1,84 +1,82 @@
 """Supervisor graph: LangGraph StateGraph with SqliteSaver checkpointing.
 
-Nodes are wired in the Phase 3 order specified in CLAUDE.md:
-  read_ledger -> propose_config -> check_hash -> check_spend
-  -> run_eval -> sanity_check -> log_results -> write_entry -> notify
+v2 phase wiring (phases 3–10):
+  query_understanding → retrieval → fusion → reranking
+  → context_construction → synthesis → verification → agentic_loop
+  → (conditional: END if loop_complete, else back to retrieval)
 
-Conditional edges after check_hash and check_spend short-circuit
-to notify on duplicate config or budget exhaustion.  Conditional
-edge after sanity_check routes to log_results (pass) or directly
-to notify (quarantine).
+Each node receives PipelineContext via bind_context wrapper.
 """
 
 from __future__ import annotations
 
 import sqlite3
+from collections.abc import Callable
 from pathlib import Path
 
 from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.sqlite import SqliteSaver
 
+from core.supervisor.context import PipelineContext
 from core.supervisor.state import ExperimentState
 from core.supervisor import nodes
 
 
-def _after_check_hash(state: ExperimentState) -> str:
-    """Skip to notify if config is a duplicate."""
-    if state.get("duplicate"):
-        return "notify"
-    return "check_spend"
+def bind_context(node_fn: Callable, context: PipelineContext) -> Callable:
+    """Wrap a node function so PipelineContext is injected as second arg."""
+
+    def wrapped(state: ExperimentState) -> dict:
+        return node_fn(state, context)
+
+    wrapped.__name__ = node_fn.__name__
+    return wrapped
 
 
-def _after_check_spend(state: ExperimentState) -> str:
-    """Skip to notify if budget is exhausted."""
-    if not state.get("spend_ok"):
-        return "notify"
-    return "run_eval"
+def _after_agentic_loop(state: ExperimentState) -> str:
+    """Route agentic loop: END if complete, else back to retrieval."""
+    if state.get("loop_complete", True):
+        return END
+    return "retrieval"
 
 
-def _after_sanity_check(state: ExperimentState) -> str:
-    """Route quarantined runs past log_results to notify."""
-    sanity = state.get("sanity", {})
-    if sanity.get("quarantined"):
-        return "notify"
-    return "log_results"
-
-
-def build_graph() -> StateGraph:
+def build_graph(context: PipelineContext) -> StateGraph:
     """Construct the un-compiled StateGraph (useful for testing)."""
     graph = StateGraph(ExperimentState)
 
-    # --- nodes ---
-    graph.add_node("read_ledger", nodes.read_ledger)
-    graph.add_node("propose_config", nodes.propose_config)
-    graph.add_node("check_hash", nodes.check_hash)
-    graph.add_node("check_spend", nodes.check_spend)
-    graph.add_node("run_eval", nodes.run_eval)
-    graph.add_node("sanity_check", nodes.sanity_check)
-    graph.add_node("log_results", nodes.log_results)
-    graph.add_node("write_entry", nodes.write_entry)
-    graph.add_node("notify", nodes.notify)
+    # --- nodes (phases 3–10) ---
+    graph.add_node("query_understanding",  bind_context(nodes.query_understanding, context))
+    graph.add_node("retrieval",            bind_context(nodes.retrieval, context))
+    graph.add_node("fusion",               bind_context(nodes.fusion, context))
+    graph.add_node("reranking",            bind_context(nodes.reranking, context))
+    graph.add_node("context_construction", bind_context(nodes.context_construction, context))
+    graph.add_node("synthesis",            bind_context(nodes.synthesis, context))
+    graph.add_node("verification",         bind_context(nodes.verification, context))
+    graph.add_node("agentic_loop",         bind_context(nodes.agentic_loop, context))
 
     # --- edges ---
-    graph.set_entry_point("read_ledger")
-    graph.add_edge("read_ledger", "propose_config")
-    graph.add_edge("propose_config", "check_hash")
+    graph.set_entry_point("query_understanding")
+    graph.add_edge("query_understanding",  "retrieval")
+    graph.add_edge("retrieval",            "fusion")
+    graph.add_edge("fusion",               "reranking")
+    graph.add_edge("reranking",            "context_construction")
+    graph.add_edge("context_construction", "synthesis")
+    graph.add_edge("synthesis",            "verification")
+    graph.add_edge("verification",         "agentic_loop")
 
-    graph.add_conditional_edges("check_hash", _after_check_hash)
-    graph.add_conditional_edges("check_spend", _after_check_spend)
-
-    graph.add_edge("run_eval", "sanity_check")
-
-    graph.add_conditional_edges("sanity_check", _after_sanity_check)
-
-    graph.add_edge("log_results", "write_entry")
-    graph.add_edge("write_entry", "notify")
-    graph.add_edge("notify", END)
+    # Phase 10 conditional: loop back or finish
+    graph.add_conditional_edges(
+        "agentic_loop",
+        _after_agentic_loop,
+        {"retrieval": "retrieval", END: END},
+    )
 
     return graph
 
 
-def compile_graph(db_path: str | Path = "checkpoints.sqlite") -> tuple:
+def compile_graph(
+    db_path: str | Path,
+    context: PipelineContext,
+) -> tuple:
     """Compile the graph with SqliteSaver checkpointing.
 
     Returns (compiled_graph, saver) so the caller can manage the
@@ -88,5 +86,5 @@ def compile_graph(db_path: str | Path = "checkpoints.sqlite") -> tuple:
     conn = sqlite3.connect(str(db_path), check_same_thread=False)
     saver = SqliteSaver(conn)
     saver.setup()
-    compiled = build_graph().compile(checkpointer=saver)
+    compiled = build_graph(context).compile(checkpointer=saver)
     return compiled, saver

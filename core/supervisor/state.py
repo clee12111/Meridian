@@ -1,75 +1,71 @@
-"""Typed state for the Supervisor experiment loop.
+"""Typed state for the v2 per-query pipeline.
 
-Every field is Optional so the graph can start from an empty state
-and each node populates only its own slice.
+Every field is Optional (total=False) so the graph can start from an
+empty state and each phase node populates only its own slice.
+LangGraph merges each node's return dict into this state.
 """
 
 from __future__ import annotations
 
-from typing import TypedDict
+from typing import Any, TypedDict
 
 from core.measurement.metrics import MetricResult
-from core.measurement.taxonomy import FailureType
 
 
-class RagConfig(TypedDict, total=False):
-    """Retrieval configuration proposed for one experiment run."""
+class RetrievalBundle(TypedDict, total=False):
+    """Carries dense + sparse results before fusion."""
 
-    chunk_size: int
-    chunk_overlap: int
-    bm25_top_k: int
-    dense_top_k: int
-    fusion_top_n: int
-
-
-class SanityVerdict(TypedDict, total=False):
-    """Outcome of post-eval sanity checks."""
-
-    passed: bool
-    violations: list[str]
-    quarantined: bool
+    dense: dict    # RetrievalResult serialized: contents, ids, scores, spans
+    sparse: dict   # RetrievalResult serialized: contents, ids, scores, spans
 
 
 class ExperimentState(TypedDict, total=False):
-    """Full state for a single Supervisor loop iteration.
+    """Per-query pipeline state, phases 3–10.
 
-    Every node reads what it needs, writes what it produces.
-    LangGraph merges each node's return dict into this state.
+    Each phase reads upstream fields and writes its own output slice.
+    RetrievalResult is serialized as a plain dict (contents, ids, scores,
+    spans) because TypedDict fields must be JSON-serializable for
+    SqliteSaver checkpointing.
     """
 
     # --- identity ---
-    experiment_id: str          # unique hash of the RagConfig
-    run_number: int             # monotonic, set by read_ledger
+    experiment_id: str       # UUID for this run
+    run_number: int          # ledger sequence number
+    trace_id: str            # Langfuse trace id; "locked-baseline" for seed
 
-    # --- proposer outputs ---
-    config: RagConfig
-    hypothesis: str             # verbatim from proposer
-    predicted_delta: dict       # PredictedDelta as dict (metric, delta_pp, baseline_ref, above_variance_floor)
-    experiment_type: str        # "query_time" | "ingestion_time"
-    estimated_embedding_chunks: int
-    cost_reasoning: str
+    # --- query (Phase 3 input / output) ---
+    raw_query: str           # original query, never mutated
+    rewritten_query: str     # Phase 3 output; falls back to raw_query if Phase 3 is stub
 
-    # --- guard rails ---
-    config_hash: str            # SHA-256 of canonical config JSON
-    duplicate: bool             # True if hash already in ledger
-    spend_ok: bool              # True if budget allows this run
+    # --- retrieval (Phase 4 output) ---
+    retrieval_bundle: RetrievalBundle
 
-    # --- eval outputs ---
+    # --- fusion (Phase 5 output) ---
+    fused_result: dict       # RetrievalResult serialized
+
+    # --- reranking (Phase 6 output) ---
+    reranked_result: dict    # RetrievalResult serialized
+
+    # --- context construction (Phase 7 output) ---
+    context_chunks: list[str]   # ordered list of chunk texts for LLM
+    context_ids: list[str]      # parallel chunk ids
+
+    # --- synthesis (Phase 8 output) ---
+    answer: str              # generated answer text
+    claims: list[dict]       # structured: [{claim, cited_chunk_id, text}, ...]
+
+    # --- verification (Phase 9 output) ---
+    verification_result: dict   # {grounded: int, ungrounded: int, score: float}
+
+    # --- agentic loop (Phase 10) ---
+    iteration: int           # current loop count, starts at 1
+    max_iterations: int      # stopping ceiling, default 3
+    loop_complete: bool      # True when Phase 10 decides to stop
+
+    # --- measurement (post-pipeline) ---
     metric_result: MetricResult
-    failure_counts: dict[str, int]   # FailureType.name -> count
-    trace_id: str               # Langfuse trace ID for this experiment
-
-    # --- sanity ---
-    sanity: SanityVerdict
-
-    # --- calibration (set by log_results) ---
-    actual_delta_pp: float      # observed delta on predicted metric vs baseline
-    prediction_error_pp: float  # predicted - actual (positive = over-predicted)
-
-    # --- scribe ---
-    decision_entry: str         # markdown for decision_log.md
-    notified: bool              # True after Apprise fires
+    failure_counts: dict[str, int]   # {drm, cbf, sgp, icr, ovr, ok}
 
     # --- control flow ---
-    status: str                 # "running" | "completed" | "quarantined" | "aborted"
-    error: str                  # non-empty on abort
+    status: str              # "running" | "complete" | "error"
+    error: str               # error message if status == "error"

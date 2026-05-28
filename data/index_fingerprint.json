@@ -1,0 +1,8 @@
+{
+  "contractnli_baseline": {
+    "target_dataset": "contractnli",
+    "chunk_size": 512,
+    "chunk_overlap": 128,
+    "indexed_at": "2026-05-27T03:56:24.972502+00:00"
+  }
+}
