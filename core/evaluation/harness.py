@@ -387,6 +387,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                    help="Override retriever top_k (default: context default)")
     p.add_argument("--fusion-top-n", type=int, default=None,
                    help="Override RRF fusion top_n (default: 50)")
+    p.add_argument("--cc-alpha", type=float, default=None,
+                   help="Use CC fusion with this alpha (0.0-1.0). "
+                        "If not set, uses RRF. "
+                        "alpha=0.7 means 70%% BM25 / 30%% dense.")
+    p.add_argument("--wrrf-sparse", type=float, default=None,
+                   help="Use weighted RRF with this sparse weight "
+                        "(0.0-1.0). 0.25 = 25%% BM25 / 75%% dense.")
     p.add_argument("--workers", type=int, default=8,
                    help="Parallel workers (default: 8, max: 12 for API rate limit safety)")
     return p.parse_args(argv)
@@ -413,6 +420,10 @@ def main(argv: list[str] | None = None) -> None:
         os.environ["MERIDIAN_TOP_K"] = str(args.top_k)
     if args.fusion_top_n is not None:
         os.environ["MERIDIAN_FUSION_TOP_N"] = str(args.fusion_top_n)
+    if args.cc_alpha is not None:
+        os.environ["MERIDIAN_CC_ALPHA"] = str(args.cc_alpha)
+    if args.wrrf_sparse is not None:
+        os.environ["MERIDIAN_WRRF_SPARSE"] = str(args.wrrf_sparse)
 
     run(
         limit=args.limit,

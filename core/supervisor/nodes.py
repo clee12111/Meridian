@@ -20,7 +20,7 @@ import logging
 import os
 
 from core.retrieval.base import RetrievalResult
-from core.retrieval.fusion import rrf
+from core.retrieval.fusion import cc_fusion, rrf, weighted_rrf
 from core.supervisor.context import PipelineContext
 from core.supervisor.state import ExperimentState
 from core.supervisor.tracing import start_span, end_span
@@ -188,8 +188,21 @@ def fusion(state: ExperimentState, context: PipelineContext) -> dict:
 
     top_n_override = os.environ.get("MERIDIAN_FUSION_TOP_N")
     top_n = int(top_n_override) if top_n_override else 50
-    fused = rrf(sparse_rr, dense_rr, top_n=top_n)
-    logger.info("Phase 5 (fusion): RRF produced %d results", len(fused.ids))
+
+    alpha_str = os.environ.get("MERIDIAN_CC_ALPHA")
+    wrrf_str = os.environ.get("MERIDIAN_WRRF_SPARSE")
+
+    if alpha_str is not None:
+        alpha = float(alpha_str)
+        fused = cc_fusion(sparse_rr, dense_rr, alpha=alpha, top_n=top_n)
+        logger.info("Phase 5 (fusion): CC alpha=%.2f produced %d results", alpha, len(fused.ids))
+    elif wrrf_str is not None:
+        sw = float(wrrf_str)
+        fused = weighted_rrf(sparse_rr, dense_rr, sparse_weight=sw, top_n=top_n)
+        logger.info("Phase 5 (fusion): weighted RRF sparse=%.2f produced %d results", sw, len(fused.ids))
+    else:
+        fused = rrf(sparse_rr, dense_rr, top_n=top_n)
+        logger.info("Phase 5 (fusion): RRF produced %d results", len(fused.ids))
     result = {"fused_result": _serialize_result(fused)}
     end_span(span, {"fused_count": len(fused.ids)})
     return result

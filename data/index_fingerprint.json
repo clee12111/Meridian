@@ -10,5 +10,11 @@
     "chunk_size": 512,
     "chunk_overlap": 128,
     "indexed_at": "2026-05-28T11:34:23.234368+00:00"
+  },
+  "privacyqa_baseline": {
+    "target_dataset": "privacy_qa",
+    "chunk_size": 512,
+    "chunk_overlap": 128,
+    "indexed_at": "2026-05-28T12:26:27.632764+00:00"
   }
 }

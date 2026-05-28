@@ -243,3 +243,55 @@ These were hidden behind DRM in prior runs. Now the targets.
 **Precludes:**
 Using the reranker without document-scoping on topically-
 homogeneous corpora. Treating reranker as universally beneficial.
+
+---
+
+### 2026-05-28 — Finding 9: CC fusion over RRF — score preservation produces largest single improvement of session
+
+**Results (194 queries, ContractNLI, SAC+NoRerank):**
+  SAC+NoRerank+CC(0.3): P@1=33.3%, R@8=75.5%, DRM=28.9%, OK=28.4%
+  SAC+NoRerank+RRF:     P@1=18.5%, R@8=56.8%, DRM=48.5%, OK=16.0%
+  vs v1 baseline:       P@1+24.5pp, R@8+25.2pp
+
+**Mechanism:**
+RRF compresses score gaps into rank positions before combining
+channels. CC fusion preserves score magnitude — a BM25 score gap
+of 0.95 vs 0.55 between right/wrong documents survives into the
+final ranking. With SAC-improved dense embeddings already
+providing slight document discrimination, CC's score preservation
+amplifies that signal dramatically.
+
+**CC vs weighted RRF (score preservation vs rank weighting):**
+CC a=0.3:    R@8=0.767, P@1=0.329 (50-query slice)
+wRRF 0.25:   R@8=0.746, P@1=0.238 (50-query slice)
+Gap: R@8 +2.1pp, P@1 +9.1pp in CC's favor.
+Score preservation matters most for P@1 (top-1 precision).
+For R@8 (top-8 recall) rank position captures most signal.
+
+**Per-dataset a confirmed:**
+ContractNLI: a=0.3 (30% BM25 / 70% dense)
+PrivacyQA:   a=0.1 (10% BM25 / 90% dense)
+Per-dataset routing warranted — corpora prefer different balance.
+
+**New dominant failure mode visible after DRM reduction:**
+OVR: 6.7% -> 26.8% (+20.1pp)
+OVR was masked by DRM. CC fusion's document discrimination
+improvement revealed it. Retrieved chunks are correct document
+but 3x larger than GT span. Next target: LLM-as-span-extractor.
+
+**Precludes:**
+Using RRF as default fusion without A/B testing CC.
+Treating score normalization as irrelevant to retrieval quality.
+
+---
+
+### 2026-05-28 — Finding 10: Per-dataset CC a is warranted
+
+**Decision:** Use per-dataset a for CC fusion, not a single
+global value. ContractNLI a=0.3, PrivacyQA a=0.1.
+
+**Why:** 0.2pp R@8 difference between a=0.2 and a=0.3 on
+ContractNLI, but 16.4pp R@8 gap between a=0.1 and a=0.5 on
+PrivacyQA. Dataset-level heterogeneity is real and measurable.
+
+**Precludes:** Using a=0.5 (equal weight) as a universal default.
