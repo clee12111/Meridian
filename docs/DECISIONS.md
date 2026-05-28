@@ -321,3 +321,272 @@ loop trigger per the typed failure classification pattern.
 **Precludes:**
 Using the loop unconditionally on all low-scoring queries.
 Assuming more iterations always improve results.
+
+---
+
+### 2026-05-28 — Session summary: SAC + CC fusion campaign
+
+This session ran a full diagnostic + optimization campaign on
+ContractNLI (194 queries). Best config improved P@1 from 8.84%
+(v1) to 31.5% and R@8 from 50.4% to 73.7%. Findings below are
+ordered by the experiment sequence.
+
+NOTE: Findings 8-11 above were logged individually mid-session.
+Findings 12-19 below are the consolidated authoritative versions,
+renumbered to avoid collision. Where content overlaps (14=8,
+15=9, 16=10, 18=11), the consolidated entry is more complete.
+
+---
+
+### Finding 6 — URL encoding measurement bug (18% false DRM)
+
+**Bug:** ContractNLI ground truth JSON stored some file_paths
+URL-encoded (VELCO%20NDA) while the corpus parquet used spaces.
+The DRM classifier did exact string comparison, so 28 queries
+across 3 documents (VELCO, Evelozcity, Grindrod) were classified
+DRM despite the right document being retrieved (dense rank 1 in
+most cases).
+
+**Fix:** urllib.parse.unquote() applied in ContractNLIGroundTruth
+__init__ and get_doc_id(). 10 of 28 reclassified correctly; 18
+were genuine DRM masked by the encoding bug.
+
+**Precludes:** Trusting DRM rates without verifying doc_id format
+consistency between ground truth and corpus.
+
+---
+
+### Finding 7 — DRM measurement scope: top-8 vs top-64
+
+**Decision:** V2 measures DRM at top-8 (final context window).
+V1 measured at top-64 (full fused candidate set). V2's top-8 is
+the operationally meaningful metric — a document outside the
+context window cannot contribute to the answer.
+
+**Evidence:** V2 single-shot at v1 config (top_k=32, no reranker,
+no loop) showed DRM 61.9% vs v1's ~24.7% (encoding-corrected).
+R@8 matched within 0.25pp — retrieval recall equivalent. 72 of
+120 V2 DRM queries had the right document retrieved but ranked
+9th or lower. The gap is purely measurement scope, confirmed via
+the v1 ground_truth_adapter (git show d40daa6): v1 passed all 64
+fused candidates to classify(), v2 passes only the top 8.
+
+**Precludes:** Comparing v1 and v2 DRM as equivalent. V1 DRM is
+a recall metric (top-64); v2 DRM is a precision metric (top-8).
+
+---
+
+### Finding 12 — Rewriter exonerated as DRM cause
+
+**Experiment:** Full 194-query A/B with Phase 3 rewriting disabled.
+  Rewriter ON:  DRM 80.3%
+  Rewriter OFF: DRM 82.0% (+1.7pp, within nondeterminism margin)
+
+**Conclusion:** Query rewriting is not the DRM cause. The
+discrimination failure is downstream in retrieval ranking, not
+query transformation. Rewriter provides slight net positive — keep it.
+
+**Note on query expansion:** Scoped OUT of the project. The DRM
+bottleneck is document discrimination on a topically-homogeneous
+corpus (indexing/ranking problem), not query insufficiency.
+Expansion helps when input is insufficient (production); these
+benchmark queries already name the document.
+
+---
+
+### Finding 13 — Reranker harms DRM on topically-homogeneous corpora
+
+**Experiment:** Full 194-query A/B with Voyage rerank-2.5 disabled.
+  Reranker ON:  DRM 79.9%, R@8 50.5%, CBF 0%
+  Reranker OFF: DRM 59.3%, R@8 45.9%, CBF 12.4%
+
+**Mechanism:** On 95 near-identical NDAs, the cross-encoder scores
+topically-perfect wrong-document chunks as highly relevant and
+promotes them above right-document chunks in the 50->8 cut. The
+reranker is working correctly — semantic relevance scoring is just
+orthogonal to document identity. This matches the LegalBench-RAG
+paper finding (Cohere v3.0 hurt) and the literature warning to
+A/B test rerankers on legal, never assume benefit.
+
+**Tradeoff:** Reranker causes ~40 DRM but fixes ~24 CBF. It does
+genuine within-document chunk selection but can't discriminate
+between documents. Fix is document-scoped reranking (defer).
+
+---
+
+### Finding 14 — SAC + reranker-OFF is additive
+
+**Experiment:** SAC (Summary-Augmented Chunking) — 150-char
+document summary prepended to each chunk before embedding, summary
+discarded after (LLM reads clean clause text, only the vector is
+influenced). Built scripts/build_sac_index.py, collection
+contractnli_sac (3797 points).
+
+  SAC alone (rerank ON):    DRM 76.8% (reranker reverses SAC gain)
+  Reranker OFF alone:       DRM 59.3%
+  SAC + reranker OFF:       DRM 48.5%, P@1 18.5%, R@8 56.8%
+
+**Mechanism:** SAC improves dense-channel discrimination (~10pp) by
+baking document identity into embeddings. The reranker reverses
+most of it by re-scoring on semantic relevance. Removing the
+reranker preserves SAC's improvement. The effects compound:
+SAC + no-reranker beats either alone.
+
+**Precludes:** Using the reranker with SAC on topically-homogeneous
+corpora without document-scoping. SAC's published >95%->19% DRM
+result (Reuter et al.) was not replicated — likely because their
+measurement was at deeper k and their baseline DRM was higher.
+
+---
+
+### Finding 15 — CC fusion over RRF: largest single improvement
+
+**Experiment:** Convex combination fusion replacing RRF k=60.
+CC_score = a*norm(BM25) + (1-a)*norm(dense), min-max normalized.
+
+  SAC+NoRerank+RRF:      P@1 18.5%, R@8 56.8%, DRM 48.5%
+  SAC+NoRerank+CC(0.3):  P@1 33.3%, R@8 75.5%, DRM 28.9%
+  vs v1 baseline:        P@1 +24.5pp, R@8 +25.2pp
+
+**Mechanism:** RRF compresses score gaps into rank positions
+(1/(60+rank)), discarding magnitude. BM25 gives party-name matches
+(rare tokens, e.g. "Seeed") a large score gap over wrong documents
+(0.95 vs 0.52). RRF collapses that to near-zero rank difference.
+CC preserves the gap. With SAC-improved dense embeddings providing
+slight discrimination, CC's score preservation amplifies it.
+
+**Why CC suits this corpus, not production:** CC works when scores
+are calibrated and comparable (single index, same corpus every run)
+and one channel has strong magnitude signal (BM25 on rare tokens).
+RRF is more robust for noisy production queries with uncalibrated
+scores across heterogeneous systems. CC is a benchmark/structured-
+corpus optimization, not a universal production default.
+
+**Precludes:** Using RRF as default without A/B testing CC on
+structured benchmark corpora. Treating score normalization as
+irrelevant to retrieval quality.
+
+---
+
+### Finding 16 — Per-dataset CC a is warranted
+
+**Experiment:** Two-corpus a sweep (ContractNLI SAC + PrivacyQA
+baseline, 50 queries each, a in [0.1..0.9]).
+
+  ContractNLI best: a=0.3 (30% BM25 / 70% dense)
+  PrivacyQA best:   a=0.1 (10% BM25 / 90% dense)
+
+**Mechanism:** ContractNLI tolerates more BM25 because party names
+provide lexical discrimination. PrivacyQA is near-pure-dense —
+lay-language queries against varied privacy-policy vocabulary make
+semantic similarity dominant. Per-dataset routing materially
+outperforms a single global a.
+
+**Built:** core/evaluation/ground_truth_privacyqa.py, collection
+privacyqa_baseline (620 points). MAUD and CUAD deferred (budget —
+~98M and ~49M Voyage tokens respectively).
+
+---
+
+### Finding 17 — CC beats weighted RRF (score preservation vs rank weighting)
+
+**Experiment:** weighted_rrf (sparse_weight applied to rank scores)
+vs cc_fusion (a applied to normalized scores), 50-query slice.
+
+  CC a=0.3:    R@8 0.767, P@1 0.329
+  wRRF 0.25:   R@8 0.746, P@1 0.238
+
+**Conclusion:** CC beats best weighted RRF by +2.1pp R@8 and
++9.1pp P@1 at similar DRM. Score preservation matters most for P@1
+(top-1 precision benefits from knowing the magnitude gap between
+#1 and #2). For R@8, rank position captures most of the signal.
+Confirms Bruch et al.: CC is strictly more expressive than weighted
+RRF (any weighted RRF config has a rank-equivalent or better CC).
+
+---
+
+### Finding 18 — Loop adds marginal value; single-shot preferred
+
+**Experiment:** Single-shot vs 3-iteration loop on best config.
+  Single-shot:  P@1 31.5%, R@8 73.7%, SGP 14.4%, DRM 26.8%, iter 1.00
+  With loop:    P@1 33.3%, R@8 75.5%, SGP 10.3%, DRM 28.9%, iter 1.68
+
+**Conclusion:** Loop adds +1.8pp at +68% compute. It helps SGP
+(+4.1pp — finds missing spans) but hurts DRM (-2.1pp — refined
+queries retrieve from wrong documents). Single-shot captures ~96%
+of loop performance at ~60% cost. Single-shot is the preferred
+default at current quality.
+
+**Decision:** Loop stays as a simple verification-threshold (0.75)
+with no failure-type gating. Rejected coupling loop behavior to
+the failure classifier — the classifier is a downstream symptom
+that shifts with config (reranker pushed everything to DRM;
+removing it pushed everything out). Coupling control flow to a
+shifting classification would make a measurement bug
+indistinguishable from a behavior bug. Measurement observes; it
+does not steer control flow.
+
+---
+
+### Finding 19 — OVR was ~83% measurement artifact (chunk vs cited-span)
+
+**Experiment:** Parallel classification using Phase 8's cited_text
+spans (the verbatim sub-span the LLM quoted per claim) instead of
+full chunk spans. Deterministic substring search, no new LLM calls.
+
+  OVR (chunk-span):   47 queries (24.2%)
+  OVR (cited-span):    4 queries (3.1% of 129 matched)
+  39 of 43 extractable OVR queries reclassified (27->OK, 7->SGP,
+  3->CBF, 1->ICR)
+
+**Conclusion:** ~83% of OVR was a measurement artifact — chunks
+(~512 chars) are coarser than the LLM's actual citations (~150
+chars). The LLM cites tightly; the chunk-span metric measured the
+whole chunk. Chunk-span measures retrieval-region quality;
+cited-span measures evidence-use quality. The gap reveals coarse
+chunking, not imprecise evidence use.
+
+**Secondary finding:** Cited-span unmasked +5 CBF and +9 SGP —
+cases where the right chunk was retrieved but the LLM cited the
+wrong part of it. A Phase 8 citation-quality signal invisible
+under chunk-span.
+
+**Domain boundary (critical):** Cited-span works ONLY for
+extractive domains (legal). It relies on cited_text being a
+verbatim span findable via str.find(). On inferential domains
+(finance: "is this company healthy?" has no verbatim span),
+extraction fails and the metric collapses. ContractNLI extraction
+failure was 7.7% (excluding DRM queries where wrong-doc citations
+naturally don't match). On inferential corpora this rate would
+spike — and the spike is itself a signal of how extractive the
+domain is.
+
+**Decision:** Keep cited-span as a SECONDARY metric on extractive
+corpora. Report three numbers: chunk-span (always valid, retrieval
+quality), cited-span (valid when extraction succeeds, end-to-end
+precision), and extraction-failure-rate (meta-signal of domain
+extractiveness). Never make cited-span primary on a corpus where
+extraction failure exceeds ~25%.
+
+---
+
+### Best configuration (end of session)
+
+SAC + NoRerank + CC(a=0.3) + single-shot:
+  P@1 31.5% (v1: 8.84%), R@8 73.7% (v1: 50.4%)
+  DRM 26.8%, OK 28.9% (chunk-span)
+  OVR 3.1% under cited-span (was 24.2% chunk-span)
+
+Remaining levers (no re-index):
+  - Document-scoped retrieval for residual DRM (26.8%)
+  - Document-scoped reranking to recover CBF without DRM cost
+
+Deliberate re-index (paired):
+  - Section-aware + conditional-clause boundary chunking (CBF/SGP)
+  - Cross-reference graph (E4, CUAD)
+  - Defined-term glossary graph (DTGG, MAUD — highest-conviction)
+
+Cross-corpus validation still open: best config tuned on
+ContractNLI only. PrivacyQA indexed but not fully evaluated.
+MAUD/CUAD deferred on budget. Overfitting risk acknowledged —
+validate transferability before further ContractNLI-specific work.

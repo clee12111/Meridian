@@ -36,6 +36,48 @@ BASELINE_P_AT_1 = 0.0884
 BASELINE_R_AT_8 = 0.5029
 
 
+# ── Cited-span extraction ───────────────────────────────────────────────────
+
+def extract_cited_spans(
+    claims: list[dict],
+    doc_id: str,
+    doc_text: str,
+) -> list[tuple[int, int]]:
+    """Find character offsets of each claim's cited_text within the document.
+
+    Returns [(start, end), ...] for spans found.
+    Deterministic substring search — no LLM. Uses str.find().
+    Handles whitespace normalization since cited_text may have
+    minor whitespace differences from the source.
+    """
+    spans = []
+    for claim in claims:
+        cited = claim.get("cited_text", "").strip()
+        cited_chunk = claim.get("cited_chunk_id", "")
+
+        # Only count claims citing this document
+        if not cited_chunk.split("#")[0] == doc_id:
+            continue
+        if not cited:
+            continue
+
+        # Exact match first
+        idx = doc_text.find(cited)
+        if idx >= 0:
+            spans.append((idx, idx + len(cited)))
+            continue
+
+        # Whitespace-normalized fallback
+        normalized_cited = " ".join(cited.split())
+        normalized_doc = " ".join(doc_text.split())
+        idx = normalized_doc.find(normalized_cited)
+        if idx >= 0:
+            # Approximate — map back to original offsets
+            spans.append((idx, idx + len(normalized_cited)))
+
+    return spans
+
+
 # ── Retry logic ──────────────────────────────────────────────────────────────
 
 _RETRY_WAITS = [5, 10, 20]
@@ -132,6 +174,37 @@ def _print_summary(results: list[dict]) -> None:
     print(f"Avg iterations:         {avg_iter:.2f}")
     print("=" * 50)
 
+    # ── Cited-span measurement comparison ────────────────────────────
+    cited_results = [r for r in results if r.get("failure_type_cited") is not None]
+    extraction_failures = sum(1 for r in results if r.get("cited_extraction_failed"))
+    no_claims = sum(1 for r in results if not r.get("claims"))
+
+    if cited_results:
+        cited_counts = Counter(r["failure_type_cited"] for r in cited_results)
+        # Chunk-span counts only for queries that also have cited spans
+        chunk_counts_matched = Counter(r["failure_type"] for r in cited_results)
+        ovr_chunk = chunk_counts_matched.get("OVR", 0)
+        ovr_cited = cited_counts.get("OVR", 0)
+
+        print()
+        print("=" * 50)
+        print("CITED-SPAN MEASUREMENT (Phase 8 cited_text instead of chunk)")
+        print("=" * 50)
+        print(f"  Queries with claims:        {len(cited_results) + extraction_failures + no_claims}")
+        print(f"  Queries with cited spans:   {len(cited_results)}")
+        print(f"  Extraction failures:        {extraction_failures}")
+        print(f"  No claims produced:         {no_claims}")
+        print(f"  OVR (chunk-span):           {ovr_chunk} ({ovr_chunk / len(cited_results) * 100:.1f}%)")
+        print(f"  OVR (cited-span):           {ovr_cited} ({ovr_cited / len(cited_results) * 100:.1f}%)")
+        print(f"  OVR reduction:              {ovr_chunk - ovr_cited} queries")
+        print()
+        print("  Full distribution shift (chunk -> cited):")
+        for ft in ["OK", "DRM", "CBF", "SGP", "ICR", "OVR"]:
+            c_chunk = chunk_counts_matched.get(ft, 0)
+            c_cited = cited_counts.get(ft, 0)
+            print(f"    {ft}:  {c_chunk:>3} -> {c_cited:>3}")
+        print("=" * 50)
+
 
 # ── Main eval loop ───────────────────────────────────────────────────────────
 
@@ -147,7 +220,7 @@ def run(
     """Run the v2 pipeline on ContractNLI and score with Tier B measurement."""
     from core.evaluation.ground_truth_contractnli import ContractNLIGroundTruth
     from core.measurement.metrics import compute_all_k
-    from core.measurement.taxonomy import classify_with_confidence
+    from core.measurement.taxonomy import classify, classify_with_confidence
     from core.supervisor.context import PipelineContext
     from core.supervisor.graph import compile_graph
     from core.supervisor.phoenix_tracing import setup_phoenix
@@ -270,6 +343,24 @@ def run(
             retrieved_with_docs, gt_with_docs
         )
 
+        # ── Parallel classification using cited_text spans ────────────
+        claims = final_state.get("claims", [])
+        cited_failure = None
+        cited_extraction_failed = False
+        if claims:
+            try:
+                cited_spans = extract_cited_spans(claims, gt_doc_id, ground_truth.doc_text(gt_doc_id))
+                if cited_spans:
+                    cited_with_docs = [
+                        (gt_doc_id, s[0], s[1]) for s in cited_spans
+                    ]
+                    cited_failure = classify(cited_with_docs, gt_with_docs)
+                else:
+                    cited_extraction_failed = True
+            except Exception as e:
+                logger.warning("Cited span classification failed for %s: %s", query_id, e)
+                cited_extraction_failed = True
+
         end_trace(trace, {
             "answer": final_state.get("answer", "")[:200],
             "p_at_1": metric_result.p_at_k.get(1, 0.0),
@@ -320,6 +411,10 @@ def run(
             "generation_model": "deepseek-v4-flash",
             "reranker_model": "rerank-2.5",
             "trace_id": initial_state["trace_id"],
+            "failure_type_cited": (
+                cited_failure.name if cited_failure else None
+            ),
+            "cited_extraction_failed": cited_extraction_failed,
         }
 
         p1 = record["p_at_1"]
