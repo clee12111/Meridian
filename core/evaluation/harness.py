@@ -1,140 +1,83 @@
 """
-Eval harness: runs the 150-question eval set through the RAG pipeline.
+v2 Eval harness: runs ContractNLI benchmark through the Meridian pipeline.
 
-Usage (via scripts/run_eval.py):
-    python scripts/run_eval.py                         # full run
-    python scripts/run_eval.py --category conceptual   # single category
-    python scripts/run_eval.py --limit 5               # first N questions
-    python scripts/run_eval.py --output /tmp/out.jsonl # override output path
+Usage:
+    python scripts/run_eval.py                   # full 194-query run
+    python scripts/run_eval.py --limit 5         # first 5 queries
+    python scripts/run_eval.py --single-shot     # max_iterations=1
+    python scripts/run_eval.py --fresh           # wipe output, start over
 
-Output: one JSON record per line in data/eval_results.jsonl.
-precision_at_5 and faithfulness are null at write time — filled in manually.
+Output: one JSON record per line in data/eval_results_v2.jsonl.
+Each record contains P@k, R@k, failure_type, verification score,
+iteration count, and latency.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import logging
+import os
 import sys
 import time
+import uuid
 from pathlib import Path
 
-import anthropic
+logger = logging.getLogger(__name__)
 
-EVAL_SET_PATH    = Path("data/eval_set.jsonl")
-DEFAULT_OUT_PATH = Path("data/eval_results.jsonl")
+BENCHMARK_PATH   = Path("data/benchmarks/contractnli.json")
+CORPUS_DIR       = Path("data/corpus")
+DEFAULT_OUT_PATH = Path("data/eval_results_v2.jsonl")
 
-VALID_CATEGORIES = {
-    "conceptual",
-    "syntactic",
-    "cross_reference",
-    "edge_case",
-    "out_of_scope",
-}
-
-# Short alias → full category name
-_CATEGORY_ALIASES: dict[str, str] = {
-    "c1": "conceptual",
-    "c2": "syntactic",
-    "c3": "cross_reference",
-    "c4": "edge_case",
-    "c5": "out_of_scope",
-}
+# Locked baseline from v1 (7-run measured, 194 queries)
+BASELINE_P_AT_1 = 0.0884
+BASELINE_R_AT_8 = 0.5029
 
 
-def _resolve_category(raw: str) -> str:
-    """Accept full category name or short alias (c1–c5)."""
-    resolved = _CATEGORY_ALIASES.get(raw.lower(), raw.lower())
-    if resolved not in VALID_CATEGORIES:
-        raise ValueError(
-            f"Unknown category '{raw}'. Valid: {sorted(VALID_CATEGORIES)} or c1–c5."
-        )
-    return resolved
+# ── Retry logic ──────────────────────────────────────────────────────────────
+
+_RETRY_WAITS = [5, 10, 20]
 
 
+def _run_with_retry(fn):
+    """Call fn(), retrying up to 3 times on transient API errors.
 
-def _load_questions(
-    category: str | None,
-    limit: int | None,
-    ids: set[str] | None = None,
-) -> list[dict]:
-    questions = []
-    with EVAL_SET_PATH.open() as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            q = json.loads(line)
-            if ids and q["id"] not in ids:
-                continue
-            if category and q["category"] != category:
-                continue
-            questions.append(q)
-            if limit and len(questions) >= limit:
-                break
-    return questions
-
-
-def _print_summary(results: list[dict]) -> None:
-    from collections import defaultdict
-
-    cat_latencies: dict[str, list[float]] = defaultdict(list)
-    cat_costs:     dict[str, float]       = defaultdict(float)
-
-    for r in results:
-        cat_latencies[r["category"]].append(r["latency_ms"])
-        cat_costs[r["category"]] += r["cost_usd"]
-
-    total_cost = sum(cat_costs.values())
-
-    header = f"{'Category':<20} {'Count':>5}  {'Mean lat (ms)':>13}  {'Cost (USD)':>10}"
-    print("\n" + header)
-    print("-" * len(header))
-
-    for cat in sorted(cat_latencies):
-        lats  = cat_latencies[cat]
-        mean  = sum(lats) / len(lats)
-        cost  = cat_costs[cat]
-        print(f"{cat:<20} {len(lats):>5}  {mean:>13.0f}  {cost:>10.5f}")
-
-    print("-" * len(header))
-    all_lats = [r["latency_ms"] for r in results]
-    overall_mean = sum(all_lats) / len(all_lats) if all_lats else 0
-    print(f"{'TOTAL':<20} {len(results):>5}  {overall_mean:>13.0f}  {total_cost:>10.5f}")
-
-
-_529_WAITS = [5, 10, 20]  # seconds; fail loud after 3 retries (4th attempt)
-
-
-def _run_with_529_retry(run_query, question: str) -> dict:
+    Retries on exceptions whose class name contains RateLimit,
+    ServiceUnavailable, ServerError, Overloaded, or '529' in message.
     """
-    Call run_query(question), retrying up to 3 times on transient overload errors.
-    Handles Anthropic 529, OpenAI 529/503, and generic rate-limit exceptions.
-    Waits: 5s, 10s, 20s. Any other exception propagates immediately.
-    """
-    for attempt, wait in enumerate(_529_WAITS, start=1):
+    for attempt, wait in enumerate(_RETRY_WAITS, start=1):
         try:
-            return run_query(question)
-        except anthropic.APIStatusError as exc:
-            if exc.status_code != 529:
-                raise
-            print(f"  529 overloaded (anthropic) -- retry {attempt}/3 in {wait}s")
-            time.sleep(wait)
+            return fn()
         except Exception as exc:
-            # Retry on OpenAI RateLimitError / ServiceUnavailableError and
-            # google.genai ServerError (503) by checking the class name —
-            # avoids hard importing each SDK's error hierarchy.
             cls = type(exc).__name__
-            if cls not in ("RateLimitError", "ServiceUnavailableError", "ServerError"):
+            msg = str(exc)
+            retryable = any(
+                kw in cls for kw in
+                ("RateLimit", "ServiceUnavailable", "ServerError", "Overloaded")
+            ) or "529" in msg
+            if not retryable:
                 raise
-            print(f"  transient error ({cls}) -- retry {attempt}/3 in {wait}s")
+            print(f"  transient error ({cls}) — retry {attempt}/3 in {wait}s")
             time.sleep(wait)
     # Final attempt — let any exception propagate
-    return run_query(question)
+    return fn()
 
+
+# ── Benchmark loader ─────────────────────────────────────────────────────────
+
+def _load_benchmark(benchmark_path: Path) -> list[dict]:
+    """Load contractnli.json, return list of {query_id, query} dicts."""
+    data = json.loads(benchmark_path.read_text(encoding="utf-8"))
+    return [
+        {"query_id": t["query_id"], "query": t["query"]}
+        for t in data["tests"]
+    ]
+
+
+# ── Resume logic ─────────────────────────────────────────────────────────────
 
 def _load_completed_ids(output: Path) -> set[str]:
-    """Read already-completed question IDs from an existing output file."""
+    """Read already-completed query IDs from an existing output file."""
     if not output.exists():
         return set()
     completed: set[str] = set()
@@ -144,122 +87,287 @@ def _load_completed_ids(output: Path) -> set[str]:
             if not line:
                 continue
             try:
-                completed.add(json.loads(line)["id"])
+                completed.add(json.loads(line)["query_id"])
             except (json.JSONDecodeError, KeyError):
                 pass
     return completed
 
 
-def run(
-    category: str | None       = None,
-    limit:    int | None        = None,
-    output:   Path              = DEFAULT_OUT_PATH,
-    fresh:    bool              = False,
-    ids:      set[str] | None   = None,
-) -> None:
-    # Import here so module-level client init only happens when actually running
-    # TODO: replace with Meridian pipeline entry point when core/orchestration/ exists
-    from production_rag_forensics.orchestration.graph import run_query  # UNRESOLVED — see transplant flag
+# ── Summary printer ──────────────────────────────────────────────────────────
 
-    questions = _load_questions(category, limit, ids=ids)
+def _print_summary(results: list[dict]) -> None:
+    """Print v2 metrics summary with baseline comparison."""
+    from collections import Counter
+
+    n = len(results)
+    if n == 0:
+        print("No results to summarize.")
+        return
+
+    mean_p1 = sum(r["p_at_1"] for r in results) / n
+    mean_r8 = sum(r["r_at_8"] for r in results) / n
+    delta_p1 = (mean_p1 - BASELINE_P_AT_1) * 100
+    delta_r8 = (mean_r8 - BASELINE_R_AT_8) * 100
+
+    failure_counts = Counter(r["failure_type"] for r in results)
+    avg_vscore = sum(r["verification_score"] for r in results) / n
+    avg_iter = sum(r["iterations"] for r in results) / n
+
+    print()
+    print("=" * 50)
+    print(f"EVAL RESULTS — ContractNLI ({n} queries)")
+    print("=" * 50)
+    print(f"P@1:  {mean_p1:.4f}  (baseline: {BASELINE_P_AT_1:.4f}, delta: {delta_p1:+.2f} pp)")
+    print(f"R@8:  {mean_r8:.4f}  (baseline: {BASELINE_R_AT_8:.4f}, delta: {delta_r8:+.2f} pp)")
+    print()
+    print("Failure distribution:")
+    for ft in ["OK", "DRM", "CBF", "SGP", "ICR", "OVR"]:
+        count = failure_counts.get(ft, 0)
+        pct = count / n * 100 if n else 0
+        print(f"  {ft}:  {count:>3}  ({pct:.1f}%)")
+    print()
+    print(f"Avg verification score: {avg_vscore:.2f}")
+    print(f"Avg iterations:         {avg_iter:.2f}")
+    print("=" * 50)
+
+
+# ── Main eval loop ───────────────────────────────────────────────────────────
+
+def run(
+    limit: int | None = None,
+    output: Path = DEFAULT_OUT_PATH,
+    fresh: bool = False,
+    ids: set[str] | None = None,
+    max_iterations: int = 3,
+) -> None:
+    """Run the v2 pipeline on ContractNLI and score with Tier B measurement."""
+    from core.evaluation.ground_truth_contractnli import ContractNLIGroundTruth
+    from core.measurement.metrics import compute_all_k
+    from core.measurement.taxonomy import classify_with_confidence
+    from core.supervisor.context import PipelineContext
+    from core.supervisor.graph import compile_graph
+    from core.supervisor.tracing import start_trace, end_trace, flush
+
+    # ── Setup ─────────────────────────────────────────────────────────────
+    qdrant_url = os.environ.get("QDRANT_URL", "http://localhost:6333")
+    context = PipelineContext.build(
+        corpus_path=Path("data/corpus_contractnli.parquet"),
+        qdrant_url=qdrant_url,
+        collection_name="contractnli_baseline",
+        dataset_name="contractnli",
+        top_k=50,
+        qdrant_api_key=os.environ.get("QDRANT_API_KEY") or None,
+    )
+
+    compiled, saver = compile_graph(
+        db_path="data/eval_pipeline.sqlite",
+        context=context,
+    )
+
+    ground_truth = ContractNLIGroundTruth(
+        benchmark_path=BENCHMARK_PATH,
+        corpus_dir=CORPUS_DIR,
+    )
+
+    questions = _load_benchmark(BENCHMARK_PATH)
+
+    # Apply filters
+    if ids:
+        questions = [q for q in questions if q["query_id"] in ids]
+    if limit:
+        questions = questions[:limit]
+
     if not questions:
         print("No questions matched the filter.", file=sys.stderr)
         sys.exit(1)
 
+    # Resume logic
     output.parent.mkdir(parents=True, exist_ok=True)
-
-    # ── Resume logic ──────────────────────────────────────────────────────────
     if fresh and output.exists():
         output.unlink()
 
     completed_ids = _load_completed_ids(output)
-    if completed_ids:
-        print(f"Resuming -- {len(completed_ids)} questions already completed, skipping")
-    else:
-        print("Starting fresh run")
+    pending = [q for q in questions if q["query_id"] not in completed_ids]
 
-    pending = [q for q in questions if q["id"] not in completed_ids]
     if not pending:
-        print("All questions in this run already completed. Nothing to do.")
+        print("All questions already completed. Nothing to do.")
         return
 
+    total = len(pending)
+    print(f"Running {total} queries (max_iterations={max_iterations})")
+    if completed_ids:
+        print(f"  Resuming — {len(completed_ids)} already completed, skipping")
+
+    # ── Per-query loop ────────────────────────────────────────────────────
     results: list[dict] = []
 
     with output.open("a", encoding="utf-8") as out_f:
-        for q in pending:
+        for i, q in enumerate(pending):
+            query_id = q["query_id"]
+            question = q["query"]
             t0 = time.perf_counter()
-            result = _run_with_529_retry(run_query, q["question"])
+
+            trace_uuid = uuid.uuid4().hex
+
+            # Start Langfuse trace for this query
+            trace = start_trace(
+                context,
+                name=f"eval_{query_id}",
+                input={"query": question, "query_id": query_id},
+            )
+
+            initial_state = {
+                "raw_query": question,
+                "iteration": 1,
+                "max_iterations": max_iterations,
+                "loop_complete": False,
+                "trace_id": trace.trace_id if trace else trace_uuid,
+            }
+
+            thread_id = str(uuid.uuid4())
+
+            try:
+                final_state = _run_with_retry(
+                    lambda: compiled.invoke(
+                        initial_state,
+                        config={"configurable": {"thread_id": thread_id}},
+                    )
+                )
+            except Exception as exc:
+                logger.error("Query %s failed: %s", query_id, exc)
+                print(f"  [{i+1}/{total}] {query_id} FAILED: {exc}")
+                end_trace(trace, {"error": str(exc)})
+                continue
+
             latency_ms = round((time.perf_counter() - t0) * 1000)
 
-            cache_read = result["cache_read_tokens"]
-            cache_cre  = result["cache_creation_tokens"]
-            inp        = result["input_tokens"]
-            out_tok    = result["output_tokens"]
-            cost       = result["cost_usd"]   # computed per-provider in generation.py
+            # ── Measurement scoring ───────────────────────────────────────
+            reranked = final_state.get("reranked_result", {})
+            retrieved_spans = [tuple(s) for s in reranked.get("spans", [])]
+            retrieved_ids = reranked.get("ids", [])
 
-            chunks_out = [
-                {
-                    "source_file":   c["source_file"],
-                    "score":         round(c["score"], 4),
-                    "chunk_index":   i,
-                    "text":          c.get("text", ""),   # required for judge faithfulness eval
-                    **({"reranker_score": round(c["reranker_score"], 4)} if "reranker_score" in c else {}),
-                    **({"dense_score":    round(c["dense_score"],    4)} if "dense_score"    in c else {}),
-                }
-                for i, c in enumerate(result["chunks"])
+            gt_spans = ground_truth.get_spans(query_id)
+            gt_doc_id = ground_truth.get_doc_id(query_id)
+
+            metric_result = compute_all_k(retrieved_spans, gt_spans)
+
+            # classify expects [(doc_id, start, end), ...]
+            retrieved_with_docs = [
+                (cid.split("#")[0], s[0], s[1])
+                for cid, s in zip(retrieved_ids, retrieved_spans)
             ]
+            gt_with_docs = [(gt_doc_id, s[0], s[1]) for s in gt_spans]
+            classification = classify_with_confidence(
+                retrieved_with_docs, gt_with_docs
+            )
 
-            record: dict = {
-                "id":                    q["id"],
-                "category":              q["category"],
-                "question":              q["question"],
-                "answer":                result["answer"],
-                "chunks":                chunks_out,
-                "precision_at_5":        None,
-                "faithfulness":          None,
-                "latency_ms":            latency_ms,
-                "generation_provider":   result.get("generation_provider", "anthropic"),
-                "generation_model":      result.get("generation_model", ""),
-                "cache_creation_tokens": cache_cre,
-                "cache_read_tokens":     cache_read,
-                "input_tokens":          inp,
-                "output_tokens":         out_tok,
-                "cost_usd":              round(cost, 6),
-                "reranker_cost_usd":     round(result.get("reranker_cost_usd", 0.0), 6),
-                "reranked":              result.get("reranked", False),
+            # End Langfuse trace with measurement results
+            end_trace(trace, {
+                "answer": final_state.get("answer", "")[:200],
+                "p_at_1": metric_result.p_at_k.get(1, 0.0),
+                "r_at_8": metric_result.r_at_k.get(8, 0.0),
+                "failure_type": classification.failure_type.name,
+                "verification_score": final_state.get(
+                    "verification_result", {}
+                ).get("score", 0.0),
+                "iterations": final_state.get("iteration", 1),
+            })
+
+            # ── Build record ──────────────────────────────────────────────
+            record = {
+                "query_id": query_id,
+                "query": question,
+                "answer": final_state.get("answer", ""),
+                "claims": final_state.get("claims", []),
+                "chunks": [
+                    {
+                        "chunk_id": cid,
+                        "score": round(float(score), 4),
+                        "text": text,
+                    }
+                    for cid, score, text in zip(
+                        reranked.get("ids", []),
+                        reranked.get("scores", []),
+                        reranked.get("contents", []),
+                    )
+                ],
+                "p_at_1": metric_result.p_at_k.get(1, 0.0),
+                "p_at_4": metric_result.p_at_k.get(4, 0.0),
+                "r_at_8": metric_result.r_at_k.get(8, 0.0),
+                "failure_type": classification.failure_type.name,
+                "confidence": classification.confidence,
+                "ambiguous": classification.ambiguous,
+                "near_category": classification.near_category,
+                "boundary_distance": classification.boundary_distance,
+                "taxonomy_evidence": classification.evidence,
+                "verification_score": final_state.get(
+                    "verification_result", {}
+                ).get("score", 0.0),
+                "verification_details": final_state.get(
+                    "verification_result", {}
+                ).get("details", []),
+                "iterations": final_state.get("iteration", 1),
+                "max_iterations": max_iterations,
+                "latency_ms": latency_ms,
+                "generation_model": "deepseek-v4-flash",
+                "reranker_model": "rerank-2.5",
+                "trace_id": initial_state["trace_id"],
             }
 
             out_f.write(json.dumps(record) + "\n")
             out_f.flush()
             results.append(record)
 
-            print(f"{q['id']} [{q['category']}] -- done ({latency_ms}ms)")
+            p1 = record["p_at_1"]
+            r8 = record["r_at_8"]
+            ft = record["failure_type"]
+            conf = record["confidence"]
+            itr = record["iterations"]
+            vs = record["verification_score"]
+            print(
+                f"  [{i+1}/{total}] {query_id} "
+                f"P@1={p1:.2f} R@8={r8:.2f} fail={ft}({conf}) "
+                f"iter={itr} vscore={vs:.2f} ({latency_ms}ms)"
+            )
 
     _print_summary(results)
     total_in_file = len(completed_ids) + len(results)
-    print(f"\nResults written to {output} ({len(results)} new records, {total_in_file} total)")
+    print(f"\nResults written to {output} ({len(results)} new, {total_in_file} total)")
 
+    # Flush all pending Langfuse events before exit
+    flush(context)
+
+
+# ── CLI ──────────────────────────────────────────────────────────────────────
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="RAG eval harness")
-    p.add_argument("--category", default=None,
-                   help="Filter to one category (full name or c1-c5 alias)")
+    p = argparse.ArgumentParser(description="Meridian v2 eval harness")
     p.add_argument("--limit", type=int, default=None,
                    help="Run only the first N questions")
     p.add_argument("--output", type=Path, default=DEFAULT_OUT_PATH,
-                   help="Override output path (default: data/eval_results.jsonl)")
+                   help="Override output path")
     p.add_argument("--fresh", action="store_true", default=False,
-                   help="Force a clean run — truncate output file and run all questions")
+                   help="Wipe output file and start fresh")
     p.add_argument("--ids", default=None,
-                   help="Comma-separated question IDs to run (e.g. c1_13,c3_06)")
+                   help="Comma-separated query IDs (e.g. contractnli-0762,contractnli-0769)")
+    p.add_argument("--max-iterations", type=int, default=3,
+                   help="Max Phase 10 loop iterations (default: 3)")
+    p.add_argument("--single-shot", action="store_true", default=False,
+                   help="Set max_iterations=1 (no Phase 10 looping)")
     return p.parse_args(argv)
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
-    category = _resolve_category(args.category) if args.category else None
+    max_iter = 1 if args.single_shot else args.max_iterations
     ids = set(args.ids.split(",")) if args.ids else None
-    run(category=category, limit=args.limit, output=args.output, fresh=args.fresh, ids=ids)
+    run(
+        limit=args.limit,
+        output=args.output,
+        fresh=args.fresh,
+        ids=ids,
+        max_iterations=max_iter,
+    )
 
 
 if __name__ == "__main__":

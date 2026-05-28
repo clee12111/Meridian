@@ -31,6 +31,7 @@ class StructuredAnswer(BaseModel):
     )
     claims: list[Claim] = Field(
         min_length=1,
+        max_length=10,
         description="One Claim per atomic fact in the answer. "
                     "Every factual assertion must be cited. "
                     "Maximum 10 claims."

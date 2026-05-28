@@ -315,7 +315,9 @@ def synthesis(state: ExperimentState, context: PipelineContext) -> dict:
         "- cited_text must be copied verbatim from the cited chunk\n"
         "- One atomic fact per claim — do not bundle multiple facts\n"
         "- Do not invent information not present in the chunks\n"
-        "- If the answer cannot be found in the chunks, say so explicitly"
+        "- If the answer cannot be found in the chunks, say so explicitly\n"
+        "- Produce at most 10 claims. If the answer needs more, merge "
+        "closely related facts into single claims."
     )
 
     user_prompt = (
@@ -340,7 +342,7 @@ def synthesis(state: ExperimentState, context: PipelineContext) -> dict:
             model="deepseek-v4-flash",
             response_model=StructuredAnswer,
             max_retries=3,
-            max_tokens=1024,
+            max_tokens=4096,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
