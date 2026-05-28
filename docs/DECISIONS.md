@@ -295,3 +295,29 @@ ContractNLI, but 16.4pp R@8 gap between a=0.1 and a=0.5 on
 PrivacyQA. Dataset-level heterogeneity is real and measurable.
 
 **Precludes:** Using a=0.5 (equal weight) as a universal default.
+
+---
+
+### 2026-05-28 — Finding 11: Loop adds marginal value on current best config, single-shot preferred
+
+**Comparison (194 queries, SAC+NoRerank+CC(0.3)):**
+  Single-shot:  P@1=31.5%, R@8=73.7%, SGP=14.4%, DRM=26.8%
+  With loop:    P@1=33.3%, R@8=75.5%, SGP=10.3%, DRM=28.9%
+  Loop cost:    +68% compute (1.00->1.68 avg iterations)
+  Net gain:     +1.8pp on P@1 and R@8
+
+**What the loop is doing:**
+Primarily recovers SGP failures (+4.1pp) -- loop finds missing
+spans on multi-span queries. But worsens DRM (-2.1pp) -- refined
+queries sometimes retrieve from wrong documents. Single-shot
+captures ~96% of loop performance at ~60% of the cost.
+
+**Recommended fix for loop design:**
+Only trigger loop for SGP/MISSING_EVIDENCE failures.
+Do not loop on DRM failures -- document-scoped retrieval not
+query refinement is the fix. Implement failure-type-aware
+loop trigger per the typed failure classification pattern.
+
+**Precludes:**
+Using the loop unconditionally on all low-scoring queries.
+Assuming more iterations always improve results.
