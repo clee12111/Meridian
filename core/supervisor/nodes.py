@@ -29,14 +29,30 @@ logger = logging.getLogger(__name__)
 
 
 def _get_trace(state: ExperimentState, context: PipelineContext):
-    """Get Langfuse trace from context — returns None if unavailable."""
+    """Get a Langfuse trace proxy for creating child spans.
+
+    Returns the langfuse_client with trace_context set so
+    start_observation() creates children under the correct trace.
+    Returns None if tracing is unavailable.
+    """
     if not context.langfuse_client:
         return None
     trace_id = state.get("trace_id")
     if not trace_id or trace_id == "local":
         return None
     try:
-        return context.langfuse_client.trace(id=trace_id)
+        from langfuse.types import TraceContext
+
+        class _TraceProxy:
+            """Thin proxy: routes start_observation to the client with trace_context."""
+            def __init__(self, client, trace_id):
+                self._client = client
+                self._tc = TraceContext(trace_id=trace_id)
+
+            def start_observation(self, **kwargs):
+                return self._client.start_observation(trace_context=self._tc, **kwargs)
+
+        return _TraceProxy(context.langfuse_client, trace_id)
     except Exception:
         return None
 
@@ -67,6 +83,8 @@ def _deserialize_result(d: dict) -> RetrievalResult:
 
 def query_understanding(state: ExperimentState, context: PipelineContext) -> dict:
     """Phase 3 — DeepSeek-flash query rewriting for retrieval."""
+    trace = _get_trace(state, context)
+    span = start_span(trace, "phase_3_query_understanding", {"raw_query": state.get("raw_query", "")})
     raw = state.get("raw_query", "")
     if not raw:
         logger.warning("Phase 3 (query_understanding): empty raw_query, skipping")
@@ -110,38 +128,49 @@ def query_understanding(state: ExperimentState, context: PipelineContext) -> dic
             rewritten = raw
 
         logger.info("Phase 3: '%s' -> '%s'", raw, rewritten)
-        return {"rewritten_query": rewritten}
+        result = {"rewritten_query": rewritten}
+        end_span(span, result)
+        return result
 
     except Exception as exc:
         logger.warning("Phase 3 (query_understanding): rewrite failed (%s), passthrough", exc)
-        return {"rewritten_query": raw}
+        result = {"rewritten_query": raw}
+        end_span(span, result)
+        return result
 
 
 def retrieval(state: ExperimentState, context: PipelineContext) -> dict:
     """Phase 4 — call dense + sparse retrieval channels."""
+    trace = _get_trace(state, context)
     query = state.get("rewritten_query") or state.get("raw_query", "")
     ds = context.dataset_name
+    span = start_span(trace, "phase_4_retrieval", {"query": query, "dataset": ds})
 
     logger.info("Phase 4 (retrieval): dense + sparse on dataset=%r", ds)
     dense_result = context.qdrant_retriever.retrieve(query, dataset_name=ds)
     sparse_result = context.bm25_retriever.retrieve(query, dataset_name=ds)
 
-    return {
+    result = {
         "retrieval_bundle": {
             "dense": _serialize_result(dense_result),
             "sparse": _serialize_result(sparse_result),
         },
     }
+    end_span(span, {"dense_count": len(dense_result.ids), "sparse_count": len(sparse_result.ids)})
+    return result
 
 
 def fusion(state: ExperimentState, context: PipelineContext) -> dict:
     """Phase 5 — RRF fusion of dense + sparse results."""
+    trace = _get_trace(state, context)
+    span = start_span(trace, "phase_5_fusion", {})
     bundle = state.get("retrieval_bundle", {})
     dense_d = bundle.get("dense")
     sparse_d = bundle.get("sparse")
 
     if not dense_d or not sparse_d:
         logger.warning("Phase 5 (fusion): missing retrieval bundle, skipping")
+        end_span(span, {"skipped": True})
         return {}
 
     dense_rr = _deserialize_result(dense_d)
@@ -149,11 +178,14 @@ def fusion(state: ExperimentState, context: PipelineContext) -> dict:
 
     fused = rrf(sparse_rr, dense_rr, top_n=50)
     logger.info("Phase 5 (fusion): RRF produced %d results", len(fused.ids))
-    return {"fused_result": _serialize_result(fused)}
+    result = {"fused_result": _serialize_result(fused)}
+    end_span(span, {"fused_count": len(fused.ids)})
+    return result
 
 
 def reranking(state: ExperimentState, context: PipelineContext) -> dict:
     """Phase 6 — Voyage rerank-2.5 over all fused candidates."""
+    trace = _get_trace(state, context)
     fused = state.get("fused_result")
     if not fused:
         logger.warning("Phase 6 (reranking): no fused_result, skipping")
@@ -166,9 +198,11 @@ def reranking(state: ExperimentState, context: PipelineContext) -> dict:
     scores = fused.get("scores", [])
     spans = fused.get("spans", [])
     n_in = len(contents)
+    span = start_span(trace, "phase_6_reranking", {"n_candidates": n_in})
 
     if not contents:
         logger.warning("Phase 6 (reranking): fused_result empty, skipping")
+        end_span(span, {"skipped": True})
         return {"reranked_result": fused}
 
     try:
@@ -202,7 +236,7 @@ def reranking(state: ExperimentState, context: PipelineContext) -> dict:
             n_in, n_out, top_score,
         )
 
-        return {
+        result = {
             "reranked_result": {
                 "contents": reranked_contents,
                 "ids": reranked_ids,
@@ -210,14 +244,15 @@ def reranking(state: ExperimentState, context: PipelineContext) -> dict:
                 "spans": reranked_spans,
             },
         }
+        end_span(span, {"n_in": n_in, "n_out": n_out, "top_score": top_score})
+        return result
 
     except Exception as exc:
         logger.warning(
             "Phase 6 (reranking): reranker failed (%s), falling back to fused top 8",
             exc,
         )
-        # Graceful degradation: pass fused top 8 through unchanged
-        return {
+        result = {
             "reranked_result": {
                 "contents": contents[:8],
                 "ids": ids[:8],
@@ -225,13 +260,18 @@ def reranking(state: ExperimentState, context: PipelineContext) -> dict:
                 "spans": spans[:8],
             },
         }
+        end_span(span, {"fallback": True, "error": str(exc)})
+        return result
 
 
 def context_construction(state: ExperimentState, context: PipelineContext) -> dict:
     """Phase 7 — take top 8 chunks from reranked result."""
+    trace = _get_trace(state, context)
+    span = start_span(trace, "phase_7_context_construction", {})
     reranked = state.get("reranked_result")
     if not reranked:
         logger.warning("Phase 7 (context_construction): no reranked_result, skipping")
+        end_span(span, {"skipped": True})
         return {}
 
     top_n = 8
@@ -239,14 +279,15 @@ def context_construction(state: ExperimentState, context: PipelineContext) -> di
     ids = reranked.get("ids", [])[:top_n]
 
     logger.info("Phase 7 (context_construction): %d chunks selected", len(contents))
-    return {
-        "context_chunks": contents,
-        "context_ids": ids,
-    }
+    result = {"context_chunks": contents, "context_ids": ids}
+    end_span(span, {"n_chunks": len(contents), "chunk_ids": ids})
+    return result
 
 
 def synthesis(state: ExperimentState, context: PipelineContext) -> dict:
     """Phase 8 — structured DeepSeek call with claim-citation pairs."""
+    trace = _get_trace(state, context)
+    span = start_span(trace, "phase_8_synthesis", {"query": state.get("rewritten_query") or state.get("raw_query", "")})
     query = state.get("rewritten_query") or state.get("raw_query", "")
     chunks = state.get("context_chunks", [])
     chunk_ids = state.get("context_ids", [])
@@ -321,14 +362,18 @@ def synthesis(state: ExperimentState, context: PipelineContext) -> dict:
             len(response.claims), n_valid,
         )
 
-        return {
+        result = {
             "answer": response.answer,
             "claims": [c.model_dump() for c in response.claims],
         }
+        end_span(span, {"n_claims": len(response.claims), "n_valid": n_valid})
+        return result
 
     except Exception as exc:
         logger.error("Phase 8 (synthesis): structured call failed: %s", exc)
-        return {"answer": "[Phase 8 failed]", "claims": []}
+        result = {"answer": "[Phase 8 failed]", "claims": []}
+        end_span(span, {"error": str(exc)})
+        return result
 
 
 _STOPWORDS = frozenset({
@@ -389,6 +434,8 @@ def verification(state: ExperimentState, context: PipelineContext) -> dict:
     NOTE: cited_chunk_id is singular now. When NLI model lands in
     Stage 3, this becomes cited_chunk_ids (list) for multi-chunk support.
     """
+    trace = _get_trace(state, context)
+    span = start_span(trace, "phase_9_verification", {"n_claims": len(state.get("claims", []))})
     claims = state.get("claims", [])
     context_chunks = state.get("context_chunks", [])
     context_ids = state.get("context_ids", [])
@@ -516,7 +563,7 @@ def verification(state: ExperimentState, context: PipelineContext) -> dict:
         entailed_count, total, contradicted_count, baseless_count, score, has_contradiction,
     )
 
-    return {
+    result = {
         "verification_result": {
             "entailed": entailed_count,
             "contradicted": contradicted_count,
@@ -527,6 +574,8 @@ def verification(state: ExperimentState, context: PipelineContext) -> dict:
             "details": details,
         },
     }
+    end_span(span, {"entailed": entailed_count, "contradicted": contradicted_count, "baseless": baseless_count, "score": score})
+    return result
 
 
 def agentic_loop(state: ExperimentState, context: PipelineContext) -> dict:
@@ -539,12 +588,14 @@ def agentic_loop(state: ExperimentState, context: PipelineContext) -> dict:
     This is the INNER per-query loop only — it answers ONE question by
     retrieving multiple times. It does NOT decide what to test tomorrow.
     """
+    trace = _get_trace(state, context)
     verification_result = state.get("verification_result", {})
     score = verification_result.get("score", 0.0)
     iteration = state.get("iteration", 1)
     max_iterations = state.get("max_iterations", 3)
     raw_query = state.get("raw_query", "")
     answer = state.get("answer", "")
+    span = start_span(trace, "phase_10_agentic_loop", {"iteration": iteration, "score": score})
 
     # ── Stopping conditions ───────────────────────────────────────────────
     if score >= 0.75:
@@ -553,6 +604,7 @@ def agentic_loop(state: ExperimentState, context: PipelineContext) -> dict:
             "Phase 10: stopping — score=%.2f, iteration=%d/%d, reason=%s",
             score, iteration, max_iterations, reason,
         )
+        end_span(span, {"loop_complete": True, "reason": reason, "iteration": iteration, "score": score})
         return {"loop_complete": True}
 
     if iteration >= max_iterations:
@@ -640,7 +692,7 @@ def agentic_loop(state: ExperimentState, context: PipelineContext) -> dict:
     )
 
     # ── Clear stale state and loop back to retrieval ──────────────────────
-    return {
+    result = {
         "rewritten_query": refined_query,
         "iteration": iteration + 1,
         "loop_complete": False,
@@ -652,3 +704,5 @@ def agentic_loop(state: ExperimentState, context: PipelineContext) -> dict:
         "claims": [],
         "verification_result": {},
     }
+    end_span(span, {"loop_complete": False, "iteration": iteration, "score": score, "refined_query": refined_query})
+    return result

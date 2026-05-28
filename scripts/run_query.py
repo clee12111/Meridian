@@ -22,6 +22,7 @@ logging.basicConfig(
 
 from core.supervisor.context import PipelineContext
 from core.supervisor.graph import compile_graph
+from core.supervisor.tracing import start_trace, end_trace, flush
 
 
 def main() -> None:
@@ -48,15 +49,29 @@ def main() -> None:
     query = "Does the contract include a non-compete clause?"
     print(f"\nQuery: {query}\n", flush=True)
 
+    # Start Langfuse trace
+    trace = start_trace(context, name="pipeline_run", input={"query": query, "dataset": "contractnli"})
+    trace_id = trace.trace_id if trace else "local"
+    print(f"  trace_id: {trace_id}", flush=True)
+
     initial_state = {
         "raw_query": query,
         "iteration": 1,
         "max_iterations": 3,
         "loop_complete": False,
+        "trace_id": trace_id,
     }
 
     config = {"configurable": {"thread_id": "test-run-1"}}
     result = compiled.invoke(initial_state, config=config)
+
+    # End trace
+    end_trace(trace, {
+        "answer": result.get("answer", "")[:200],
+        "score": result.get("verification_result", {}).get("score", 0.0),
+        "iterations": result.get("iteration", 1),
+    })
+    flush(context)
 
     # ── Print results ─────────────────────────────────────────────────────
     print("\n" + "=" * 70)
