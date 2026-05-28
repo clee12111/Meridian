@@ -86,3 +86,47 @@ run `_per_span_coverage` separately per document, then aggregate the
 per-span verdicts.
 
 Discovered: measurement audit 2025-05-25, test_multi_doc_char_offset_collision.
+
+---
+
+## Fusion: RRF, CC, and weighted RRF
+
+Three fusion functions are available (`core/retrieval/fusion.py`):
+
+- **RRF** (`rrf_fuse`) — reciprocal rank fusion (k=60). Rank-based,
+  discards score magnitude. Production-robust default for uncalibrated
+  scores across heterogeneous systems.
+
+- **CC** (`cc_fuse`) — convex combination: `α·norm(BM25) + (1-α)·norm(dense)`,
+  min-max normalized. Preserves score magnitude — a BM25 gap of 0.95 vs 0.55
+  survives into the final ranking. Largest single improvement in the campaign
+  (+24.5pp P@1 over RRF). Best for structured benchmark corpora where scores
+  are calibrated. Per-dataset α required: ContractNLI α=0.3, PrivacyQA α=0.1.
+
+- **Weighted RRF** (`weighted_rrf_fuse`) — rank-based with per-channel weights.
+  Strictly less expressive than CC (Bruch et al.): any wRRF config has a
+  rank-equivalent or better CC config.
+
+Selection: set `MERIDIAN_CC_ALPHA` or `MERIDIAN_WRRF_SPARSE` env vars, or
+pass `--cc-alpha` / `--wrrf-sparse` CLI flags. If neither is set, RRF is used.
+
+---
+
+## Cited-span measurement (secondary)
+
+The harness runs two parallel classifications per query:
+
+1. **Chunk-span** (primary) — uses full chunk boundaries from the parquet
+   `start_end_idx`. Always valid. Measures retrieval-region quality.
+
+2. **Cited-span** (secondary) — uses Phase 8's `cited_text` field, located
+   in the source document via `extract_cited_spans()` (deterministic substring
+   search, no LLM). Measures end-to-end evidence-use precision.
+
+~83% of OVR was a measurement artifact of chunk boundaries (Finding 19).
+Cited-span unmasked +5 CBF and +9 SGP invisible under chunk-span.
+
+**Domain boundary:** cited-span works only on extractive corpora where
+`cited_text` is verbatim-findable via `str.find()`. Extraction failure was
+7.7% (non-DRM) on ContractNLI. Never make cited-span primary where
+extraction failure exceeds ~25%.

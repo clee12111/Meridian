@@ -47,7 +47,7 @@ retrieving multiple times. It does NOT decide what to test tomorrow.
 
 ### The measurement layer (two tiers)
 
-Deterministic. No LLM judges in scoring. Ever.
+Deterministic. No LLM judges in the deterministic span-overlap layer.
 
 **Tier A — corpus-agnostic (work on any corpus):**
 - Robustness — output stability under input perturbation
@@ -91,8 +91,12 @@ Measurement never depends on the agent. Agent never bypasses measurement.
 
 ## Hard rules (never violate)
 
-1. **No LLM judges in scoring.** Measurement is deterministic. The agent
-   uses LLMs (rewriter, synthesizer) — those are PART of what's measured.
+1. **No LLM judges in the deterministic measurement layer.** The span-overlap
+   taxonomy (Tier B) and corpus-agnostic metrics (Tier A) are the trust
+   anchor — deterministic, no LLM calls. Answer-correctness evaluation
+   (scripts/judge_answers.py) is a SEPARATE, clearly-labeled metric that
+   uses an LLM judge. The two are reported separately and never contaminate
+   each other. (Finding 20 established this boundary.)
 2. **Per-span scoring, not merged-character-set.** Finding 3 fix; do not regress.
 3. **Sub-floor deltas are noise.** R@8 has 0.50pp variance floor (Voyage
    embedding nondeterminism). Never narrate sub-floor changes as improvements.
@@ -103,6 +107,19 @@ Measurement never depends on the agent. Agent never bypasses measurement.
    `taxonomy.py` is latent on current data; must fix before MultiHop.
 8. **Finding 2 — top_k is not a DRM lever.** DRM is discrimination-bound;
    real DRM levers are query expansion, BM25/dense ratio, hybrid weighting.
+9. **Reranker OFF on topically-homogeneous corpora** without document-scoping.
+   Cross-encoder reranking by semantic relevance is blind to document identity;
+   produces ~79% DRM regardless of candidate quality. Three evidence lines:
+   aggregate, controlled, mechanistic (Phoenix traces). (Findings 13, 21.)
+10. **CC fusion over RRF on structured benchmark corpora.** Per-dataset α:
+    ContractNLI α=0.3, PrivacyQA α=0.1. RRF remains the production-robust
+    default for uncalibrated heterogeneous systems. (Findings 15, 16.)
+11. **Cited-span is a secondary metric**, valid only on extractive corpora
+    (where cited_text is verbatim-findable). Never make it primary where
+    extraction failure exceeds ~25%. (Finding 19.)
+12. **Single-shot preferred.** Loop adds +1.8pp at +68% compute. Use
+    single-shot as default; loop only when SGP recovery justifies cost.
+    (Finding 18.)
 
 ---
 
@@ -158,58 +175,86 @@ Two failure modes to actively counter:
 
 ## Current view (update when focus shifts)
 
-**Phase:** v2 — Stage 2 complete. Full 10-phase pipeline running
-end-to-end on LegalBench-RAG (ContractNLI corpus).
+**Phase:** v2 — Stage 2 retrieval optimization complete. Full
+10-phase pipeline operational, validated end-to-end with answer
+correctness judge.
 
-**What was built in Stage 2:**
-- Phase 3: DeepSeek-flash query rewriting
-- Phase 4: Qdrant dense + BM25 sparse retrieval (top_k=50 each)
-- Phase 5: RRF fusion (top_n=50)
-- Phase 6: Voyage rerank-2.5 (50→8 candidates)
-- Phase 7: Context construction (top 8 chunks)
-- Phase 8: DeepSeek-flash structured synthesis
-  (instructor + Pydantic claim-citation pairs)
-- Phase 9: Three-way deterministic verification
-  (ENTAILED / CONTRADICTED / BASELESS)
-- Phase 10: Score-gated agentic loop
-  (threshold=0.75, max_iterations=3, loops back to Phase 4)
+**Best config (SAC + NoRerank + CC(α=0.3) + single-shot):**
+  P@1 31.5% (v1: 8.84%), R@8 73.7% (v1: 50.4%), DRM 26.8%
+  Answer correctness: 45.4% CORRECT (vs 14.9% baseline)
+  OVR 3.1% under cited-span (was 24.2% chunk-span)
+
+**What was built / validated:**
+- Full 10-phase pipeline running end-to-end
+- Parallel eval harness (12 workers, ~7min/194 queries)
+- SAC indexing (summary-augmented chunks, document identity in
+  embeddings) — scripts/build_sac_index.py
+- CC fusion (convex combination, per-dataset α) replacing RRF
+- Cited-span measurement (Phase 8 cited_text → taxonomy)
+- End-to-end answer correctness judge (scripts/judge_answers.py)
+- Phoenix observability (localhost:6006)
+- Collections: contractnli_baseline, contractnli_sac (3797 each),
+  privacyqa_baseline (620)
 
 **Chunking baseline (Phases 1-2):**
-Fixed-size 512 tokens, 128 overlap. Pre-indexed as
-contractnli_baseline in Qdrant. RagForensics section-aware
-chunker transplanted to core/ingestion/chunker.py but not yet
-wired. Switch deferred until CBF failure rates from eval harness
-justify a deliberate re-index. See docs/DECISIONS.md.
+Fixed-size 512 tokens, 128 overlap. Section-aware chunker
+transplanted but not wired. Switch deferred until CBF failure
+rates justify a re-index. See docs/DECISIONS.md.
 
-**Resume swap conditions (from CLAUDE.md positioning statement):**
+**Resume swap conditions:**
 1. Agent runs all 10 phases on LegalBench  ✓ COMPLETE
 2. Tier A measurement on non-annotated corpus  — not started
-3. Phase 10 measurably beats single-shot  — not measured yet
+3. Phase 10 measurably beats single-shot  — measured: +1.8pp at
+   +68% compute (Finding 18). Marginal. Single-shot preferred.
 
-**Stage 3 — next (in order):**
-1. Wire eval harness — connect harness.py to v2 pipeline entry
-   point, replacing unresolved run_query import from RagForensics
-2. Baseline comparison — run max_iterations=1 (single-shot) vs
-   max_iterations=3 (agentic) on ContractNLI query set, compare
-   P@1 and R@8 against locked baseline (8.84% / 50.29%)
-3. Tier A measurement — port FiQA or NFCorpus testbed, run
-   corpus-agnostic metrics (robustness, drift, economic, systems)
-4. NLI model for Phase 9 — DeBERTa-MNLI local model, fixes
-   CONTRADICTED false positive rate on legal negation patterns
-5. Section-aware chunker — swap when CBF is dominant failure type,
-   re-index with voyage-law-2 simultaneously (one deliberate pass)
-6. Phase 3 query decomposition — builds on rewriting pattern,
-   directly attacks SGP failures (43% of queries are multi-span)
+**Next (in priority order):**
+1. Document-scoped retrieval — attack residual 26.8% DRM.
+   Entity extraction → filter to candidate docs → retrieve within.
+   Largest remaining lever (42 DRM queries = wrong answer).
+2. Phase 8 synthesis fix — 12 OK+INCORRECT queries have right
+   evidence but wrong conclusion. Prompt/model issue, not retrieval.
+3. Cross-corpus validation — PrivacyQA full run (α=0.1), then
+   MAUD/CUAD when budget allows (~98M + ~49M Voyage tokens).
+4. Tier A measurement — port robustness/drift/economic metrics
+   to run on current best config.
+5. NLI model for Phase 9 — DeBERTa-MNLI, fixes CONTRADICTED
+   false positive rate on legal negation patterns.
+6. Section-aware chunker — swap when CBF is dominant failure type,
+   re-index with voyage-law-2 simultaneously.
 
 **Known issues / open flags:**
 - Phase 9 CONTRADICTED: false positive rate on legal negation
-  ("shall not") — conservative by design, NLI model fixes in Stage 3
-- harness.py line 161: unresolved run_query import from RagForensics,
-  blocks batch eval until Stage 3 wiring pass
-- state.py fields: iteration/max_iterations not in initial state
-  schema — set in run_query.py directly, acceptable for now
-- graph.py: loop-back path tested structurally but not yet exercised
-  on a real query that scores below 0.75
+  ("shall not") — conservative by design, NLI model fix deferred
+- 12 OK+INCORRECT synthesis failures (Finding 20) — Phase 8
+  answers NO despite having correct evidence
+- Cited-span extraction fails 7.7% (non-DRM) — LLM paraphrases
+  instead of verbatim quoting; tolerable on extractive corpora
+- ContractNLI is affirmative-only (no negative cases) — answer
+  correctness does not test false-positive rate
+
+**Env flags (for A/B experiments):**
+  MERIDIAN_NO_REWRITE    — disable Phase 3 query rewriting
+  MERIDIAN_NO_RERANK     — disable Phase 6 reranking
+  MERIDIAN_CC_ALPHA      — CC fusion alpha (0.0-1.0); if unset, uses RRF
+  MERIDIAN_WRRF_SPARSE   — weighted RRF sparse weight
+  MERIDIAN_TOP_K         — override retriever top_k
+  MERIDIAN_FUSION_TOP_N  — override fusion top_n
+  PHOENIX_ENABLED        — enable Phoenix tracing (localhost:6006)
+
+**CLI flags (scripts/run_eval.py):**
+  --collection NAME      — Qdrant collection (default: contractnli_baseline)
+  --no-rerank            — disable reranker
+  --no-rewrite           — disable query rewriter
+  --single-shot          — max_iterations=1
+  --cc-alpha FLOAT       — CC fusion alpha
+  --wrrf-sparse FLOAT    — weighted RRF sparse weight
+  --top-k INT            — override retriever top_k
+  --fusion-top-n INT     — override fusion top_n
+  --workers INT          — parallel workers (max 12)
+  --limit INT            — run only first N queries
+  --ids ID,ID,...        — run specific query IDs
+  --fresh                — wipe output, start over
+  --output PATH          — override output file
 
 ---
 
