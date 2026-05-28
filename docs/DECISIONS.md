@@ -590,3 +590,65 @@ Cross-corpus validation still open: best config tuned on
 ContractNLI only. PrivacyQA indexed but not fully evaluated.
 MAUD/CUAD deferred on budget. Overfitting risk acknowledged —
 validate transferability before further ContractNLI-specific work.
+
+---
+
+### Finding 20 — End-to-end answer correctness validates the campaign; synthesis failures now isolated
+
+**Method:** LLM-judged answer correctness (DeepSeek-flash judge,
+separate eval step, NOT in the deterministic measurement layer).
+Judged the saved answers from four configs against the implicit
+ground truth (ContractNLI is affirmative-only — correct answer
+is always YES, the queried provision exists).
+
+**Results — answer correctness tracks retrieval:**
+  Config                  OK%     R@8     CORRECT%
+  baseline                10.8%   50.5%   14.9%
+  SAC (rerank ON)         13.9%   51.4%   19.1%
+  SAC+NoRerank (RRF)      16.0%   56.8%   29.4%
+  SAC+NoRerank+CC(0.3)    28.9%   73.7%   45.4%
+
+CORRECT% tripled (14.9%->45.4%), closely tracking retrieval gains.
+The retrieval optimization translated to genuinely better answers —
+not a metric artifact.
+
+**Correctness by retrieval failure type (best config):**
+  DRM (52):  0% correct — wrong document = wrong answer, zero
+             exceptions across 776 judgments. DRM is an accurate
+             end-to-end failure predictor, not pessimistic.
+  OK  (56):  70% correct (39/56) — 12 had perfect retrieval but
+             WRONG answer. Pure Phase 8 synthesis failures.
+  OVR (50):  54% correct — over-retrieval rarely prevents correct
+             answers (confirms OVR is mostly chunk-boundary artifact).
+  SGP (28):  71% correct — partial span coverage still often correct.
+
+**The newly isolated problem — synthesis failures:**
+12 OK+INCORRECT queries had the right document, right chunk, right
+spans, but Phase 8 reached the wrong conclusion (answered NO or
+"cannot determine" when the cited text supported YES). Examples:
+0452, 0851, 0958. These need a Phase 8 prompt/model fix, NOT
+retrieval work. Invisible until answer correctness was measured.
+
+**Failure decomposition (best config, 194 queries):**
+  ~88 CORRECT (45.4%)
+  ~85 INCORRECT: 42 DRM (retrieval), 12 OK+INCORRECT (synthesis),
+                 ~31 other failure types
+  ~12 PARTIAL, ~9 judge parse errors (4.6% noise floor)
+
+**Limitation:** ContractNLI is affirmative-only. This measures
+correctness on provisions that EXIST. It does not test false-
+positive rate (correctly saying NO when a provision is absent) —
+the benchmark has no negative cases. Real deployment correctness
+would differ.
+
+**Decision on LLM judges:** The "no LLM judges" hard rule applies
+to the deterministic span-overlap measurement layer (the trust
+anchor), NOT to answer-correctness evaluation. Answer correctness
+legitimately requires a judge and lives in a separate, clearly-
+labeled eval step. The span taxonomy stays deterministic; the
+correctness metric is LLM-judged and labeled as such. They are
+reported separately and never contaminate each other.
+
+**Next levers, now cleanly separated:**
+  - Retrieval: document-scoping for the 42 DRM queries
+  - Synthesis: Phase 8 prompt/model fix for the 12 OK+INCORRECT
