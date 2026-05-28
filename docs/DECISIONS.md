@@ -204,3 +204,42 @@ RRF fusion and reranking.
 **Precludes:** Comparing V1 and V2 DRM rates as equivalent 
 measurements. V1 DRM is a recall metric; V2 DRM is a precision 
 metric. They measure different things.
+
+---
+
+### 2026-05-28 — Finding 8 (v2): SAC + reranker-OFF is additive, best configuration found
+
+**Results (194 queries, ContractNLI):**
+  SAC + reranker OFF:  P@1=18.5%, R@8=56.8%, DRM=48.5%, OK=16.0%
+  Baseline (urlfix):   P@1=12.2%, R@8=50.5%, DRM=79.9%, OK=10.8%
+  Delta:               P@1+6.3pp, R@8+6.3pp, DRM-31.4pp, OK+5.2pp
+
+**What this proves:**
+SAC and reranker-OFF are genuinely additive. SAC improves dense
+channel discrimination (~10pp DRM reduction) by baking document
+identity into chunk embeddings. Removing the reranker preserves
+that improvement (~10pp more) by preventing semantic relevance
+scoring from re-promoting topically-identical wrong-document chunks.
+
+**The confirmed finding:**
+On a topically-homogeneous legal corpus (95 NDAs), cross-encoder
+reranking by semantic relevance worsens document discrimination
+because topically-similar wrong-document chunks outscore
+right-document chunks on clause-level semantic similarity. SAC
+partially mitigates this at the embedding level but the reranker
+reverses most of the gain. Optimal configuration omits the reranker.
+
+**Failure modes now visible (unmasked by DRM drop):**
+CBF: 0→13 (6.7%), SGP: 7→23 (11.9%), OVR: 6→23 (11.9%)
+These were hidden behind DRM in prior runs. Now the targets.
+
+**Next experiments in priority order:**
+1. CC fusion (RRF → convex combination) on SAC+NoRerank config
+2. Document-scoped reranking (entity extract → filter → rerank)
+   to recover CBF/OVR quality without reintroducing DRM
+3. Section-aware + conditional-clause chunking re-index to
+   attack CBF and SGP directly
+
+**Precludes:**
+Using the reranker without document-scoping on topically-
+homogeneous corpora. Treating reranker as universally beneficial.
