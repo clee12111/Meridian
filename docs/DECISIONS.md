@@ -652,3 +652,51 @@ reported separately and never contaminate each other.
 **Next levers, now cleanly separated:**
   - Retrieval: document-scoping for the 42 DRM queries
   - Synthesis: Phase 8 prompt/model fix for the 12 OK+INCORRECT
+
+---
+
+### Finding 21 — Reranker harm is robust to candidate quality (Finding 9 confirmed with Phoenix mechanism)
+
+**Experiment:** SAC + CC(0.3) + reranker ON — the one untested
+three-way config. Tests whether CC's cleaner candidate set changes
+the reranker's effect.
+
+  SAC+CC+NoRerank:  DRM 26.8%, P@1 31.5%, R@8 73.7%  (best)
+  SAC+CC+Rerank:    DRM 78.9%, P@1 11.1%, R@8 52.0%
+  SAC+Rerank(noCC): DRM 76.8%  (RRF input, earlier)
+
+**Conclusion:** The reranker produces ~77-79% DRM regardless of
+whether fed CC's clean candidates or RRF's noisy ones. CC's
+improvement is entirely erased. 36 queries flipped OK->DRM when the
+reranker was added. The reranker's failure is orthogonal to
+candidate-set quality — it discards the fusion ordering and
+re-scores all candidates on semantic relevance from scratch.
+
+**Phoenix mechanistic evidence (per-query, observed not inferred):**
+For 3 queries that were OK without the reranker, after reranking
+the top 8 were 0/8 correct-document chunks:
+- contractnli-0832 (CEII): 8 wrong docs at scores 0.91-0.95
+- contractnli-0405 (Motorola): 8 wrong docs at 0.62-0.67
+- contractnli-0586 (Inventor-PDE): 8 wrong docs at 0.80-0.86
+The right document's chunks were present in CC's fused input but
+scored below 8 wrong-document chunks. High reranker confidence
+(0.91-0.95) on wrong documents = the signature of a model
+optimizing the wrong objective (semantic relevance, orthogonal
+to document identity).
+
+**Refined finding:** Cross-encoder reranking by semantic relevance
+is fundamentally blind to document identity. On topically-
+homogeneous corpora, it confidently promotes wrong-document chunks
+that are topically relevant. Better fusion does not help — the
+reranker discards fusion ordering. Three independent evidence
+lines: aggregate (27%->79%), controlled (same with CC and RRF
+input), mechanistic (Phoenix per-query traces).
+
+**Only path to reranker use here:** document-scoped reranking —
+filter to the right document first, then rerank within it. The
+reranker's within-document chunk selection (CBF benefit) is real;
+its cross-document discrimination is absent. Requires entity
+extraction / document-scoping at retrieval time.
+
+**Precludes:** Any reranker use on topically-homogeneous corpora
+without document-scoping, regardless of fusion method.
