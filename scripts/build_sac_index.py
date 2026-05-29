@@ -154,14 +154,14 @@ def build_sac_corpus(corpus_df: pd.DataFrame,
 
 def embed_and_index(corpus_df: pd.DataFrame) -> None:
     """Embed SAC content with voyage-4-large and upsert into Qdrant."""
-    import voyageai
     from qdrant_client import QdrantClient
     from qdrant_client.models import (
         Distance,
         PayloadSchemaType,
-        PointStruct,
         VectorParams,
     )
+    from core.ingestion.embed_index import embed_and_upsert
+    from core.evaluation.fingerprint import write_fingerprint
 
     print(f"\n{'='*60}")
     print(f"PHASE 3: Embedding and indexing into Qdrant")
@@ -198,62 +198,14 @@ def embed_and_index(corpus_df: pd.DataFrame) -> None:
     )
     print(f"  Created collection {COLLECTION_NAME}")
 
-    # Embed and upsert in batches
-    vo = voyageai.Client()
-    BATCH_SIZE = 128
     chunks = corpus_df.to_dict("records")
-    total = len(chunks)
-    total_batches = (total + BATCH_SIZE - 1) // BATCH_SIZE
-
-    for batch_num, i in enumerate(range(0, total, BATCH_SIZE)):
-        batch = chunks[i : i + BATCH_SIZE]
-        texts = [c["sac_content"] for c in batch]
-
-        # Embed with retry
-        for attempt in range(5):
-            try:
-                result = vo.embed(
-                    texts,
-                    model="voyage-4-large",
-                    input_type="document",
-                )
-                break
-            except Exception as e:
-                if "rate" in str(e).lower() or "429" in str(e):
-                    wait = 2 ** attempt
-                    print(f"  Rate limit hit, waiting {wait}s...")
-                    time.sleep(wait)
-                else:
-                    raise
-        else:
-            raise RuntimeError("Max retries exceeded on Voyage embed")
-
-        points = [
-            PointStruct(
-                id=str(uuid.uuid5(uuid.NAMESPACE_DNS, c["chunk_id"])),
-                vector=embedding,
-                payload={
-                    "chunk_id": c["chunk_id"],
-                    "doc_id": c["doc_id"],
-                    "dataset_name": c["dataset_name"],
-                    "content": c["content"],  # original, not SAC
-                },
-            )
-            for c, embedding in zip(batch, result.embeddings)
-        ]
-
-        client.upsert(collection_name=COLLECTION_NAME, points=points)
-
-        if (batch_num + 1) % 5 == 0 or (batch_num + 1) == total_batches:
-            print(
-                f"  Indexed {min(i + BATCH_SIZE, total)}/{total} chunks "
-                f"(batch {batch_num + 1}/{total_batches})"
-            )
-
-        time.sleep(0.25)  # rate limit buffer
-
-    # Write fingerprint
-    from core.evaluation.fingerprint import write_fingerprint
+    embed_and_upsert(
+        chunks=chunks,
+        client=client,
+        collection=COLLECTION_NAME,
+        model="voyage-4-large",
+        dataset_name="contractnli",
+    )
 
     write_fingerprint(
         Path("data"),
@@ -262,12 +214,6 @@ def embed_and_index(corpus_df: pd.DataFrame) -> None:
         chunk_size=512,
         chunk_overlap=128,
     )
-
-    # Verify
-    collection_info = client.get_collection(COLLECTION_NAME)
-    sac_points = collection_info.points_count
-    print(f"\n  SAC collection ready: {sac_points} points")
-    print(f"  Expected: {total} points")
 
     # Confirm baseline untouched
     baseline_info_after = client.get_collection("contractnli_baseline")

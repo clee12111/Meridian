@@ -16,5 +16,12 @@
     "chunk_size": 512,
     "chunk_overlap": 128,
     "indexed_at": "2026-05-28T12:26:27.632764+00:00"
+  },
+  "cuad_section_sac_v4": {
+    "target_dataset": "cuad",
+    "chunk_size": 512,
+    "chunk_overlap": 0,
+    "indexed_at": "2026-05-29T09:29:49.543200+00:00",
+    "chunk_strategy": "section"
   }
 }

@@ -30,17 +30,16 @@ load_dotenv()
 
 import numpy as np
 import pandas as pd
-import voyageai
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
     Distance,
     PayloadSchemaType,
-    PointStruct,
     VectorParams,
 )
 
+from core.ingestion.embed_index import embed_and_upsert
+
 EMBED_MODEL = "voyage-4"
-BATCH_SIZE = 128
 
 CORPUS_CONFIG = {
     "contractnli": {
@@ -243,7 +242,7 @@ def _get_existing_chunk_ids(client: QdrantClient, collection: str) -> set[str]:
     return existing
 
 
-def embed_and_index(corpus_df: pd.DataFrame, config: dict) -> None:
+def embed_and_index_corpus(corpus_df: pd.DataFrame, config: dict) -> None:
     """Embed SAC content with voyage-4 and upsert into Qdrant.
 
     Resumable: if the collection exists with partial data, only
@@ -306,53 +305,14 @@ def embed_and_index(corpus_df: pd.DataFrame, config: dict) -> None:
             _release_lock(collection)
             return
 
-        print(f"  Embedding {pending_count} new chunks "
-              f"(skipped {total_chunks - pending_count})")
-
-        vo = voyageai.Client()
         chunks = pending_df.to_dict("records")
-        total_batches = (pending_count + BATCH_SIZE - 1) // BATCH_SIZE
-
-        for batch_num, i in enumerate(range(0, pending_count, BATCH_SIZE)):
-            batch = chunks[i : i + BATCH_SIZE]
-            texts = [c["sac_content"] for c in batch]
-
-            for attempt in range(5):
-                try:
-                    result = vo.embed(texts, model=EMBED_MODEL, input_type="document")
-                    break
-                except Exception as e:
-                    if "rate" in str(e).lower() or "429" in str(e):
-                        wait = 2 ** attempt
-                        print(f"  Rate limit hit, waiting {wait}s...")
-                        time.sleep(wait)
-                    else:
-                        raise
-            else:
-                raise RuntimeError("Max retries exceeded on Voyage embed")
-
-            points = [
-                PointStruct(
-                    id=str(uuid.uuid5(uuid.NAMESPACE_DNS, c["chunk_id"])),
-                    vector=embedding,
-                    payload={
-                        "chunk_id": c["chunk_id"],
-                        "doc_id": c["doc_id"],
-                        "dataset_name": c.get("dataset_name", config["dataset_name"]),
-                        "content": c["content"],
-                    },
-                )
-                for c, embedding in zip(batch, result.embeddings)
-            ]
-            client.upsert(collection_name=collection, points=points)
-
-            if (batch_num + 1) % 10 == 0 or (batch_num + 1) == total_batches:
-                print(f"  Indexed {min(i + BATCH_SIZE, pending_count)}/{pending_count} "
-                      f"new chunks (batch {batch_num + 1}/{total_batches})")
-            time.sleep(0.25)
-
-        info = client.get_collection(collection)
-        print(f"  {collection}: {info.points_count} points (target: {total_chunks})")
+        embed_and_upsert(
+            chunks=chunks,
+            client=client,
+            collection=collection,
+            model=EMBED_MODEL,
+            dataset_name=config["dataset_name"],
+        )
     finally:
         _release_lock(collection)
 
@@ -401,7 +361,7 @@ def build_one(corpus_name: str) -> None:
     corpus_df = build_sac_corpus(corpus_df, summaries, config)
 
     # Phase 3: embed and index
-    embed_and_index(corpus_df, config)
+    embed_and_index_corpus(corpus_df, config)
 
     # Phase 4: routing index
     build_routing(summaries, config)
