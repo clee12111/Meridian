@@ -864,3 +864,157 @@ recall. R@8 overpredicts correctness where DRM is present.
 **Precludes:** Mixing affirmative-only and span-informed judge
 numbers in any comparison. Quoting the ~15% baseline. Selective
 per-corpus routing (ship always-ON, one config).
+
+---
+
+### 2026-05-29 — Finding 25: Section-aware chunking helps on CUAD (+3.6pp correctness, attributable)
+
+**Experiment:** Section-aware / conditional-clause chunker (cascading boundary
+detector: Article/numbered-section/ALL-CAPS/lettered-subsection patterns, terminal
+fallback to fixed-stride on unstructured docs). Char-based offsets, half-open
+[start,end), cap ~512 / floor ~200 to keep granularity comparable to the 512/128
+fixed baseline. A/B on CUAD, single variable = chunk boundaries, everything else held
+(SAC + NoRerank + CC(0.1) + always-on routing + single-shot).
+
+**Offset integrity gate (the load-bearing check):** source_text[start:end] == content
+for ALL 75,277 chunks, zero failures. Tier B character-set overlap depends on this;
+gate passed before any embedding spent.
+
+**Results (194 queries):**
+  Metric          Run A (fixed 512/128)   Run B (section)   Delta
+  CBF             43 (22.2%)              33 (17.0%)        -10 (-5.2pp)
+  R@8             0.6709                  0.7243            +5.34pp (above noise floor)
+  P@1             0.3054                  0.2980            -0.74pp (within noise)
+  Correctness     121 (62.4%)            128 (66.0%)       +3.6pp
+  INCORRECT       56 (28.9%)             41 (21.1%)        -15
+
+**Attribution (why this is real, not a metric wobble):** Of 18 queries freed from
+CBF, 9 went 0/18->9/18 CORRECT (R@8 0.00->>=0.99 — span went from missed to captured).
+Honest cost: 8 new CBF introduced (section boundaries moved a previously-captured span
+out of window), 3 of which were OVR/CORRECT->lost. Net on changed queries: +9 gained,
+-3 lost = +6, plus +1 non-CBF margin shift = +7 overall. The subset ledger reconciles
+to the headline delta query-by-query.
+
+**Scope of claim:** Confirmed on CUAD only — the richest-structure, high-CBF corpus
+(friendliest case). NOT yet generalization-tested. MAUD is the real test (CBF 15.5% +
+20.6% PARTIAL gap). ContractNLI is a negative control (DRM-bound, not CBF-bound —
+expect little benefit; a null there CONFIRMS the lever is CBF-specific, not a generic
+boundary-nudge artifact). PrivacyQA is the graceful-degradation check (prose -> falls
+through to fixed-stride -> should ~= baseline and must not hurt).
+
+**Precludes:** Claiming section-aware chunking generalizes before MAUD/ContractNLI/
+PrivacyQA A/Bs run. Quoting the +9 gross win without the -3 regression cost.
+
+---
+
+### 2026-05-29 — CUAD CBF baseline reconciled: 17.5% routing-ON vs 21.6% routing-OFF (NOT a doc error)
+
+**Decision:** The CUAD CBF baseline is ~17.5% routing-ON and ~21.6% routing-OFF. Both
+are real eval outputs measuring the same corpus under different routing states.
+Routing-ON (17.5%) is the shipped-config anchor (routing is always-ON, Finding 24).
+CLAUDE.md updated to state both numbers so the bare "17.5%" can't be misread again.
+
+**Why this was investigated:** Run A of the section A/B reported CBF 22.2% against a
+documented baseline cited as 17.5% — a ~4.7pp gap on the CONTROL. Recon confirmed Run
+A's config is byte-for-byte identical to the four-corpus sweep config. The "gap"
+resolved to two benign causes: (1) 17.5% was the routing-ON figure, 21.6%/22.2% the
+routing-OFF range; (2) run-to-run nondeterminism (±3 queries, bidirectional across
+CBF<->OVR<->ICR — the signature of noise, not a systematic shift).
+
+**Secondary observation (reproducibility leak, flagged not fixed):** on-disk CUAD eval
+files were overwritten by a later re-run and no longer match the documented
+FourCorpus.md numbers. Eval outputs need run-traceable filenames (config hash / date)
+so numbers can always be traced to the run that produced them. Deferred.
+
+**Precludes:** Treating a control that doesn't reproduce the documented baseline as
+automatically a bug — verify config identity and routing state first. Citing CUAD CBF
+as a bare single number without the routing state.
+
+---
+
+### 2026-05-29 — Finding 26: Faithfulness added as a Layer-2 metric (validated); it is orthogonal to correctness
+
+**Decision:** Faithfulness (RAGAS definition: fraction of answer claims entailed by
+the retrieved context) is added as a second Layer-2 LLM-judged metric, alongside
+correctness. It is judged against the FULL retrieved context (all top-8 chunks the
+model saw), not the model's own cited_text — because judging a claim against the
+snippet the model chose is partly blind to the OK+INCORRECT failure this metric exists
+to instrument. It NEVER touches the deterministic span taxonomy (Layer 1). Judge model
+pinned (deepseek-v4-flash, temp 0, thinking disabled), held constant across the
+campaign, same discipline as the correctness judge.
+
+**Build:** Harness change saves context_chunks (Phase 7 output) per record. New judge
+(scripts/judge_faithfulness.py) feeds Phase 8's pre-extracted claims (claim +
+cited_chunk_id + cited_text) to the entailment judge — Phase 8's structured output
+means RAGAS's claim-extraction step is skipped entirely.
+
+**Validation (gated before scaling):**
+- Variance: 5/40 queries scored sub-1.0 (0.50-0.80), mean 0.961 — not rubber-stamping.
+- NOT_ENTAILED reasons inspected: all 5 substantively correct, no false negatives.
+- Negative control: a fabricated claim ("signed in 1823 by Napoleon...") correctly
+  marked NOT_ENTAILED, score dropped 1.0->0.67.
+- Diagnostic payoff: contractnli-0411 (OK retrieval + INCORRECT + faithfulness 0.50) —
+  the model had right evidence, contradicted it, the judge caught it. Splits
+  OK+INCORRECT into "unfaithful (ignored evidence)" vs "faithful but wrong reasoning."
+
+**Two findings about what it measures:**
+1. Faithfulness is ORTHOGONAL to correctness. DRM queries score faithfulness 1.0 (the
+   model faithfully reports what the WRONG document says). Correctness catches
+   DRM/wrong-conclusion; faithfulness catches hallucination/contradiction. Two metrics,
+   two failure modes — by design.
+2. As built, the judge is partly a CONTRADICTION detector, not pure RAGAS faithfulness
+   — most NOT_ENTAILED verdicts flagged claims the context REFUTES, not just claims it
+   is silent on. Broader than stock RAGAS (which centers on "unsupported"). Describe it
+   as such; do not conflate with textbook RAGAS faithfulness.
+
+**Expected behavior on legal:** runs high (extractive domain — model mostly quotes,
+little room to hallucinate). Flat-high on legal is a TRUE finding (low hallucination),
+not a dud metric. Faithfulness's real value is the BEIR transfer, where inferential
+domains make hallucination/ungrounding the live risk.
+
+**Cross-tab required going forward:** correctness × faithfulness 2x2 per corpus. The
+CORRECT+UNFAITHFUL cell measures correctness borrowed against parametric knowledge
+rather than retrieval — a transfer-leak signal only visible once faithfulness exists.
+
+**Precludes:** Reading faithfulness as a correctness proxy (they are orthogonal).
+Judging faithfulness against cited_text instead of full context. Putting faithfulness
+verdicts into the Layer-1 span taxonomy.
+
+---
+
+### 2026-05-29 — RAGAS evaluated as a framework, declined; our judge kept; few-shot lift deferred to pre-BEIR
+
+**Decision:** Do NOT adopt the RAGAS library for the Layer-2 faithfulness/correctness
+metrics. Keep our own judge. Lift exactly two things from RAGAS's (Apache-2.0) source
+as a deferred PRE-BEIR prompt upgrade: their two entailment few-shot examples,
+especially the "unrelated-but-true" calibration case (a claim true in the world but
+not supported by the context). Nothing else.
+
+**Why (evaluated their actual source, not from memory):** RAGAS is Apache-2.0, vendorable.
+Compared their faithfulness implementation to ours head-to-head:
+- Claim decomposition: ours is better — Phase 8 gives atomic claims WITH citations for
+  free; RAGAS spends an extra LLM call to re-decompose the raw answer post-hoc into
+  citation-less statements.
+- Entailment prompt: roughly equivalent. Ours is explicit on paraphrase and
+  contradiction; theirs is zero-explicit but carries 2 few-shot examples. Their
+  "unrelated-but-true" example is the one genuine edge ours lacks.
+- Scoring: identical ratio (entailed/total); ours handles the empty edge better
+  (0.0 vs their silently-propagating NaN).
+- Determinism: ours pins model + temp 0; RAGAS pins NEITHER by default — stock RAGAS
+  has the judge-drift problem we explicitly guard against.
+- Dependencies: pip-installing RAGAS pulls langchain-core, datasets, their prompt
+  framework — for a metric we've already built and validated.
+
+**The general lesson:** "use the standard framework, don't handroll" was the right
+default but wrong in this specific case — borrowing RAGAS's DEFINITION while owning the
+implementation is better-fit, pinned, dependency-free, and validated. Adopting the
+library would have been a downgrade.
+
+**Sequencing:** few-shot lift is deferred so it does not split the campaign across two
+judge versions. Finish four corpora on the validated judge, THEN add the few-shot
+examples as a deliberate step, re-run the variance + negative-control gates (plus an
+explicit "true-but-unrelated" test), re-judge legal once if numbers move materially,
+then run BEIR on the final calibrated judge.
+
+**Precludes:** pip-installing ragas. Changing the faithfulness judge prompt or model
+mid-campaign. Running BEIR before the few-shot calibration step.

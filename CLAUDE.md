@@ -246,7 +246,8 @@ rates justify a re-index. See docs/DECISIONS.md.
 
 **Next (in priority order):**
 1. Section-aware / conditional-clause chunking — attacks CBF on
-   CUAD (17.5%) / MAUD (15.5%) and the MAUD partial-extraction
+   CUAD CBF ~17.5% routing-ON / ~21.6% routing-OFF (both real;
+   routing-ON is the shipped anchor) / MAUD (15.5%) and the MAUD partial-extraction
    gap (20.6% PARTIAL). Next retrieval lever. Requires re-index.
 2. Phase 8 synthesis fix — OK+INCORRECT cluster (right evidence,
    wrong conclusion). Reasoning-layer work, not retrieval.
