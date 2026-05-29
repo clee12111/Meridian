@@ -15,10 +15,14 @@ The autonomous-outer-loop direction from v1 was explored and abandoned —
 do not bring it back.
 
 **Positioning:** v1 (RAG Forensics) stays on resume as the shipped project
-until v2 is demonstrably better. Three conditions: (1) agent runs all 10
-phases on LegalBench, (2) Tier A measurement produces signal on a non-
-annotated corpus (FiQA or NFCorpus), (3) Phase 10 measurably beats single-
-shot retrieval with trajectories traced. Until all three: v1 ships, v2 builds.
+until v2 is demonstrably better. Three conditions:
+(1) agent runs all 10 phases on LegalBench — ✓ COMPLETE (all four corpora,
+    exceeds original single-corpus gate),
+(2) Tier A measurement produces signal on a non-annotated corpus (FiQA or
+    NFCorpus) — NOT STARTED, the open transferability item,
+(3) Phase 10 measurably beats single-shot — measured: +1.8pp at +68%
+    compute (Finding 18); marginal, single-shot preferred.
+Until condition 2 is met: v1 ships, v2 builds.
 
 ---
 
@@ -29,7 +33,8 @@ shot retrieval with trajectories traced. Until all three: v1 ships, v2 builds.
 Phases 1-2 run once per corpus. Phases 3-10 run per query.
 
   1. Chunking              — fixed-size / semantic / section-aware / agentic
-  2. Indexing              — Qdrant + voyage-4-large + BM25 + HNSW
+  2. Indexing              — Qdrant + voyage-4 + BM25 + HNSW (voyage-4-large
+                            reserved for final headline run only)
   3. Query Understanding   — rewriting / expansion / decomposition / HyDE
   4. Retrieval             — dense + sparse channels
   5. Fusion                — RRF or convex combination
@@ -82,7 +87,8 @@ Measurement never depends on the agent. Agent never bypasses measurement.
 
 ### Testbeds
 
-- LegalBench-RAG — Tier A + Tier B, 293k chunks indexed (starting testbed)
+- LegalBench-RAG — all four corpora (ContractNLI, PrivacyQA, CUAD,
+  MAUD) indexed on voyage-4, swept, and answer-judged. COMPLETE.
 - FiQA — Tier A only, validates the transferability bet
 - NFCorpus — Tier A only, vocabulary mismatch stress
 - MultiHop (HotpotQA) — BLOCKED on Finding 1 fix
@@ -111,15 +117,32 @@ Measurement never depends on the agent. Agent never bypasses measurement.
    Cross-encoder reranking by semantic relevance is blind to document identity;
    produces ~79% DRM regardless of candidate quality. Three evidence lines:
    aggregate, controlled, mechanistic (Phoenix traces). (Findings 13, 21.)
-10. **CC fusion over RRF on structured benchmark corpora.** Per-dataset α:
-    ContractNLI α=0.3, PrivacyQA α=0.1. RRF remains the production-robust
-    default for uncalibrated heterogeneous systems. (Findings 15, 16.)
+10. **CC fusion over RRF on structured benchmark corpora.** Per-dataset chunk
+    α (final sweep): ContractNLI 0.2, PrivacyQA 0.1, CUAD 0.1, MAUD 0.2 —
+    all dense-heavy. A single fixed α≈0.2 is near-optimal across all four
+    (narrow band). Routing α also per-corpus (CUAD 0.3, MAUD 0.7,
+    ContractNLI 0.3). RRF remains the production-robust default for
+    uncalibrated heterogeneous systems. (Findings 15, 16.)
 11. **Cited-span is a secondary metric**, valid only on extractive corpora
     (where cited_text is verbatim-findable). Never make it primary where
     extraction failure exceeds ~25%. (Finding 19.)
 12. **Single-shot preferred.** Loop adds +1.8pp at +68% compute. Use
     single-shot as default; loop only when SGP recovery justifies cost.
     (Finding 18.)
+13. **Document routing ALWAYS-ON (domain-agnostic policy).** Routing
+    helps all four corpora at the answer level (+1.0 to +12.9pp, never
+    hurts); benefit tracks DRM rate (largest on ContractNLI). The system
+    ships ONE fixed config and cannot detect corpus type at query time,
+    so routing is always-on — no selective routing, no corpus detector.
+    The frozen-default routing-index bug (DocumentRouter.__init__) is
+    FIXED (index_path=None, resolved in body). (Finding 23, 24.)
+14. **Hold the answer judge constant; span-informed is standard.** Two
+    judges exist: affirmative-only (early, ~15% baseline) and span-informed
+    (final, ~15-17pp higher by design). They are NOT comparable. Never
+    quote a delta that mixes them. The honest ContractNLI delta is
+    25.8%→75.3% (span-informed both ends). The old ~15%→75% figure mixed
+    judges and overstated the gain. Span-informed is the standard going
+    forward. (Finding 24.)
 
 ---
 
@@ -253,7 +276,8 @@ rates justify a re-index. See docs/DECISIONS.md.
   MERIDIAN_WRRF_SPARSE   — weighted RRF sparse weight
   MERIDIAN_TOP_K         — override retriever top_k
   MERIDIAN_FUSION_TOP_N  — override fusion top_n
-  MERIDIAN_EMBED_MODEL   — Voyage model (default: voyage-4-large)
+  MERIDIAN_EMBED_MODEL   — Voyage model (default: voyage-4; all v4
+                            collections are voyage-4, must match)
   MERIDIAN_ROUTING_TOPK  — document routing top-k (unset = no routing)
   MERIDIAN_ROUTING_ALPHA — routing CC fusion alpha (default: 0.5)
   MERIDIAN_ROUTING_INDEX — routing index path (default: data/routing_index.npz)
@@ -268,7 +292,7 @@ rates justify a re-index. See docs/DECISIONS.md.
   --wrrf-sparse FLOAT    — weighted RRF sparse weight
   --top-k INT            — override retriever top_k
   --fusion-top-n INT     — override fusion top_n
-  --workers INT          — parallel workers (max 12)
+  --workers INT          — parallel workers (max 16, safe for single-shot)
   --limit INT            — run only first N queries
   --ids ID,ID,...        — run specific query IDs
   --routing-topk INT     — document routing top-k (unset = no routing)
