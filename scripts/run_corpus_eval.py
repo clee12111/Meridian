@@ -104,6 +104,10 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--workers", type=int, default=8)
     p.add_argument("--limit", type=int, default=None)
+    p.add_argument("--collection", type=str, default=None,
+                   help="Override Qdrant collection (for A/B testing)")
+    p.add_argument("--parquet", type=Path, default=None,
+                   help="Override corpus parquet (must match collection chunks)")
     args = p.parse_args()
 
     cfg = CORPUS_CONFIG[args.corpus]
@@ -129,10 +133,12 @@ def main():
     from core.supervisor.graph import compile_graph
 
     qdrant_url = os.environ.get("QDRANT_URL", "http://localhost:6333")
+    corpus_parquet = args.parquet if args.parquet else cfg["parquet"]
+    collection = args.collection if args.collection else cfg["collection"]
     context = PipelineContext.build(
-        corpus_path=cfg["parquet"],
+        corpus_path=corpus_parquet,
         qdrant_url=qdrant_url,
-        collection_name=cfg["collection"],
+        collection_name=collection,
         dataset_name=cfg["dataset_name"],
         top_k=50,
         qdrant_api_key=os.environ.get("QDRANT_API_KEY") or None,
@@ -177,11 +183,24 @@ def main():
         gt_with = [(gt_doc, s[0], s[1]) for s in gt_spans]
         classification = classify_with_confidence(retrieved_with, gt_with)
 
+        # Build context_chunks from Phase 7 output (what the model actually saw)
+        ctx_texts = final.get("context_chunks", [])
+        ctx_ids = final.get("context_ids", [])
+        context_chunks = [
+            {
+                "chunk_id": cid,
+                "doc_id": cid.split("#")[0],
+                "content": text,
+            }
+            for cid, text in zip(ctx_ids, ctx_texts)
+        ]
+
         record = {
             "query_id": qid,
             "query": question,
             "answer": final.get("answer", ""),
             "claims": final.get("claims", []),
+            "context_chunks": context_chunks,
             "p_at_1": metrics.p_at_k.get(1, 0.0),
             "r_at_8": metrics.r_at_k.get(8, 0.0),
             "failure_type": classification.failure_type.name,
