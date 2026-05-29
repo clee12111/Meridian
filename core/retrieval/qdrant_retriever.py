@@ -18,8 +18,13 @@ from qdrant_client.models import (
 
 from core.retrieval.base import RetrievalResult
 
-VOYAGE_MODEL = "voyage-4-large"
 VOYAGE_DIMENSION = 1024
+
+
+def _get_voyage_model() -> str:
+    """Return the Voyage embed model from env or default."""
+    import os
+    return os.environ.get("MERIDIAN_EMBED_MODEL", "voyage-4-large")
 
 
 def _embed_with_retry(
@@ -141,7 +146,7 @@ class QdrantRetriever:
             batch_ds = dataset_names[i : i + batch_size]
 
             embeddings = _embed_with_retry(
-                self._voyage, batch_texts, VOYAGE_MODEL, input_type="document"
+                self._voyage, batch_texts, _get_voyage_model(), input_type="document"
             )
 
             points = []
@@ -188,22 +193,15 @@ class QdrantRetriever:
         k = top_k if top_k is not None else self._top_k
 
         query_emb = _embed_with_retry(
-            self._voyage, [query], VOYAGE_MODEL, input_type="query"
+            self._voyage, [query], _get_voyage_model(), input_type="query"
         )[0]
 
         must_conditions = []
 
-        if dataset_name is not None:
-            if self._multi_dataset:
-                if not self._has_dataset_index:
-                    raise RuntimeError(
-                        f"dataset_name filter required on multi-dataset collection "
-                        f"'{self._collection}' but no dataset_name payload index exists. "
-                        f"Create one with client.create_payload_index()."
-                    )
-                must_conditions.append(
-                    FieldCondition(key="dataset_name", match=MatchValue(value=dataset_name))
-                )
+        if dataset_name is not None and self._has_dataset_index:
+            must_conditions.append(
+                FieldCondition(key="dataset_name", match=MatchValue(value=dataset_name))
+            )
 
         if doc_ids is not None:
             # Convert doc_ids to matching chunk_ids via corpus_df

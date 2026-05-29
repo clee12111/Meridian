@@ -749,3 +749,49 @@ DRM = wrong doc = 0% correct, no exceptions (confirms Finding 20).
 answer-correctness rate is the ground truth. Retrieval metrics
 overpredict and the chunk-span taxonomy can false-alarm (OVR);
 only the judged output is the observable that matters.
+
+---
+
+### Finding 23 — Four-corpus routing (corrected): routing recall is general, routing BENEFIT is conditional on DRM presence
+
+**Bug context:** Stage 2 initially showed 0% routing recall on
+CUAD/MAUD/PrivacyQA, read as "routing is ContractNLI-specific."
+That was WRONG — a frozen-default-argument bug (DocumentRouter
+.__init__ evaluated index_path = _get_routing_index_path() at
+import, freezing it to ContractNLI's index). All three corpora
+searched ContractNLI's 95 NDAs. Fixed: index_path: Path | None =
+None, resolved in body. Audit confirmed this was the only frozen-
+default bug in the codebase.
+
+**Corrected results (full 194 queries, per-corpus routing index):**
+  Corpus        Route recall   R@8 impact   DRM before->after
+  ContractNLI   81%            +3.8pp       20.0% -> 20.6%
+  CUAD          100%           +3.2pp        0.5% ->  0.0%
+  MAUD          100%           +3.3pp        1.0% ->  0.0%
+  PrivacyQA     92-100%        -1.1pp        2.1% ->  1.5%
+
+**The precise finding (recall vs benefit are different):**
+Routing RECALL is excellent on all four corpora once the correct
+index loads (81-100%) — routing reliably finds the right document
+everywhere. Routing BENEFIT is conditional: it helps where document
+discrimination is a problem (ContractNLI's near-identical NDAs) and
+is neutral-to-slightly-negative where discrimination is already easy
+(PrivacyQA, 7 documents, dense already discriminates). The benefit
+tracks the DRM rate, a measurable corpus property — not the corpus
+identity.
+
+**Correction to prior reading:** "Routing is ContractNLI-specific"
+was a bug artifact. The accurate claim: routing is a general
+capability whose benefit is proportional to the document-
+discrimination difficulty of the corpus.
+
+**OPEN — mechanism of CUAD/MAUD R@8 gain (flagged for verification):**
++3.2/+3.3pp R@8 on corpora with near-zero DRM cannot come from
+DRM-elimination alone (can't gain 3pp R@8 by fixing 0.5% DRM).
+Likely a recall-concentration effect: hard-filtering to routed
+documents pulls more right-document chunks into top-8. To be
+confirmed (recon below). "Routing fixed DRM" and "routing
+concentrated within-doc recall" are different stories.
+
+**Precludes:** Claiming routing helps universally; claiming it's
+ContractNLI-specific. Both are wrong. Benefit proportional to DRM rate.

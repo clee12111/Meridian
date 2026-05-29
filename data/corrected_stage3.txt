@@ -1,0 +1,70 @@
+================================================================================
+CORRECTED STAGE 3: Full validation (194 queries)
+================================================================================
+  [PrivacyQA] chunk-alpha=0.1, no routing (full)...
+2026-05-28 18:06:05,882 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00191'
+2026-05-28 18:06:05,882 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00226'
+2026-05-28 18:06:05,882 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00230'
+2026-05-28 18:06:05,882 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00192'
+2026-05-28 18:06:05,882 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00192'
+2026-05-28 18:06:05,883 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00234'
+2026-05-28 18:06:21,504 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00389'
+2026-05-28 18:06:21,504 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00389'
+2026-05-28 18:06:21,505 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00388'
+2026-05-28 18:06:21,505 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00388'
+2026-05-28 18:06:21,505 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00388'
+2026-05-28 18:06:21,505 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00384'
+2026-05-28 18:06:21,505 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00385'
+2026-05-28 18:06:21,505 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00386'
+2026-05-28 18:06:21,505 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00403'
+2026-05-28 18:06:25,162 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00384'
+2026-05-28 18:06:25,163 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00385'
+2026-05-28 18:06:25,163 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00389'
+2026-05-28 18:06:25,163 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00392'
+2026-05-28 18:06:25,163 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00389'
+2026-05-28 18:06:25,163 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00386'
+2026-05-28 18:06:25,163 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00404'
+2026-05-28 18:06:26,378 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00386'
+2026-05-28 18:06:45,508 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00301'
+2026-05-28 18:06:45,508 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00303'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00289'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00288'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00319'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00320'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00317'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00321'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00289'
+2026-05-28 18:07:04,544 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00332'
+2026-05-28 18:07:32,224 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00407'
+2026-05-28 18:07:32,224 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-00407'
+2026-05-28 18:07:40,136 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'TickTick: To Do List with Reminder, Day Planner.txt#chunk-00413'
+2026-05-28 18:07:40,137 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'TickTick: To Do List with Reminder, Day Planner.txt#chunk-00413'
+2026-05-28 18:07:40,137 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'TickTick: To Do List with Reminder, Day Planner.txt#chunk-00409'
+2026-05-28 18:07:40,137 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'TickTick: To Do List with Reminder, Day Planner.txt#chunk-00413'
+    n=194 P@1=0.3301 R@8=0.5688 DRM=1.5%
+    Failure dist: CBF=25 DRM=3 ICR=23 OK=42 OVR=43 SGP=58
+
+  [CUAD] chunk-alpha=0.1, routing(top-3, alpha=0.3) (full)...
+2026-05-28 18:19:04,659 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-66806'
+2026-05-28 18:19:04,690 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-66906'
+2026-05-28 18:19:04,690 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-66906'
+2026-05-28 18:19:04,706 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-66906'
+2026-05-28 18:19:04,738 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-66908'
+2026-05-28 18:19:04,832 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-66908'
+2026-05-28 18:20:35,503 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-40450'
+2026-05-28 18:20:35,581 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-40462'
+2026-05-28 18:20:35,581 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-40457'
+2026-05-28 18:20:35,612 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-40459'
+2026-05-28 18:20:35,612 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-40461'
+2026-05-28 18:20:35,612 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-40461'
+    n=194 P@1=0.3248 R@8=0.7013 DRM=0.0%, routing recall=100.0%
+    Failure dist: CBF=34 ICR=18 OK=12 OVR=120 SGP=10
+
+  [MAUD] chunk-alpha=0.2, routing(top-3, alpha=0.7) (full)...
+2026-05-28 18:28:33,830 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'N/A'
+2026-05-28 18:32:21,808 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-12803'
+2026-05-28 18:32:21,839 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-12803'
+2026-05-28 18:32:21,965 core.supervisor.nodes          WARNING Phase 8: claim cites unknown chunk_id 'chunk-12803'
+    n=194 P@1=0.2471 R@8=0.7320 DRM=0.0%, routing recall=100.0%
+    Failure dist: CBF=30 ICR=7 OK=7 OVR=112 SGP=38
+

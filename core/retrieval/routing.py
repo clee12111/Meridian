@@ -27,9 +27,17 @@ from rank_bm25 import BM25Okapi
 
 logger = logging.getLogger(__name__)
 
-ROUTING_INDEX_PATH = Path("data/routing_index.npz")
 SUMMARIES_PATH = Path("data/sac_summaries.json")
-VOYAGE_MODEL = "voyage-4-large"
+
+
+def _get_routing_index_path() -> Path:
+    """Return routing index path from env or default."""
+    return Path(os.environ.get("MERIDIAN_ROUTING_INDEX", "data/routing_index.npz"))
+
+
+def _get_voyage_model() -> str:
+    """Return the Voyage embed model from env or default."""
+    return os.environ.get("MERIDIAN_EMBED_MODEL", "voyage-4-large")
 
 
 def _filename_tokens(doc_id: str) -> str:
@@ -75,19 +83,25 @@ def _tokenize(text: str) -> list[str]:
 
 def build_routing_index(
     summaries_path: Path = SUMMARIES_PATH,
-    output_path: Path = ROUTING_INDEX_PATH,
+    output_path: Path | None = None,
+    model: str | None = None,
 ) -> int:
     """Embed SAC summaries and build BM25 routing texts. Persist to disk.
 
     Returns the number of documents indexed.
     """
+    if output_path is None:
+        output_path = _get_routing_index_path()
+    if model is None:
+        model = _get_voyage_model()
+
     summaries = json.loads(summaries_path.read_text(encoding="utf-8"))
     doc_ids = sorted(summaries.keys())
     texts = [summaries[d] for d in doc_ids]
 
     # Dense channel: embed summaries
     vo = voyageai.Client()
-    embeddings = vo.embed(texts, model=VOYAGE_MODEL, input_type="document").embeddings
+    embeddings = vo.embed(texts, model=model, input_type="document").embeddings
     vectors = np.array(embeddings, dtype=np.float32)
 
     # BM25 channel: build routing texts (filename tokens + summary)
@@ -119,7 +133,9 @@ def _minmax_normalize(scores: np.ndarray) -> np.ndarray:
 class DocumentRouter:
     """Hybrid routing index: dense (summary) + BM25 (filename + summary)."""
 
-    def __init__(self, index_path: Path = ROUTING_INDEX_PATH) -> None:
+    def __init__(self, index_path: Path | None = None) -> None:
+        if index_path is None:
+            index_path = _get_routing_index_path()
         data = np.load(index_path, allow_pickle=True)
         self._vectors = data["vectors"]  # (N, dim)
         self._doc_ids = list(data["doc_ids"])
@@ -148,7 +164,7 @@ class DocumentRouter:
 
         # Dense channel
         query_emb = self._vo.embed(
-            [query], model=VOYAGE_MODEL, input_type="query"
+            [query], model=_get_voyage_model(), input_type="query"
         ).embeddings[0]
         query_vec = np.array(query_emb, dtype=np.float32)
         query_norm = query_vec / (np.linalg.norm(query_vec) or 1.0)
