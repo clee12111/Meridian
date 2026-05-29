@@ -795,3 +795,72 @@ concentrated within-doc recall" are different stories.
 
 **Precludes:** Claiming routing helps universally; claiming it's
 ContractNLI-specific. Both are wrong. Benefit proportional to DRM rate.
+
+---
+
+### Finding 24 — Four-corpus answer-correctness validation: routing helps ALL corpora; honest single-judge deltas; always-ON policy
+
+**Method:** Span-informed answer judge (DeepSeek-flash, gives credit
+for capturing golden-span information, semantic not string match)
+applied UNIFORMLY across all four corpora and both routing states.
+Separate, clearly-labeled LLM-judged metric — does not touch the
+deterministic span taxonomy.
+
+**Routing comparison (all span-informed judge, full 194 each):**
+  Corpus        routing-OFF   routing-ON   Delta
+  ContractNLI   62.4%         75.3%        +12.9pp
+  PrivacyQA     57.2%         61.9%        +4.7pp
+  CUAD          62.4%         63.9%        +1.5pp
+  MAUD          65.5%         66.5%        +1.0pp
+  Average       61.9%         66.9%        +5.0pp
+
+**Corrects Finding 23's prediction:** Finding 23 (retrieval-level)
+predicted routing would be neutral-to-negative on low-DRM corpora
+(PrivacyQA -1.1pp R@8). At the ANSWER level, routing helped EVERY
+corpus and hurt none (+1.0 to +12.9pp). PrivacyQA's +4.7pp answer
+gain despite only 7 documents was the surprise — routing helps even
+where dense discrimination was thought sufficient. The magnitude
+still tracks DRM (largest gain on highest-DRM ContractNLI), but the
+floor is "always helps, never hurts," not "conditional on DRM."
+
+**Always-ON routing policy (domain-agnostic decision):**
+The system ships ONE fixed config (cannot detect corpus type at
+query time). Always-ON beats always-OFF by +5.0pp average and wins
+or ties on all four corpora. Decision: routing ALWAYS-ON, single
+dense-heavy chunk-alpha. No corpus detector, no selective routing,
+no pre-query filter needed.
+
+**Honest baseline delta (judge held constant — CRITICAL CORRECTION):**
+Prior "~15% -> 75%" claims MIXED two judges (affirmative-only baseline
+vs span-informed best-config) and overstated the gain. Re-judging the
+v1 baseline with the SAME span-informed judge:
+  v1 baseline (span-judged):   25.8%
+  Best config (span-judged):   75.3%
+  Honest delta:                +49.5pp (~3x), judge held constant
+The 25.8% -> 75.3% is the defensible number. Do NOT quote the old
+~15% baseline alongside span-informed numbers — different judge.
+(v2-urlfix scored 19.6% span-judged, lower than v1's 25.8%, because
+v2 measures DRM at top-8 vs v1's top-64 — Finding 7, not a regression.)
+
+**Honest limitation — three corpora have no answer baseline:**
+PrivacyQA/CUAD/MAUD were never run with the v1 baseline config, so
+no answer-delta exists for them — only absolute best-config numbers
+(61.9/63.9/66.5%) and the published-retrieval-baseline comparison.
+The ContractNLI delta (25.8->75.3) is the only clean answer before/after.
+
+**Discipline note:** Two answer judges exist — affirmative-only (early
+session, "did the system affirm YES") and span-informed (final, "did
+the answer capture golden-span info"). They are NOT comparable;
+span-informed runs ~15-17pp higher by design. All reported deltas
+must hold the judge constant. The span-informed judge is the standard
+going forward (works for extraction queries; affirmative-only could not).
+
+**DRM-is-the-answer-killer thesis (confirmed at answer level):**
+Answer correctness tracks LOW DRM, not high R@8. MAUD (DRM 1.0%,
+R@8 0.715) -> 65.5% beats ContractNLI (DRM 20.6%, R@8 0.807) -> 56.7%
+routing-off. Document discrimination matters more for answers than
+recall. R@8 overpredicts correctness where DRM is present.
+
+**Precludes:** Mixing affirmative-only and span-informed judge
+numbers in any comparison. Quoting the ~15% baseline. Selective
+per-corpus routing (ship always-ON, one config).

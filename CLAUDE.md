@@ -175,26 +175,40 @@ Two failure modes to actively counter:
 
 ## Current view (update when focus shifts)
 
-**Phase:** v2 — Stage 2 retrieval optimization complete. Full
-10-phase pipeline operational, validated end-to-end with answer
-correctness judge.
+**Phase:** v2 — Stage 2 COMPLETE. Four-corpus retrieval + answer
+correctness validated end-to-end. All four LegalBench-RAG corpora
+indexed on voyage-4, swept, judged.
 
-**Best config (SAC + NoRerank + CC(α=0.3) + single-shot):**
-  P@1 31.5% (v1: 8.84%), R@8 73.7% (v1: 50.4%), DRM 26.8%
-  Answer correctness: 45.4% CORRECT (vs 14.9% baseline)
-  OVR 3.1% under cited-span (was 24.2% chunk-span)
+**Best config:** SAC + NoRerank + CC(per-corpus α) + always-ON
+hybrid routing(top-3) + single-shot.
+
+**Answer correctness (span-informed judge, routing-ON):**
+  ContractNLI  75.3%   (v1 baseline 25.8%, honest delta +49.5pp)
+  PrivacyQA    61.9%
+  CUAD         63.9%
+  MAUD         66.5%
+  Average      66.9%
+
+**Retrieval vs published baselines:**
+  ContractNLI  P@1 0.381  R@8 0.807  (RCTS: P@1 0.088, R@8 0.503)
+  MAUD         P@1 0.247  R@8 0.732  (RCTS: P@1 0.027, R@8 0.062)
+  CUAD         P@1 0.325  R@8 0.701  (no published baseline)
+  PrivacyQA    P@1 0.326  R@8 0.588  (no published baseline)
 
 **What was built / validated:**
-- Full 10-phase pipeline running end-to-end
-- Parallel eval harness (12 workers, ~7min/194 queries)
-- SAC indexing (summary-augmented chunks, document identity in
-  embeddings) — scripts/build_sac_index.py
-- CC fusion (convex combination, per-dataset α) replacing RRF
+- Full 10-phase pipeline running end-to-end on all four corpora
+- Parallel eval harness (16 workers)
+- SAC indexing — scripts/build_sac_index.py, build_corpus_v4.py
+- CC fusion (per-dataset α: CNL 0.2, PQA 0.1, CUAD 0.1, MAUD 0.2)
+- Hybrid document routing (dense summary + BM25 filename tokens)
 - Cited-span measurement (Phase 8 cited_text → taxonomy)
-- End-to-end answer correctness judge (scripts/judge_answers.py)
+- Span-informed answer judge (scripts/judge_answers_v2.py)
 - Phoenix observability (localhost:6006)
-- Collections: contractnli_baseline, contractnli_sac (3797 each),
-  privacyqa_baseline (620)
+- Collections on voyage-4: contractnli_sac_v4 (3797),
+  privacyqa_sac_v4 (620), cuad_sac_v4 (96256), maud_sac_v4 (45324)
+- Routing indexes: per-corpus hybrid dense+BM25 (.npz)
+- voyage-4 budget: ~47M of 200M spent, ~153M remaining
+- voyage-4-large: ~74M remaining, reserved for final headline run
 
 **Chunking baseline (Phases 1-2):**
 Fixed-size 512 tokens, 128 overlap. Section-aware chunker
@@ -208,29 +222,29 @@ rates justify a re-index. See docs/DECISIONS.md.
    +68% compute (Finding 18). Marginal. Single-shot preferred.
 
 **Next (in priority order):**
-1. Document-scoped retrieval — attack residual 26.8% DRM.
-   Entity extraction → filter to candidate docs → retrieve within.
-   Largest remaining lever (42 DRM queries = wrong answer).
-2. Phase 8 synthesis fix — 12 OK+INCORRECT queries have right
-   evidence but wrong conclusion. Prompt/model issue, not retrieval.
-3. Cross-corpus validation — PrivacyQA full run (α=0.1), then
-   MAUD/CUAD when budget allows (~98M + ~49M Voyage tokens).
-4. Tier A measurement — port robustness/drift/economic metrics
-   to run on current best config.
-5. NLI model for Phase 9 — DeBERTa-MNLI, fixes CONTRADICTED
-   false positive rate on legal negation patterns.
-6. Section-aware chunker — swap when CBF is dominant failure type,
-   re-index with voyage-law-2 simultaneously.
+1. Section-aware / conditional-clause chunking — attacks CBF on
+   CUAD (17.5%) / MAUD (15.5%) and the MAUD partial-extraction
+   gap (20.6% PARTIAL). Next retrieval lever. Requires re-index.
+2. Phase 8 synthesis fix — OK+INCORRECT cluster (right evidence,
+   wrong conclusion). Reasoning-layer work, not retrieval.
+3. Reasoning-based loop gate (vs current deterministic grounding
+   gate) — the agentic-loop frontier piece.
+4. Three missing answer baselines (PQA/CUAD/MAUD) if delta
+   symmetry wanted — low priority, ContractNLI delta carries claim.
+5. Final headline run on voyage-4-large once chunking + config
+   locked.
 
 **Known issues / open flags:**
 - Phase 9 CONTRADICTED: false positive rate on legal negation
   ("shall not") — conservative by design, NLI model fix deferred
-- 12 OK+INCORRECT synthesis failures (Finding 20) — Phase 8
-  answers NO despite having correct evidence
-- Cited-span extraction fails 7.7% (non-DRM) — LLM paraphrases
+- OK+INCORRECT synthesis failures — Phase 8 answers NO or hedges
+  despite having correct evidence
+- Cited-span extraction fails ~8% (non-DRM) — LLM paraphrases
   instead of verbatim quoting; tolerable on extractive corpora
-- ContractNLI is affirmative-only (no negative cases) — answer
-  correctness does not test false-positive rate
+- All four corpora are affirmative-only (no negative cases) —
+  answer correctness measures recall, not false-positive rate
+- Two answer judges exist (affirmative-only, span-informed) —
+  do NOT mix numbers across judges (Finding 24)
 
 **Env flags (for A/B experiments):**
   MERIDIAN_NO_REWRITE    — disable Phase 3 query rewriting
@@ -239,6 +253,10 @@ rates justify a re-index. See docs/DECISIONS.md.
   MERIDIAN_WRRF_SPARSE   — weighted RRF sparse weight
   MERIDIAN_TOP_K         — override retriever top_k
   MERIDIAN_FUSION_TOP_N  — override fusion top_n
+  MERIDIAN_EMBED_MODEL   — Voyage model (default: voyage-4-large)
+  MERIDIAN_ROUTING_TOPK  — document routing top-k (unset = no routing)
+  MERIDIAN_ROUTING_ALPHA — routing CC fusion alpha (default: 0.5)
+  MERIDIAN_ROUTING_INDEX — routing index path (default: data/routing_index.npz)
   PHOENIX_ENABLED        — enable Phoenix tracing (localhost:6006)
 
 **CLI flags (scripts/run_eval.py):**
@@ -253,6 +271,7 @@ rates justify a re-index. See docs/DECISIONS.md.
   --workers INT          — parallel workers (max 12)
   --limit INT            — run only first N queries
   --ids ID,ID,...        — run specific query IDs
+  --routing-topk INT     — document routing top-k (unset = no routing)
   --fresh                — wipe output, start over
   --output PATH          — override output file
 
