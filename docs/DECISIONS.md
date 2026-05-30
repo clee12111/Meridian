@@ -1018,3 +1018,203 @@ then run BEIR on the final calibrated judge.
 
 **Precludes:** pip-installing ragas. Changing the faithfulness judge prompt or model
 mid-campaign. Running BEIR before the few-shot calibration step.
+
+---
+
+### 2026-05-29 — Finding 27: Section-aware chunking is NOT corpus-general — negative result, do not ship
+
+**Decision:** Section-aware / conditional-clause chunking is rejected as a general
+lever. It is corpus-dependent: marginally helpful on CUAD, neutral on ContractNLI,
+and HARMFUL on MAUD and PrivacyQA. Do not ship it as a default; do not re-attempt it
+as a corpus-general strategy. The right structural answer to the problem it exposed is
+hierarchical chunking (next lever).
+
+**Full five-corpus A/B (baseline fixed-stride vs section-aware, both arms fresh+paired,
+both Layer-2 metrics, single variable = chunk boundaries):**
+  Corpus        R@8 delta    Correctness delta    Verdict
+  CUAD          +1.4pp       +5.2pp               marginal help (partly parametric)
+  ContractNLI   -1.2pp        0.0pp               neutral (DRM-bound, as predicted)
+  MAUD          -22.8pp      -12.8pp              HARMFUL (fragmentation, see Finding 28)
+  PrivacyQA     -3.3pp       -7.2pp               HARMFUL (prose, no real sections)
+
+**The mechanism (meta-level):** A chunk serves two opposed jobs — the unit you RETRIEVE
+(wants small + pure for sharp embeddings) and the unit you READ (wants large + complete
+for sufficient context). Section chunking optimizes the retrieval job at the expense of
+the reading job. It wins only where the answer fits inside one section (CUAD's
+single-clause commercial-contract answers). It loses where answers span multiple
+sections (MAUD merger agreements — the 20.6% PARTIAL gap IS multi-span answers) because
+it cuts along the exact seams that separate the pieces of a single answer.
+
+**Controls behaved as predicted (validates the method, not just the result):**
+ContractNLI flat (DRM-bound — section chunking can't help a document-discrimination
+problem). PrivacyQA harmful (flowing prose, section detector forces bad splits, DRM
+8->28). The lever is not a generic boundary-nudge artifact — it does nothing where it
+structurally cannot help and damage where structure is absent.
+
+**Precludes:** Shipping section-aware chunking as a default. Re-attempting it as a
+corpus-general strategy. Treating "more semantic boundaries" as universally good —
+boundary-awareness that splits multi-span evidence is net harmful.
+
+---
+
+### 2026-05-29 — Finding 28: MAUD section-chunking recall collapse is real fragmentation (mandates hierarchical chunking)
+
+**Decision:** The MAUD R@8 -22.8pp collapse under section chunking is a genuine
+fragmentation effect, confirmed by chunk-distribution analysis — not a parquet bug.
+This is the direct, evidence-backed motivation for hierarchical chunking.
+
+**Evidence (MAUD section parquet vs baseline parquet):**
+  - Chunk count: 45,324 -> 145,601 (3.21x more chunks)
+  - Median chunk size: 1,800 -> 485 chars; baseline 89.5% over the 512 cap (2048-char
+    fixed-stride blocks); section 8.9% under the 200 floor (short section stubs)
+  - Mean chunks/doc: 302 -> 971 (3.21x); 100% of MAUD docs hit the section detector,
+    zero fixed-stride fallback (merger agreements are heavily structured)
+
+**Mechanism:** Baseline's large 2048-char blocks held whole multi-span merger clauses
+intact in one retrievable unit. Section chunking shattered each into 3-4 ~485-char
+section-boundary chunks plus sub-floor stubs that embed poorly. The multi-span evidence
+still exists but no longer arrives TOGETHER in top-8 — the retriever can't surface all
+the fragments of one answer at once. Recall collapses.
+
+**The deceptive faithfulness signal:** MAUD section faithfulness ROSE (49.5%->85.1%)
+while correctness FELL (-12.8pp). This is NOT a grounding fix. Shorter chunks give the
+model less context to be ungrounded about — it faithfully answers from tight fragments
+that lack the full answer. High faithfulness + low recall + low correctness = "model
+faithfully reports evidence that doesn't contain the answer." Faithfulness and recall
+moved as the same event, opposite directions.
+
+**Implication — hierarchical chunking is the indicated next lever:** retrieve on small
+pure children (section chunking's precise retrieval) but feed the PARENT section to the
+model (the complete context section chunking destroyed). Separates the retrieve-unit
+from the read-unit so neither job is sacrificed. NOTE: hierarchy reintroduces a Tier B
+measurement-scope question (child-span vs parent-span = "the retrieved chunk"?) that
+MUST be locked before any build — same class as Finding 7's top-8/top-64 scope trap.
+
+**Precludes:** Tuning section-boundary parameters as the MAUD fix (the problem is
+fragmentation of multi-span evidence, not boundary placement). Reading a faithfulness
+RISE alongside a recall FALL as an improvement.
+
+---
+
+### 2026-05-29 — Finding 29 CORRECTED (superseded twice): MAUD faithfulness collapse was a 6000-char truncation bug, NOT an NLI failure
+
+**History:** Originally logged as "judge ~35% false-negative on legal cross-references."
+Corrected after recon to "6000-char truncation bug." Then corrected AGAIN after
+re-judging revealed the strict cited-chunk fix was itself a metric-definition change
+(see Finding 30). The truncation bug diagnosis stands; the cited-chunk fix was the
+wrong remedy. Final fix: holistic full-context judge with truncation limit raised
+from 6000 to 20000.
+
+**The real cause:** judge_faithfulness.py truncated context to the first 6000
+characters (context_str[:6000], line 101). MAUD's 2048-char chunks produced ~13K
+contexts, 100% truncated to ~3.2 of 8 chunks. 87.7% of NOT_ENTAILED verdicts cited
+chunks invisible to the judge. Other corpora (~450-char chunks, ~4K context) were
+unaffected.
+
+**Fix applied:** truncation limit raised from 6000 to 20000 (DeepSeek-v4-flash
+handles 64K+). Holistic full-context mode retained as default per Finding 30.
+
+**Precludes:** Trusting any faithfulness number produced under the 6000-char limit.
+Evaluating any large-chunk strategy with the old truncating judge.
+
+---
+
+### 2026-05-29 — Finding 30: Faithfulness metric redesigned — holistic groundedness is the default; strict cited-chunk is a separate citation-precision diagnostic
+
+**Decision:** The standard faithfulness metric going forward is DOMAIN-AGNOSTIC HOLISTIC
+GROUNDEDNESS: is the answer/claim supported by the retrieved context AS A WHOLE (full
+context, truncation bug fixed). It is the headline grounding number and it means the same
+thing on every corpus (legal and, later, inferential/BEIR). The STRICT cited-chunk check
+(claim judged against its own cited_chunk_id) is RETAINED but DEMOTED to a separate,
+clearly-labeled CITATION-PRECISION diagnostic — valid only where citations are meaningful
+(extractive/legal), never the faithfulness headline, never compared across regimes.
+
+**Why holistic is the default (the future-proofing reason):** the strict cited-chunk
+judge has a hidden dependency — it assumes a claim maps cleanly to ONE source chunk. That
+holds on extractive legal text and collapses on dense/inferential corpora (e.g. "is this
+company healthy?" synthesizes across many passages, maps to no single chunk). The strict
+judge would read near-zero faithfulness there and a future reader could mistake
+domain-mismatch for failure. Holistic groundedness has no such dependency and is the
+correct metric where ground-truth citation structure is thin. This is also the
+RAGAS/RAG-triad definition — adopting the industry framing is correct HERE, at the
+inferential regime, because that metric was designed for exactly these conditions.
+
+**Why citation precision is kept as a diagnostic (the core insight):** a wrong-citation
+answer is NOT an incorrect answer. A claim can correctly answer the query (correctness
+PASS) while citing the wrong/incomplete chunk (citation-precision FAIL). The true test is
+correctness against the query; citation precision is a quality layer below it. Conflating
+the two is what made the MAUD analysis misread "model cited loosely" as "model is wrong."
+On legal, where a user must be able to follow a citation to the right clause, citation
+precision is a REAL and valuable signal — just not a verdict on answer correctness.
+
+**The three-rung regime ladder (metric matches the ground-truth structure the domain
+provides):**
+  1. Extractive + meaningful citations (legal): holistic groundedness (headline) +
+     cited-chunk citation-precision (diagnostic).
+  2. Extractive, weak citations: holistic groundedness only.
+  3. Inferential / dense (BEIR, finance): holistic groundedness only (RAGAS-style).
+Regime is a CONFIGURED property of the eval, set when pointing at a corpus — NOT
+auto-detected at runtime (a wrong runtime guess would silently swap the metric). Same
+spirit as always-on routing: one fixed choice per deployment.
+
+**What the strict-judge cited-chunk failures actually are (the citation-precision
+signal):** three patterns, none of them hallucination — (a) wrong/absent section label
+(substance right, "Section 6.02" not in the cited chunk), (b) incomplete paraphrase
+(maud-0922: "$2.10 cash" vs chunk's "$2.10 cash AND 0.0228 shares"), (c) cross-chunk
+synthesis (claim spans chunks A/B/C, cites only A). On extractive legal text the live
+faithfulness risk is MIS-CITATION, not fabrication.
+
+**Action required:** re-judge all four corpora under HOLISTIC groundedness (truncation
+fix retained) to produce the canonical faithfulness headline. The strict numbers from the
+prior re-judge become the citation-precision diagnostic. (Cheap — re-judge existing files,
+no regeneration.)
+
+**Hierarchy prediction (two independent, no-longer-contaminating signals):** hierarchy's
+feed-the-parent step should (1) improve citation precision (whole section in one unit ->
+fewer cross-chunk citation failures) and (2) hold/improve holistic groundedness. Measured
+by two metrics that no longer contaminate each other.
+
+**Precludes:** Using the strict cited-chunk judge as the faithfulness headline. Comparing
+strict-judge and holistic numbers in one row. Reading a citation-precision failure as an
+answer-correctness failure. Auto-detecting domain regime at runtime. Carrying the
+strict-only judge into inferential/BEIR transfer.
+
+---
+
+### 2026-05-29 — Finding 28 & 29 corrections consolidated: MAUD had NO parametric leak; the "deceptive faithfulness rise" was a truncation artifact
+
+**Corrects Findings 28 and 29.** After the faithfulness truncation fix (6000-char cutoff
+removed; see prior corrected Finding 29) and re-judging:
+
+**There is NO parametric leak on MAUD.** The entire thread — "44% parametric," then
+"~20-25%," then "maud-0019 is the one real fabrication" — was the truncation bug at
+progressively higher zoom. maud-0019's "fabricated $5M/$25M thresholds" were REAL TEXT in
+truncated chunks. Under the fixed judge, MAUD baseline CORRECT+UNFAITHFUL dropped 58 -> 20,
+and the 20 survivors are CITATION-PRECISION failures (wrong section label / incomplete
+paraphrase / cross-chunk synthesis), NOT fabrication. No fabricated-from-nothing leak
+survives on any corpus. The transfer-risk thesis ("legal correctness borrowed against
+parametric memory, will collapse on BEIR") has NO evidence behind it and is withdrawn.
+
+**The MAUD "+35.6pp faithfulness improvement" (Finding 28) is withdrawn.** It measured
+truncation-presence (baseline, huge chunks, clipped) vs truncation-absence (section,
+small chunks, not clipped). Under the fixed holistic-comparable judge, section faithfulness
+is slightly LOWER than baseline, not higher — consistent with section chunking's
+fragmentation causing cross-chunk citation failures. Faithfulness and recall both fall
+under section chunking; these are the SAME underlying cause (small chunks fragment
+multi-span evidence), showing up in two metrics, not two independent findings.
+
+**Section-aware chunking conclusion (Finding 27) STANDS and is reinforced:** corpus-
+dependent non-win. The fragmentation that collapsed MAUD recall (-22.8pp) also degrades
+citation precision. Not shippable as a general lever. Hierarchical chunking is the
+indicated structural answer.
+
+**Meta-lesson (third artifact this session):** a too-dramatic number (MAUD 49.5% faithful)
+was theorized as an NLI failure, logged, then found to be a mechanical truncation bug on
+recon — and the "confirmed real leak" exemplar was itself the artifact. Verify the
+instrument's actual INPUT before theorizing about its reasoning. Three artifacts caught
+this session by refusing to trust a clean-looking number (CBF 17.5% reconciliation,
+MAUD NLI misdiagnosis, MAUD parametric-leak that wasn't).
+
+**Precludes:** Citing any MAUD parametric-leak rate. Quoting the +35.6pp section
+faithfulness delta. Treating section-chunking faithfulness and recall effects as
+independent findings.
