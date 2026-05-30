@@ -222,6 +222,7 @@ def build_corpus(corpus_name: str) -> None:
     for _, row in doc_df.iterrows():
         se = row["start_end_idx"]
         content_preview = row["content"][:120].replace("\n", "\\n")
+        content_preview = content_preview.encode("ascii", errors="replace").decode()
         print(f"  {row['chunk_id']}")
         print(f"    [{se[0]:>6}, {se[1]:>6})  len={se[1]-se[0]:>4}  "
               f"\"{content_preview}...\"")
