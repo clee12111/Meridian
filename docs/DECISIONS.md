@@ -1218,3 +1218,109 @@ MAUD NLI misdiagnosis, MAUD parametric-leak that wasn't).
 **Precludes:** Citing any MAUD parametric-leak rate. Quoting the +35.6pp section
 faithfulness delta. Treating section-chunking faithfulness and recall effects as
 independent findings.
+
+---
+
+### 2026-05-30 — Finding 33: Cross-reference graph is extractable but addresses the WRONG bottleneck; MAUD synthesis failures are comprehension, not access
+
+**Decision:** Do NOT build the cross-reference graph (or DTGG) as a fix for MAUD's synthesis
+failures. The graph is highly extractable but targets information ACCESS, while MAUD's
+dominant failure is information COMPREHENSION — the model has the evidence and reasons over
+it wrong. Wrong bottleneck.
+
+**The graph IS viable (extraction was never the question):**
+- 101,478 cross-reference matches, 677/doc mean. 95.6% of "Section X" refs resolve to a
+  section header in the same document. 155 defined terms/doc. A regex extractor would
+  produce a rich, production-grade graph.
+
+**Why it would NOT help (the decisive check):** Of 5 sampled MAUD INCORRECT+FAITHFUL
+(grounded-but-wrong) queries, 4/5 are pure reasoning errors on evidence ALREADY PRESENT and
+ALREADY cross-referenced in context:
+- maud-0018: denied a tail provision that was in 28 cross-referenced context chunks.
+- maud-0126: misread a specific threshold number.
+- maud-0012: failed to extract a detail present in 21 cross-referenced chunks.
+- maud-0531: entity confusion (Parent vs Company), not a cross-reference issue.
+- Only maud-0130 (1/5) involved a missing cross-reference (a retrieval gap).
+The model HAS the cross-references (7-28 per query) and misreads them. Declaring more edges
+to a model that already has the cross-referenced text and still answers wrong addresses
+access, which is not the failure.
+
+**The chain this completes (what does NOT fix MAUD multi-span/synthesis):**
+- Retrieval-unit changes — section chunking (F28) and hierarchy (F31): proven harmful twice.
+- Cross-reference graph (this finding): wrong bottleneck — access, not comprehension.
+- The agentic loop: re-retrieves, useless when evidence is already present and misread.
+What's LEFT and dead-center on the failure: Phase 8 SYNTHESIS REASONING QUALITY — same
+evidence in, better reasoning out. Levers: chain-of-thought / structured reasoning prompt,
+or a stronger synthesis model, or both.
+
+**Meta (fourth verify-before-build save this session):** the graph was my (advisor's)
+predicted multi-span fix. Checked against 5 labeled failures, refuted — the failures are
+comprehension, not access. Prior saves: truncation bug, parametric-leak-that-wasn't,
+section/hierarchy retrieval-unit dead ends. The pattern holds: confident hypothesis, checked
+on labeled cases, redirected before the build.
+
+**Precludes:** Building the cross-reference graph or DTGG to fix synthesis quality. Treating
+MAUD's grounded-but-wrong cluster as an information-access problem. Using the loop (re-
+retrieval) to fix sufficient-evidence-misread failures.
+
+---
+
+### 2026-05-30 — Finding 34: The "synthesis gap" decomposes into FOUR distinct failure types; rewrite-off is the cheap real win; stronger model is a null
+
+**Decision:** A five-arm sweep (Pro-on-Phase-8, rewrite-off, windowed-parent, SAC-visible,
++ prior CoT) on the 18 labeled MAUD INCORRECT+FAITHFUL failures proved there is NO single
+"synthesis gap." It is at least four distinct failures, each touched by a different lever,
+and the most-expected lever (stronger model) did the least. Bank rewrite-off; do NOT ship
+windowed; log Pro as a null.
+
+**The sweep (18 queries, by-name reading, faithfulness on every arm):**
+  Arm              CORRECT  Faith   Note
+  Baseline         2        0.940   —
+  CoT (prior)      1        0.944   dead lever, no diagnostic flips
+  A: Pro synthesis 3        0.952   flipped 2 NON-diagnostic borderlines; flipped ZERO of
+                                    the 4 hard diagnostics. Capability is NOT the ceiling.
+  B: Rewrite OFF   3        0.950   flipped maud-0012 AND maud-0126 (TWO hard diagnostics);
+                                    16/18 queries got different chunks — verified mechanism,
+                                    not noise. Faithful.
+  C: Windowed parent 4      0.679   highest CORRECT, flipped maud-0018 (marquee case) BUT
+                                    faithfulness COLLAPSED 0.94->0.68, CORRECT+UNFAITHFUL=4.
+                                    Correct-but-ungrounded — disqualified as built.
+  D: SAC visible   2        0.972   maud-0531 (entity confusion) -> PARTIAL only. Best
+                                    faithfulness; framing helps grounding, not comprehension.
+
+**The four failure types (the real deliverable — the gap was never one problem):**
+1. RETRIEVAL-QUALITY (rewrite degrading chunks): maud-0012, maud-0126. Fixed by rewrite-OFF.
+   The single rewrite normalized queries toward generic legal vocabulary and pulled blander,
+   harder-to-read chunks. Raw query retrieved chunks the model could read correctly. These
+   were retrieval failures MASQUERADING as comprehension.
+2. ACCESS-LIMITED (answer needs wider context): maud-0018, maud-0130. Windowed parent flips
+   them — but at unacceptable faithfulness cost as built (model infers from wide context
+   rather than grounding).
+3. ENTITY-CONFUSION (which entity a term refers to): maud-0531. Partially helped by SAC
+   document-framing; not cleanly fixed by anything.
+4. GENUINE COMPREHENSION RESIDUAL: maud-0684, 0788, 1114, 1452, 1453 — INCORRECT across ALL
+   five arms. Not retrieval, not capability, not context-width, not framing. The real hard
+   core, now isolated and ~5 cases (down from 18).
+
+**Two findings that update prior decisions:**
+- Pro is a NULL on the hard cases — stronger model does not fix misread-present-evidence.
+  This KILLS the "frontier model on Phase 8" direction before it was paid for. Capability is
+  not the ceiling for these failures.
+- Rewrite was "exonerated" as a DRM lever (Finding 12) but is net-NEGATIVE on
+  synthesis/retrieval-quality. Finding 12 tested DRM, never synthesis. Rewrite-off is the
+  cheap win — turn off a component, fixes 2 hard cases, faithful.
+
+**Windowed parent is the Arm-C trap:** highest correctness, lowest faithfulness. The
+faithfulness metric caught exactly what it was built for — correct-but-ungrounded answers
+from a model inferring over wide context. Without the metric this reads "4 CORRECT, ship it";
+with it, "trades comprehension for hallucination, disqualified." Metric earned its keep again.
+
+**Precludes:** Treating the synthesis gap as one problem. Pursuing a frontier model on Phase 8
+to fix the hard comprehension cases (proven null). Shipping windowed parent as-built (faith
+collapse). Reading a correctness gain without checking the faithfulness cost.
+
+**Next:** validate rewrite-off at scale (touches shipped config). Test two query-time
+successors on the 18 — multi-query retrieval (the principled successor to rewrite-off) and
+decomposition (the one query/reasoning-time lever aimed at the comprehension residual, with
+faithfulness as the guardrail per the Arm-C lesson). If neither beats plain rewrite-off, ship
+rewrite-off and the comprehension residual becomes the final-phase target.
