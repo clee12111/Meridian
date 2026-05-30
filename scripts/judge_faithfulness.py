@@ -98,7 +98,7 @@ def _judge_claim(claim_text: str, context_str: str) -> dict:
     client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com")
 
     prompt = ENTAILMENT_PROMPT.format(
-        context=context_str[:6000],
+        context=context_str[:20000],
         claim=claim_text,
     )
 
@@ -139,8 +139,18 @@ def _judge_claim(claim_text: str, context_str: str) -> dict:
     return _parse_verdict(raw) if raw else {"verdict": "PARSE_ERROR", "reason": "Empty after retries"}
 
 
-def judge_query(record: dict) -> dict:
-    """Judge all claims in one query record. Returns faithfulness result."""
+def judge_query(record: dict, *, strict: bool = False) -> dict:
+    """Judge all claims in one query record. Returns faithfulness result.
+
+    Parameters
+    ----------
+    strict : bool
+        If False (default), HOLISTIC mode — each claim is judged against the
+        FULL retrieved context (Finding 30: canonical faithfulness headline).
+        If True, STRICT CITATION-PRECISION mode — each claim is judged against
+        only its cited chunk, falling back to full context when no cited chunk
+        is available (Finding 30: separate diagnostic, not the headline).
+    """
     qid = record["query_id"]
     claims = record.get("claims", [])
     context_chunks = record.get("context_chunks", [])
@@ -167,11 +177,15 @@ def judge_query(record: dict) -> dict:
             ],
         }
 
-    # Build full context string (all chunks the model saw)
-    context_str = "\n---\n".join(
+    # Build full context string (all chunks the model saw).
+    # Truncation limit raised from 6000 to 20000 (Finding 29 fix).
+    full_context_str = "\n---\n".join(
         f"[{c['chunk_id']}]\n{c['content']}"
         for c in context_chunks
     )
+
+    # For strict mode: lookup cited chunks by ID
+    chunk_by_id = {c["chunk_id"]: c for c in context_chunks} if strict else {}
 
     per_claim: list[dict] = []
     n_entailed = 0
@@ -182,10 +196,20 @@ def judge_query(record: dict) -> dict:
             per_claim.append({"claim": "", "verdict": "NOT_ENTAILED", "reason": "empty claim"})
             continue
 
-        verdict = _judge_claim(claim_text, context_str)
+        # Resolve context for this claim
+        cited_id = claim.get("cited_chunk_id", "")
+        if strict and cited_id and cited_id in chunk_by_id:
+            # Strict: judge against the specific cited chunk only
+            cited_chunk = chunk_by_id[cited_id]
+            context_for_claim = f"[{cited_chunk['chunk_id']}]\n{cited_chunk['content']}"
+        else:
+            # Holistic (default): judge against full retrieved context
+            context_for_claim = full_context_str
+
+        verdict = _judge_claim(claim_text, context_for_claim)
         per_claim.append({
             "claim": claim_text,
-            "cited_chunk_id": claim.get("cited_chunk_id", ""),
+            "cited_chunk_id": cited_id,
             **verdict,
         })
         if verdict["verdict"] == "ENTAILED":
@@ -203,7 +227,8 @@ def judge_query(record: dict) -> dict:
     }
 
 
-def judge_file(filepath: Path, workers: int = 14) -> list[dict]:
+def judge_file(filepath: Path, workers: int = 14, *,
+               strict: bool = False) -> list[dict]:
     """Judge all records in a file."""
     records = []
     with filepath.open(encoding="utf-8") as f:
@@ -217,10 +242,16 @@ def judge_file(filepath: Path, workers: int = 14) -> list[dict]:
     if missing_ctx:
         print(f"  WARNING: {missing_ctx}/{len(records)} records lack context_chunks")
 
+    mode = "STRICT (citation-precision)" if strict else "HOLISTIC (groundedness)"
+    print(f"  Mode: {mode}")
+
     results: list[dict] = []
 
     with ThreadPoolExecutor(max_workers=workers) as executor:
-        futures = {executor.submit(judge_query, r): r for r in records}
+        futures = {
+            executor.submit(judge_query, r, strict=strict): r
+            for r in records
+        }
         for future in as_completed(futures):
             result = future.result()
             results.append(result)
@@ -242,6 +273,9 @@ def main():
     p.add_argument("--input", nargs="+", type=Path, required=True)
     p.add_argument("--workers", type=int, default=14)
     p.add_argument("--output-dir", type=Path, default=Path("data"))
+    p.add_argument("--strict", action="store_true",
+                   help="Citation-precision mode: judge each claim against its "
+                        "cited chunk only (Finding 30 diagnostic, not the headline)")
     args = p.parse_args()
 
     all_summaries = []
@@ -253,7 +287,7 @@ def main():
 
         n_records = sum(1 for line in filepath.open(encoding="utf-8") if line.strip())
         print(f"\nJudging faithfulness: {filepath.name} ({n_records} records)...")
-        results = judge_file(filepath, workers=args.workers)
+        results = judge_file(filepath, workers=args.workers, strict=args.strict)
 
         n = len(results)
         scores = [r["faithfulness_score"] for r in results]
