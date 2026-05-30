@@ -15,14 +15,13 @@ The autonomous-outer-loop direction from v1 was explored and abandoned —
 do not bring it back.
 
 **Positioning:** v1 (RAG Forensics) stays on resume as the shipped project
-until v2 is demonstrably better. Three conditions:
-(1) agent runs all 10 phases on LegalBench — ✓ COMPLETE (all four corpora,
-    exceeds original single-corpus gate),
-(2) Tier A measurement produces signal on a non-annotated corpus (FiQA or
-    NFCorpus) — NOT STARTED, the open transferability item,
-(3) Phase 10 measurably beats single-shot — measured: +1.8pp at +68%
-    compute (Finding 18); marginal, single-shot preferred.
-Until condition 2 is met: v1 ships, v2 builds.
+until v2 is demonstrably better. One gate remains:
+  Tier A measurement produces signal on a non-annotated corpus (FiQA or
+  NFCorpus) — NOT STARTED, the open transferability item.
+(Prior conditions resolved: agent runs all 10 phases on LegalBench ✓
+COMPLETE; Phase 10 vs single-shot measured at +1.8pp / +68% compute,
+single-shot preferred — Finding 18.)
+Until the transfer gate is met: v1 ships, v2 builds.
 
 ---
 
@@ -97,12 +96,14 @@ Measurement never depends on the agent. Agent never bypasses measurement.
 
 ## Hard rules (never violate)
 
-1. **No LLM judges in the deterministic measurement layer.** The span-overlap
-   taxonomy (Tier B) and corpus-agnostic metrics (Tier A) are the trust
-   anchor — deterministic, no LLM calls. Answer-correctness evaluation
-   (scripts/judge_answers.py) is a SEPARATE, clearly-labeled metric that
-   uses an LLM judge. The two are reported separately and never contaminate
-   each other. (Finding 20 established this boundary.)
+1. **No LLM judges in the deterministic measurement layer (two-layer rule).**
+   Layer 1 (deterministic, the trust anchor): span-overlap taxonomy (Tier B:
+   DRM/CBF/SGP/ICR/OVR/OK) + corpus-agnostic metrics (Tier A). No LLM calls.
+   Layer 2 (LLM-judged, separate): correctness (scripts/judge_answers_v2.py)
+   + faithfulness (scripts/judge_faithfulness.py — holistic groundedness
+   default, --strict for citation-precision diagnostic). Layer 2 never
+   contaminates Layer 1. (Finding 20 established the boundary; Finding 30
+   formalized the two-regime faithfulness design.)
 2. **Per-span scoring, not merged-character-set.** Finding 3 fix; do not regress.
 3. **Sub-floor deltas are noise.** R@8 has 0.50pp variance floor (Voyage
    embedding nondeterminism). Never narrate sub-floor changes as improvements.
@@ -112,7 +113,9 @@ Measurement never depends on the agent. Agent never bypasses measurement.
 7. **Finding 1 is a hard gate on MultiHop.** Multi-doc classifier bug in
    `taxonomy.py` is latent on current data; must fix before MultiHop.
 8. **Finding 2 — top_k is not a DRM lever.** DRM is discrimination-bound;
-   real DRM levers are query expansion, BM25/dense ratio, hybrid weighting.
+   the validated DRM lever is document routing (Finding 24, +12.9pp on the
+   most DRM-bound corpus), with BM25/dense balance secondary. Query
+   expansion was tested and scoped out (Finding 12) — not a DRM lever.
 9. **Reranker OFF on topically-homogeneous corpora** without document-scoping.
    Cross-encoder reranking by semantic relevance is blind to document identity;
    produces ~79% DRM regardless of candidate quality. Three evidence lines:
@@ -226,17 +229,55 @@ hybrid routing(top-3) + single-shot.
 - Hybrid document routing (dense summary + BM25 filename tokens)
 - Cited-span measurement (Phase 8 cited_text → taxonomy)
 - Span-informed answer judge (scripts/judge_answers_v2.py)
+- Faithfulness judge (scripts/judge_faithfulness.py) — holistic
+  groundedness default, --strict for citation-precision diagnostic
+- Section-aware chunker (core/ingestion/section_chunker.py) +
+  build_section_chunks.py — tested across all four corpora, rejected
+  as general lever (Finding 27); section collections retained for
+  reference ({corpus}_section_sac_v4)
+- Shared embed pipeline (core/ingestion/embed_index.py) with
+  MERIDIAN_EMBED_WORKERS / MERIDIAN_EMBED_SLEEP env control
+- Section A/B campaign runner (scripts/run_section_campaign.py) —
+  sequential gated runner for multi-corpus section-chunking A/B
 - Phoenix observability (localhost:6006)
 - Collections on voyage-4: contractnli_sac_v4 (3797),
   privacyqa_sac_v4 (620), cuad_sac_v4 (96256), maud_sac_v4 (45324)
+- Section collections: cuad_section_sac_v4 (75277),
+  maud_section_sac_v4 (145601), contractnli_section_sac_v4 (2865),
+  privacyqa_section_sac_v4 (464)
 - Routing indexes: per-corpus hybrid dense+BM25 (.npz)
 - voyage-4 budget: ~47M of 200M spent, ~153M remaining
 - voyage-4-large: ~74M remaining, reserved for final headline run
 
 **Chunking baseline (Phases 1-2):**
-Fixed-size 512 tokens, 128 overlap. Section-aware chunker
-transplanted but not wired. Switch deferred until CBF failure
-rates justify a re-index. See docs/DECISIONS.md.
+Fixed-size 2048-char stride (baseline collections). Section-aware
+chunker built, wired, tested across all four corpora in a five-corpus
+A/B, and REJECTED as a general lever (Finding 27): marginal on CUAD,
+neutral on ContractNLI, harmful on MAUD (-22.8pp R@8, fragmentation —
+Finding 28) and PrivacyQA (-7.2pp correctness). The mechanism: section
+boundaries split multi-span evidence, collapsing recall. Hierarchical
+chunking (retrieve tight children, feed parent context) was the
+indicated next lever but also tested negative (Finding 31). Both
+retrieval-unit approaches failed; the synthesis bottleneck is
+comprehension, not access (Finding 33). See Findings 27-28, 31, 33.
+
+**Faithfulness (Layer 2, LLM-judged):**
+Holistic groundedness is the canonical default: each claim judged
+against the FULL retrieved context (Finding 30). Domain-agnostic,
+RAGAS-aligned. Strict cited-chunk mode (--strict flag on
+judge_faithfulness.py) is a separate citation-precision diagnostic —
+valid on extractive/legal corpora where citations are meaningful,
+never the headline.
+  Canonical holistic faithfulness (four corpora):
+    PrivacyQA    97.2%
+    MAUD         96.8%
+    CUAD         95.5%
+    ContractNLI  92.4%
+A 6000-char context truncation bug was found and fixed (Finding 29
+corrected). MAUD was 100% truncated under the old judge (~5 of 8
+chunks clipped), producing corrupt 49.5% faithfulness. Fixed by
+raising truncation limit to 20000. All pre-fix MAUD faithfulness
+numbers are invalid.
 
 **Resume swap conditions:**
 1. Agent runs all 10 phases on LegalBench  ✓ COMPLETE
@@ -245,30 +286,43 @@ rates justify a re-index. See docs/DECISIONS.md.
    +68% compute (Finding 18). Marginal. Single-shot preferred.
 
 **Next (in priority order):**
-1. Section-aware / conditional-clause chunking — attacks CBF on
-   CUAD CBF ~17.5% routing-ON / ~21.6% routing-OFF (both real;
-   routing-ON is the shipped anchor) / MAUD (15.5%) and the MAUD partial-extraction
-   gap (20.6% PARTIAL). Next retrieval lever. Requires re-index.
-2. Phase 8 synthesis fix — OK+INCORRECT cluster (right evidence,
-   wrong conclusion). Reasoning-layer work, not retrieval.
+1. Phase 8 synthesis fix — INCORRECT+FAITHFUL cluster (grounded but
+   wrong: right evidence, wrong conclusion). 18-43 queries per corpus
+   under holistic judge (CUAD 34, ContractNLI 31, MAUD 18, PrivacyQA 43).
+   Material cluster. Now confirmed as THE bottleneck: retrieval-unit
+   changes (section chunking F28, hierarchy F31), cross-reference graph
+   (F33), and the agentic loop have all been tested/analyzed and do NOT
+   address it — the failure is comprehension, not access. Levers:
+   chain-of-thought / structured reasoning prompt, or a stronger
+   synthesis model, or both.
+2. BEIR / non-legal transfer — Tier A measurement on FiQA or
+   NFCorpus. The open transferability condition. Holistic faithfulness
+   (Finding 30) is the metric designed for this regime.
 3. Reasoning-based loop gate (vs current deterministic grounding
    gate) — the agentic-loop frontier piece.
-4. Three missing answer baselines (PQA/CUAD/MAUD) if delta
-   symmetry wanted — low priority, ContractNLI delta carries claim.
-5. Final headline run on voyage-4-large once chunking + config
-   locked.
+4. Final headline run on voyage-4-large once config locked.
 
 **Known issues / open flags:**
+- INCORRECT+FAITHFUL synthesis failures — Phase 8 answers wrong
+  despite having correct, grounded evidence (18-43 per corpus).
+  The largest remaining error cluster. Reasoning-layer fix needed.
 - Phase 9 CONTRADICTED: false positive rate on legal negation
   ("shall not") — conservative by design, NLI model fix deferred
-- OK+INCORRECT synthesis failures — Phase 8 answers NO or hedges
-  despite having correct evidence
 - Cited-span extraction fails ~8% (non-DRM) — LLM paraphrases
   instead of verbatim quoting; tolerable on extractive corpora
 - All four corpora are affirmative-only (no negative cases) —
   answer correctness measures recall, not false-positive rate
 - Two answer judges exist (affirmative-only, span-informed) —
   do NOT mix numbers across judges (Finding 24)
+- Section-aware chunking is a tested NEGATIVE result (Finding 27) —
+  do not re-attempt as a general lever
+- Hierarchical chunking is a tested NEGATIVE result (Finding 31) —
+  retrieval-unit changes do not fix the synthesis bottleneck
+- Cross-reference graph / DTGG precluded as synthesis fix (Finding
+  33) — MAUD's grounded-but-wrong failures are comprehension, not
+  access. The model already has the cross-referenced evidence and
+  misreads it.
+- Finding 1 (multi-doc classifier) is still a hard gate on MultiHop
 
 **Env flags (for A/B experiments):**
   MERIDIAN_NO_REWRITE    — disable Phase 3 query rewriting
@@ -282,9 +336,22 @@ rates justify a re-index. See docs/DECISIONS.md.
   MERIDIAN_ROUTING_TOPK  — document routing top-k (unset = no routing)
   MERIDIAN_ROUTING_ALPHA — routing CC fusion alpha (default: 0.5)
   MERIDIAN_ROUTING_INDEX — routing index path (default: data/routing_index.npz)
+  MERIDIAN_EMBED_WORKERS — thread pool for Voyage embed batches (default: 4)
+  MERIDIAN_EMBED_SLEEP   — per-batch sleep in seconds (default: 0.0)
   PHOENIX_ENABLED        — enable Phoenix tracing (localhost:6006)
 
-**CLI flags (scripts/run_eval.py):**
+**CLI flags (scripts/run_corpus_eval.py — cross-corpus eval):**
+  --corpus NAME          — {contractnli|privacyqa|cuad|maud}
+  --chunk-alpha FLOAT    — CC fusion alpha (required)
+  --output PATH          — output JSONL file (required)
+  --collection STR       — override Qdrant collection (for A/B testing)
+  --parquet PATH         — override corpus parquet (must match collection)
+  --routing-topk INT     — document routing top-k (unset = no routing)
+  --routing-alpha FLOAT  — routing CC fusion alpha
+  --workers INT          — parallel workers (default: 8, max: 12)
+  --limit INT            — run only first N queries
+
+**CLI flags (scripts/run_eval.py — ContractNLI-only harness):**
   --collection NAME      — Qdrant collection (default: contractnli_baseline)
   --no-rerank            — disable reranker
   --no-rewrite           — disable query rewriter
@@ -304,6 +371,6 @@ rates justify a re-index. See docs/DECISIONS.md.
 
 ## Decision log
 
-Decisions are recorded in docs/DECISIONS.md. Append new entries there.
-Format: date, decision, why, precludes. See that file for full history
-and format instructions.
+Decisions are recorded in docs/DECISIONS.md (Findings 1-30 + corrections).
+Append new entries there. Format: date, decision, why, precludes. See that
+file for full history and format instructions.
