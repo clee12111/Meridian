@@ -19,6 +19,8 @@ from __future__ import annotations
 import logging
 import os
 
+import pandas as pd
+
 from core.retrieval.base import RetrievalResult
 from core.retrieval.fusion import cc_fusion, rrf, weighted_rrf
 from core.supervisor.context import PipelineContext
@@ -333,7 +335,14 @@ def reranking(state: ExperimentState, context: PipelineContext) -> dict:
 
 
 def context_construction(state: ExperimentState, context: PipelineContext) -> dict:
-    """Phase 7 — take top 8 chunks from reranked result."""
+    """Phase 7 — take top 8 chunks from reranked result.
+
+    When context.parent_df is set (hierarchical chunking), swaps child
+    content with parent content and deduplicates: multiple children of the
+    same parent produce that parent ONCE, ordered by best child score.
+    DOES NOT modify reranked_result.spans — those stay as child spans for
+    Tier B measurement (child-span scoring invariant).
+    """
     trace = _get_trace(state, context)
     span = start_span(trace, "phase_7_context_construction", {})
     reranked = state.get("reranked_result")
@@ -343,10 +352,68 @@ def context_construction(state: ExperimentState, context: PipelineContext) -> di
         return {}
 
     top_n = 8
-    contents = reranked.get("contents", [])[:top_n]
-    ids = reranked.get("ids", [])[:top_n]
+    child_ids = reranked.get("ids", [])[:top_n]
+    child_contents = reranked.get("contents", [])[:top_n]
 
-    logger.info("Phase 7 (context_construction): %d chunks selected", len(contents))
+    if context.parent_df is not None:
+        # Hierarchical parent swap + dedup.
+        # Lookups are built lazily once, then cached on the context object
+        # to avoid 92K iterrows() per query (the cause of the stall).
+        if not hasattr(context, "_hier_child_to_parent"):
+            context._hier_child_to_parent = dict(
+                zip(context.corpus_df["chunk_id"],
+                    context.corpus_df["parent_id"])
+            )
+            # Filter out NaN/None parent_ids (leaves)
+            context._hier_child_to_parent = {
+                k: v for k, v in context._hier_child_to_parent.items()
+                if v is not None and not (isinstance(v, float) and pd.isna(v))
+            }
+            context._hier_parent_content = dict(
+                zip(context.parent_df["chunk_id"],
+                    context.parent_df["content"])
+            )
+
+        child_to_parent = context._hier_child_to_parent
+        parent_content_lookup = context._hier_parent_content
+
+        seen_parents: set[str] = set()
+        deduped_contents: list[str] = []
+        deduped_ids: list[str] = []
+
+        for cid, child_content in zip(child_ids, child_contents):
+            parent_id = child_to_parent.get(cid)
+            if parent_id is None:
+                # Leaf: use own content (it IS the parent)
+                if cid not in seen_parents:
+                    seen_parents.add(cid)
+                    deduped_contents.append(child_content)
+                    deduped_ids.append(cid)
+            else:
+                # Child of a split parent: swap to parent content, dedup
+                if parent_id not in seen_parents:
+                    seen_parents.add(parent_id)
+                    parent_content = parent_content_lookup.get(parent_id)
+                    if parent_content is not None:
+                        deduped_contents.append(parent_content)
+                        deduped_ids.append(parent_id)
+                    else:
+                        # Fallback: use child content if parent missing
+                        deduped_contents.append(child_content)
+                        deduped_ids.append(cid)
+
+        contents = deduped_contents
+        ids = deduped_ids
+        logger.info(
+            "Phase 7 (context_construction): %d children -> %d parents (deduped)",
+            len(child_ids), len(contents),
+        )
+    else:
+        # Standard path: no hierarchy
+        contents = child_contents
+        ids = child_ids
+        logger.info("Phase 7 (context_construction): %d chunks selected", len(contents))
+
     result = {"context_chunks": contents, "context_ids": ids}
     end_span(span, {"n_chunks": len(contents), "chunk_ids": ids})
     return result

@@ -30,6 +30,7 @@ class PipelineContext:
     llm_client: Any           # placeholder, typed later
     langfuse_client: Any      # Langfuse instance or None
     dataset_name: str         # e.g. "contractnli" — passed to retrievers
+    parent_df: pd.DataFrame | None = None  # Hierarchical: parent lookup table
 
     @classmethod
     def build(

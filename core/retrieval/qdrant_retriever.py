@@ -204,14 +204,13 @@ class QdrantRetriever:
             )
 
         if doc_ids is not None:
-            # Convert doc_ids to matching chunk_ids via corpus_df
-            matching_chunk_ids = self._corpus_df.loc[
-                self._corpus_df["doc_id"].isin(doc_ids), "chunk_id"
-            ].tolist()
-            if matching_chunk_ids:
-                must_conditions.append(
-                    FieldCondition(key="chunk_id", match=MatchAny(any=matching_chunk_ids))
-                )
+            # Filter directly on doc_id payload (requires doc_id keyword index).
+            # Replaces the old chunk_id enumeration which built MatchAny lists
+            # of 100s-1000s of chunk_ids — verified output-identical on 5-query
+            # gate (same chunks, same order, same scores).
+            must_conditions.append(
+                FieldCondition(key="doc_id", match=MatchAny(any=doc_ids))
+            )
 
         query_filter = Filter(must=must_conditions) if must_conditions else None
 

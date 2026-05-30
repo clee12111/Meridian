@@ -74,6 +74,19 @@ class SectionChunk:
     chunk_index: int    # sequential within this doc
 
 
+@dataclass
+class HierarchicalResult:
+    """Parent + child spans from hierarchical chunking.
+
+    parents: list of (start, end) for each parent section.
+    children: list of (start, end, parent_idx) where parent_idx indexes
+              into parents. For leaf sections (no split needed), the leaf
+              is both a parent and a child pointing to itself.
+    """
+    parents: list[tuple[int, int]]
+    children: list[tuple[int, int, int]]  # (start, end, parent_idx)
+
+
 def _find_boundaries(text: str) -> list[int]:
     """Return sorted, deduplicated char offsets where section boundaries occur."""
     offsets: set[int] = set()
@@ -258,6 +271,147 @@ def _fixed_stride_chunks(text: str, doc_id: str) -> list[SectionChunk]:
             break
         pos += stride
     return chunks
+
+
+def _merge_and_split_hierarchical(
+    text: str, sections: list[tuple[int, int]],
+) -> HierarchicalResult:
+    """Merge sub-floor sections and split oversize ones, emitting BOTH levels.
+
+    For sections <= CHUNK_CAP: emitted as leaf (parent and child are identical).
+    For sections > CHUNK_CAP: parent span preserved, children are sub-splits.
+    """
+    parents: list[tuple[int, int]] = []
+    children: list[tuple[int, int, int]] = []  # (start, end, parent_idx)
+
+    pending_start: int | None = None
+    pending_end: int | None = None
+
+    def flush() -> None:
+        nonlocal pending_start, pending_end
+        if pending_start is None:
+            return
+        length = pending_end - pending_start
+        parent_idx = len(parents)
+        parents.append((pending_start, pending_end))
+
+        if length > CHUNK_CAP:
+            # Oversize: emit parent + sub-split children
+            child_spans = _sub_split(
+                text[pending_start:pending_end],
+                pending_start, CHUNK_CAP, SPLIT_OVERLAP,
+            )
+            for cs, ce in child_spans:
+                children.append((cs, ce, parent_idx))
+        else:
+            # Leaf: parent == child
+            children.append((pending_start, pending_end, parent_idx))
+
+        pending_start = None
+        pending_end = None
+
+    for s, e in sections:
+        if pending_start is None:
+            pending_start = s
+            pending_end = e
+            continue
+
+        pending_len = pending_end - pending_start
+        combined = e - pending_start
+
+        if pending_len < CHUNK_FLOOR:
+            pending_end = e
+            continue
+
+        if combined <= CHUNK_CAP:
+            pending_end = e
+            continue
+
+        flush()
+        pending_start = s
+        pending_end = e
+
+    flush()
+
+    # Post-pass: merge trailing sub-floor parent into predecessor
+    if len(parents) >= 2:
+        last_s, last_e = parents[-1]
+        if last_e - last_s < CHUNK_FLOOR:
+            prev_s, _ = parents[-2]
+            # Merge: extend predecessor parent, reassign children
+            merged_parent_idx = len(parents) - 2
+            removed_parent_idx = len(parents) - 1
+            parents[merged_parent_idx] = (prev_s, last_e)
+            parents.pop()
+            # Reassign children of removed parent to merged parent
+            children = [
+                (cs, ce, merged_parent_idx if pi == removed_parent_idx else pi)
+                for cs, ce, pi in children
+            ]
+            # Re-merge children of the extended parent if needed
+            # (the predecessor's children + the removed parent's children
+            # now all point to merged_parent_idx)
+
+    return HierarchicalResult(parents=parents, children=children)
+
+
+def chunk_document_hierarchical(text: str, doc_id: str) -> HierarchicalResult:
+    """Chunk one document with parent-child hierarchy.
+
+    Returns HierarchicalResult with parent sections and child sub-splits.
+    For leaf sections (no split needed), parent == child.
+    Falls back to fixed-stride with synthetic parents on unstructured docs.
+    """
+    if not text.strip():
+        return HierarchicalResult(parents=[], children=[])
+
+    boundaries = _find_boundaries(text)
+
+    if len(boundaries) < 2:
+        # Fallback: fixed-stride children, each is its own parent
+        parents = []
+        children = []
+        stride = CHUNK_CAP - 128
+        pos = 0
+        while pos < len(text):
+            end = min(pos + CHUNK_CAP, len(text))
+            if text[pos:end].strip():
+                parent_idx = len(parents)
+                parents.append((pos, end))
+                children.append((pos, end, parent_idx))
+            if end == len(text):
+                break
+            pos += stride
+        return HierarchicalResult(parents=parents, children=children)
+
+    if boundaries[0] != 0:
+        boundaries.insert(0, 0)
+
+    raw_sections: list[tuple[int, int]] = []
+    for i in range(len(boundaries)):
+        s = boundaries[i]
+        e = boundaries[i + 1] if i + 1 < len(boundaries) else len(text)
+        if s < e and text[s:e].strip():
+            raw_sections.append((s, e))
+
+    if not raw_sections:
+        # Same fallback
+        parents = []
+        children = []
+        stride = CHUNK_CAP - 128
+        pos = 0
+        while pos < len(text):
+            end = min(pos + CHUNK_CAP, len(text))
+            if text[pos:end].strip():
+                parent_idx = len(parents)
+                parents.append((pos, end))
+                children.append((pos, end, parent_idx))
+            if end == len(text):
+                break
+            pos += stride
+        return HierarchicalResult(parents=parents, children=children)
+
+    return _merge_and_split_hierarchical(text, raw_sections)
 
 
 def compute_checksum(content: str) -> str:
