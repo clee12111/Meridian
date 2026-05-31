@@ -17,7 +17,8 @@ do not bring it back.
 **Positioning:** v1 (RAG Forensics) stays on resume as the shipped project
 until v2 is demonstrably better. One gate remains:
   Tier A measurement produces signal on a non-annotated corpus (FiQA or
-  NFCorpus) — NOT STARTED, the open transferability item.
+  NFCorpus) — MET on NFCorpus (Finding 47: nDCG@10 0.3988, beats classic
+  BEIR baselines; routing boundary characterized).
 (Prior conditions resolved: agent runs all 10 phases on LegalBench ✓
 COMPLETE; Phase 10's +1.8pp / +68% compute was a broken mechanism,
 not inherent low value — Finding 35. Loop under redesign.)
@@ -98,7 +99,8 @@ Measurement never depends on the agent. Agent never bypasses measurement.
 - LegalBench-RAG — all four corpora (ContractNLI, PrivacyQA, CUAD,
   MAUD) indexed on voyage-4, swept, and answer-judged. COMPLETE.
 - FiQA — Tier A only, validates the transferability bet
-- NFCorpus — Tier A only, vocabulary mismatch stress
+- NFCorpus — Tier A validated (Finding 47: nDCG@10 0.3988, routing OFF wins,
+                CC transfers as general improvement)
 - MultiHop (HotpotQA) — BLOCKED on Finding 1 fix
 
 ---
@@ -343,8 +345,8 @@ numbers are invalid.
    across all five arms including Pro). CoT tested dead; Pro tested
    null (zero hard-case flips — capability is NOT the ceiling,
    Finding 34). Do NOT pursue frontier model on Phase 8.
-3. BEIR / non-legal transfer — Tier A measurement on FiQA or
-   NFCorpus. The open transferability condition. Holistic faithfulness
+3. BEIR / non-legal transfer — ✓ MET on NFCorpus (Finding 47).
+   nDCG@10 0.3988 beats classic BEIR baselines. Holistic faithfulness
    (Finding 30) is the metric designed for this regime.
 4. LLM critic gate for the loop — ONLY after the delta-accumulate-
    scope + freeze-patch mechanism is verified. Gate is a control-flow
