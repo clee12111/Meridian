@@ -132,7 +132,11 @@ def _sf32(v):
 # ── Step 1: Build combined sqlite-vec index ──────────────────────────────
 
 def build_combined_index():
-    """Pull vectors from all 4 Qdrant collections (mini-doc only) into sqlite-vec."""
+    """Pull vectors from all 4 Qdrant collections (mini-doc only) into sqlite-vec.
+
+    Spans are resolved from the PARQUET files (Qdrant payloads don't store them).
+    """
+    import pandas as pd
     import sqlite_vec
     from qdrant_client import QdrantClient
     from qdrant_client.models import FieldCondition, Filter, MatchAny
@@ -151,7 +155,6 @@ def build_combined_index():
     db.execute(f"PRAGMA mmap_size = {3 * 1024 * 1024 * 1024}")
     db.execute(f"CREATE VIRTUAL TABLE vec_items USING vec0(embedding float[{EMBED_DIM}])")
 
-    # Also store metadata
     db.execute("""
         CREATE TABLE chunk_meta (
             rowid INTEGER PRIMARY KEY,
@@ -168,6 +171,13 @@ def build_combined_index():
     for corpus, params in CORPUS_PARAMS.items():
         coll = params["collection"]
 
+        # Load parquet for span lookup (spans are NOT in Qdrant payloads)
+        corpus_df = pd.read_parquet(params["parquet"])
+        span_lookup = {}
+        for _, row in corpus_df.iterrows():
+            span = tuple(row["start_end_idx"])
+            span_lookup[row["chunk_id"]] = (span[0], span[1])
+
         # Get mini-doc IDs
         bench = json.loads(params["benchmark"].read_text(encoding="utf-8"))
         mini_docs = set()
@@ -175,16 +185,17 @@ def build_combined_index():
             for s in t["snippets"]:
                 mini_docs.add(unquote(s["file_path"]))
 
-        logger.info("Pulling %s mini docs from %s...", len(mini_docs), coll)
+        logger.info("Pulling %s mini docs from %s (span lookup: %d chunks)...",
+                     len(mini_docs), coll, len(span_lookup))
 
         filt = Filter(must=[
             FieldCondition(key="doc_id", match=MatchAny(any=list(mini_docs)))
         ])
 
-        # Scroll through collection
         offset = None
         batch_vectors = []
         batch_meta = []
+        missing_spans = 0
         while True:
             points, next_offset = client.scroll(
                 collection_name=coll,
@@ -200,14 +211,19 @@ def build_combined_index():
             for p in points:
                 vec = p.vector
                 payload = p.payload
+                chunk_id = payload.get("chunk_id", "")
+                span = span_lookup.get(chunk_id, (0, 0))
+                if span == (0, 0):
+                    missing_spans += 1
+
                 batch_vectors.append((global_idx, _sf32(vec)))
                 batch_meta.append((
                     global_idx,
-                    payload.get("chunk_id", ""),
+                    chunk_id,
                     payload.get("doc_id", ""),
                     payload.get("content", ""),
-                    payload.get("start_idx", 0),
-                    payload.get("end_idx", 0),
+                    span[0],
+                    span[1],
                     corpus,
                 ))
                 global_idx += 1
@@ -222,7 +238,7 @@ def build_combined_index():
                 "INSERT INTO chunk_meta(rowid, chunk_id, doc_id, content, start_idx, end_idx, corpus) VALUES (?,?,?,?,?,?,?)",
                 batch_meta,
             )
-        logger.info("  %s: %d chunks pulled", corpus, len(batch_vectors))
+        logger.info("  %s: %d chunks pulled, %d missing spans", corpus, len(batch_vectors), missing_spans)
 
     db.close()
     logger.info("Combined index: %d total chunks in %s", global_idx, DB_PATH)

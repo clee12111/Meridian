@@ -1912,15 +1912,17 @@ without noting the ~2-3pp embedding-drift noise floor.
 
 ---
 
-### 2026-05-30 — Finding 45: Combined-index headline — config-stack validated, routing degrades on topically-homogeneous corpora, external P@k comparison confounded by chunk granularity
+### 2026-05-30 — Finding 45 CORRECTED: Combined-index headline — config-stack validated (+7.9pp/+4.2pp), system-level external multipliers on 3 un-confounded corpora, routing limitation on ContractNLI
 
-**Decision:** The final headline measurement on the COMBINED index (72 mini-split
-documents, 11,524 SAC chunks from all 4 corpora pooled into one index — matching the
-paper's benchmark regime). Channel-matched: dense (sqlite-vec) and BM25 both searched
-the same 11,524-chunk combined pool. Verified: no channel mismatch, index composition
-matches paper Table 3 (72 docs).
+**Decision:** Final headline on the COMBINED index (72 mini-split documents, 11,524
+SAC chunks from all 4 corpora pooled, matching the paper's benchmark regime).
+Channel-matched: dense (sqlite-vec) + BM25 both searched the same combined pool.
 
-**Config-stack delta (internal, same combined index both sides — CLEAN):**
+NOTE: Initial P@k/R@8 were computed against (0,0) spans (Qdrant payloads don't
+store span offsets — spans live in parquets). Recomputed from saved records using
+parquet span lookup; spot-checked correct. All numbers below are the corrected values.
+
+**INTERNAL: Config-stack delta (controlled, same combined index both sides):**
   Arm 0: SAC + RRF, no routing/selector, voyage-4, hybrid.
   Arm 1: SAC + CC(per-corpus alpha) + routing(top-3) + selector + no-rerank, flash.
 
@@ -1939,48 +1941,91 @@ matches paper Table 3 (72 docs).
     MAUD          91.3%       95.5%       +4.2pp
     Average       91.7%       95.9%       +4.2pp
 
+  Retrieval (corrected, real spans):
+    Corpus        Arm 0 P@1   Arm 1 P@1   Arm 0 R@8   Arm 1 R@8
+    ContractNLI   0.152       0.422       0.702       0.810
+    PrivacyQA     0.068       0.297       0.462       0.579
+    CUAD          0.027       0.394       0.605       0.814
+    MAUD          0.008       0.270       0.670       0.783
+
   Cost (Arm 1): 2077-4813 tok/q, 5.6-8.4s latency.
 
-**Routing on the combined index — holds on 2/4, DEGRADES on 2/4:**
+**EXTERNAL: System-vs-system comparison (3 un-confounded corpora):**
+  Paper: arXiv 2408.10343, Table 5, RCTS 500-char, text-embedding-3-large,
+  dense-only, no reranker. Baselines confirmed paper-pinned (Finding 44).
+
+  Un-confounded (512-char SAC ≈ paper's 500-char RCTS — chunk size matched):
+    Corpus        Meridian P@1   RCTS P@1   Mult    Meridian R@8   RCTS R@8   Mult
+    ContractNLI   0.422          0.066      6.4x    0.810          0.250      3.2x  [caveat]
+    PrivacyQA     0.297          0.144      2.1x    0.579          0.424      1.4x
+    CUAD          0.394          0.020      19.7x   0.814          0.317      2.6x
+
+  Confounded (MAUD uses 2048-char chunks — 4x paper's, deflates P@k mechanically):
+    MAUD          0.270          0.027      [confounded — do not report as multiplier]
+
+  FRAMING: These multipliers compare OUR FULL STACK (SAC + CC + hybrid + routing
+  + selector, voyage-4) vs THEIR BARE BASELINE (RCTS, dense-only, text-embedding-
+  3-large). The advantage bundles method + embedder + hybrid-vs-dense. Frame as
+  "optimized system vs published baseline" — NOT "method alone is Nx better."
+  ContractNLI [caveat]: benchmark-file provenance differs (Finding 44).
+
+**Routing on the combined index:**
   Corpus        Routing recall   Avg correct-doc chunks /8   Finding
-  CUAD          194/194 (100%)   8.0/8                       Immune — distinctive docs
-  MAUD          194/194 (100%)   7.9/8                       Immune — distinctive docs
+  CUAD          194/194 (100%)   8.0/8                       Immune
+  MAUD          194/194 (100%)   7.9/8                       Immune
   PrivacyQA     172/194 (89%)    6.1/8                       Moderate confusion
   ContractNLI   148/194 (76%)    4.9/8 (47 queries = 0/8)   REAL LIMITATION
 
-  ContractNLI routing degrades to 76% in the combined regime because its
-  homogeneous NDA documents confuse with CUAD's commercial contracts in the
-  combined pool. 47/194 queries (24%) get ZERO chunks from the correct document
-  — routing fails, R@8=0 on those queries mechanically. This is a GENUINE SYSTEM
-  LIMITATION on topically-homogeneous corpora with cross-corpus distractors, NOT
-  a measurement artifact. The architecture struggles when document-level routing
-  can't discriminate between similar contract types across corpora.
+  ContractNLI routing degrades to 76% because homogeneous NDA documents confuse
+  with CUAD's commercial contracts in the combined pool. 47/194 queries (24%) get
+  ZERO chunks from the correct document. This is a GENUINE SYSTEM LIMITATION on
+  topically-homogeneous corpora with cross-corpus distractors — NOT a measurement
+  artifact. Without routing (Arm 0), it's worse (2.0/8 correct-doc chunks).
 
-  Without routing (Arm 0), correct-doc chunk counts are even worse (2.0/8 for
-  ContractNLI, 4.0/8 for PrivacyQA). Routing helps all four corpora — it just
-  doesn't fully solve ContractNLI's cross-corpus confusion.
+**Measurement-bug log (verify-before-trust record for this session):**
+  1. Pro flash-alias: PRO_MODEL="deepseek-chat" routed to flash, not Pro.
+     Caught via billing + docs. Fixed to "deepseek-v4-pro", served_model logging
+     added. (Finding 34 CORRECTION)
+  2. BM25 channel mismatch: combined-index dense searched mini-doc chunks, BM25
+     searched full parquets (96K for CUAD). Fixed: BM25 filtered to mini-doc set,
+     channel-matched. Crashed CUAD; corrupted ContractNLI. Both re-run.
+  3. (0,0) span bug: Qdrant payloads don't store span offsets (they live in
+     parquets). Combined-index builder defaulted missing fields to 0. All P@k/R@8
+     computed as ~0. Fixed: spans looked up from parquets, recomputed from saved
+     records. Spot-checked correct.
+  4. MAUD 2048-char chunk-size inconsistency: blanket "~2048-char" claim was wrong
+     for 3/4 corpora (ContractNLI/PrivacyQA/CUAD use 512-char). Only MAUD uses
+     2048-char. Documented (see Finding 46).
 
-**External P@k/R@k vs paper — NOT directly comparable (chunk-granularity confound):**
-  Our SAC uses ~2048-char chunks; the paper's RCTS uses ~500-char chunks. P@k is
-  character-overlap precision (|overlap| / |retrieved_chars|), so our 4x-larger
-  chunks MECHANICALLY deflate precision (~200-char span / 2048-char chunk = low
-  ratio vs 200/500 = higher). This is a measurement confound, not a system
-  difference. R@8 is additionally affected by routing misses on ContractNLI/
-  PrivacyQA (a real limitation, not a confound — see above).
+**Precludes:** Reporting MAUD P@k/R@k multipliers vs the paper (chunk confound).
+Reporting external multipliers without "system-vs-system" framing. Dismissing
+ContractNLI routing degradation as a confound (it's a real limitation). Comparing
+combined-index numbers to prior per-corpus numbers without noting the regime change.
 
-  Do NOT report P@k/R@k multipliers vs the paper's Table 5 — the chunk-size
-  difference makes the comparison invalid in both directions. The valid external
-  story is answer quality (immune to chunk granularity).
+---
 
-**What IS valid as headline (immune to chunk-granularity confound):**
-  1. Internal config-stack delta: +7.9pp correctness, +4.2pp faithfulness
-     (same chunks both sides, granularity cancels)
-  2. Answer quality on the combined benchmark regime: 68-74% correctness,
-     94-98% faithfulness (measures answer rightness/grounding, not char overlap)
-  3. Routing finding: holds at 100% on CUAD/MAUD, degrades to 76% on
-     ContractNLI — genuine limitation on topically-homogeneous corpora
+### 2026-05-30 — Finding 46: MAUD baseline uses 2048-char chunks (4x the other three corpora) — undocumented inconsistency, now documented
 
-**Precludes:** Reporting P@k/R@k multipliers vs the paper as a headline (chunk
-confound). Dismissing the ContractNLI routing degradation as a confound (it's a
-real system limitation). Comparing combined-index retrieval numbers to the prior
-per-corpus numbers without noting the regime change.
+**Decision:** The four corpora use two different chunk sizes in their baseline SAC
+collections, never previously documented as a deliberate choice:
+
+  Corpus        chunk_size   chunk_overlap   Unit
+  ContractNLI   512          128             chars
+  PrivacyQA     512          128             chars
+  CUAD          512          128             chars
+  MAUD          2048         ~512            chars
+
+**Why MAUD is different:** MAUD's merger agreements are extremely long (~350K
+chars/doc, 52M total). 512-char chunks would produce ~192K chunks; 2048-char
+produces 45K — manageable. Finding 28 reveals the downstream benefit: "baseline's
+large 2048-char blocks held whole multi-span merger clauses intact in one
+retrievable unit." The larger size was pragmatic (collection size) and accidentally
+beneficial (multi-span coverage).
+
+**Consequence:** External P@k/R@k comparison to the paper (RCTS 500-char) is valid
+for ContractNLI/PrivacyQA/CUAD (512 ≈ 500, chunk-size matched) but NOT for MAUD
+(2048 vs 500, 4x confound). The prior blanket claim "our SAC uses ~2048-char chunks"
+(Finding 45 initial version, CLAUDE.md) was wrong for 3 of 4 corpora. Corrected.
+
+**Precludes:** Claiming MAUD P@k/R@k multipliers vs the paper without noting the
+4x chunk-size difference. Claiming all four corpora use the same chunk size.

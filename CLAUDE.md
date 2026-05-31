@@ -241,11 +241,15 @@ always-ON hybrid routing(top-3) + single-shot.
   (Prior per-corpus numbers — CNL 75.3%, PQA 61.9%, CUAD 63.9%, MAUD 66.5%
   — were measured on an easier per-corpus-index regime; do NOT compare.)
 
-**External P@k/R@k vs paper — NOT directly comparable:**
-  Chunk-granularity confound: our SAC ~2048-char chunks vs paper's RCTS
-  ~500-char mechanically deflates character-overlap P@k. Do NOT report
-  P@k/R@k multipliers (Finding 45). The valid external story is answer
-  quality and config-stack delta (immune to chunk granularity).
+**External retrieval (system-vs-system, combined index, Finding 45):**
+  Our full stack vs paper's RCTS dense-only baseline (arXiv 2408.10343 Table 5).
+  System-level comparison — advantage bundles method + embedder + hybrid.
+  Un-confounded (512-char ≈ paper's 500-char, chunk size matched):
+    ContractNLI  P@1 0.422  R@8 0.810  (RCTS: 0.066/0.250)  6.4x/3.2x [caveat]
+    PrivacyQA    P@1 0.297  R@8 0.579  (RCTS: 0.144/0.424)  2.1x/1.4x
+    CUAD         P@1 0.394  R@8 0.814  (RCTS: 0.020/0.317)  19.7x/2.6x
+  Confounded (MAUD 2048-char vs paper 500-char — do NOT report multiplier):
+    MAUD         P@1 0.270  R@8 0.783  (RCTS: 0.027/0.062)  [confounded]
 
 **Routing on combined index (Finding 45):**
   CUAD 100%, MAUD 100%, PrivacyQA 89%, ContractNLI 76%.
@@ -281,7 +285,8 @@ always-ON hybrid routing(top-3) + single-shot.
 - voyage-4-large: ~74M remaining, reserved for final headline run
 
 **Chunking baseline (Phases 1-2):**
-Fixed-size 2048-char stride (baseline collections). Section-aware
+Fixed-size char stride: 512-char (ContractNLI/PrivacyQA/CUAD), 2048-char
+(MAUD — large merger docs, Finding 46). Section-aware
 chunker built, wired, tested across all four corpora in a five-corpus
 A/B, and REJECTED as a general lever (Finding 27): marginal on CUAD,
 neutral on ContractNLI, harmful on MAUD (-22.8pp R@8, fragmentation —

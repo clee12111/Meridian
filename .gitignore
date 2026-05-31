@@ -69,3 +69,4 @@ data/maud_titles.json
 # OS
 Thumbs.db
 .DS_Store
+data/headline_combined.db-journal
