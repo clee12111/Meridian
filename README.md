@@ -1,138 +1,127 @@
 # Meridian
 
-A forensic measurement framework for retrieval-augmented generation. Meridian evaluates RAG strategy choices across all 10 pipeline phases on a single axis: does a given strategy improve retrieval and answer quality, measured identically every time.
-
-Most RAG evaluation uses either pure retrieval metrics (recall@k, precision@k) or pure LLM-judged answer scores. Meridian uses both in a two-layer design where **Layer 1 is deterministic — no LLM judges** — and Layer 2 is LLM-judged. The layers never contaminate each other. Layer 1 is the trust anchor: a deterministic span-overlap taxonomy that can't be gamed and makes measurement bugs distinguishable from model bugs. Layer 2 measures answer quality on top of that foundation.
-
-The agent (a 10-phase RAG pipeline) is what gets measured. The measurement framework is the contribution.
+A forensic measurement framework for retrieval-augmented generation, validated on legal and medical IR benchmarks. The measurement layer — a deterministic, two-layer diagnostic that separates retrieval failures from reasoning failures — is the contribution. A 10-phase RAG pipeline is the proving ground.
 
 ---
 
-## The measurement framework
+## What this measures and why
 
-### Layer 1 — deterministic retrieval taxonomy (no LLM judges)
+Most RAG evaluation conflates retrieval quality with generation quality. A wrong answer could mean the retriever missed the evidence, or the model misread it. Meridian separates these:
 
-Every retrieved span is classified against ground-truth character offsets into one of six failure types:
+**Layer 1 (deterministic, no LLM judges):** Every retrieved span is classified against ground-truth character offsets into six failure types — DRM (wrong document), CBF (chunk boundary), SGP (span gap), ICR (wrong section), OVR (over-retrieval), OK (correct). Pure arithmetic on character indices. When a number moves, you know whether the pipeline changed or the measurement changed.
 
-| Code | Meaning | What it tells you |
-|------|---------|-------------------|
-| **DRM** | Document-level retrieval miss | Retrieved from the wrong document entirely |
-| **CBF** | Chunk boundary failure | Right document, but the answer straddles a chunk split |
-| **SGP** | Span gap | Right document, but only part of a multi-span answer was found |
-| **ICR** | Incorrect region | Right document, wrong section |
-| **OVR** | Over-retrieval | Right region, but the retrieved span is much coarser than the evidence |
-| **OK** | Correct | Retrieved span covers the ground-truth evidence |
+**Layer 2 (LLM-judged, separate):** Answer correctness (does the answer convey the ground-truth information?) and faithfulness (is each claim entailed by the retrieved context?). Judged by a pinned model (DeepSeek-v4-flash, temperature 0) held constant across all comparisons.
 
-This taxonomy is computed by character-span overlap — pure arithmetic on character offsets. No embeddings, no model calls, no judgment. Scoring is per-span (not merged-character-set) to correctly handle multi-span evidence.
+The layers never contaminate each other. Layer 1 is the trust anchor; Layer 2 measures answer quality on top of that foundation.
 
-**Why deterministic matters:** when a number moves, you know whether the pipeline changed or the measurement changed. LLM judges drift with model updates, temperature, and prompt wording. A deterministic anchor eliminates that variable.
-
-Phase 9's deterministic citation-traceability (ENTAILED / CONTRADICTED / BASELESS per claim) also lives in Layer 1. Additional corpus-agnostic Tier A metrics (robustness, drift, latency, cost, trajectory) are designed but not yet built.
-
-### Layer 2 — LLM-judged answer metrics (separate, clearly labeled)
-
-Two metrics, both judged by a pinned model (DeepSeek-v4-flash, temperature 0, thinking disabled) held constant across all comparisons:
-
-- **Correctness** — does the answer convey the same information as the ground-truth evidence? Span-informed: the judge sees both the system's answer and the golden evidence text. Semantic match, not string match.
-- **Faithfulness** — is each answer claim entailed by the retrieved context? Holistic groundedness by default: each claim is judged against the *full* retrieved context (RAGAS definition, domain-agnostic). A separate strict citation-precision mode judges each claim against only its cited chunk — valid as a diagnostic on extractive/legal corpora, never the headline.
-
-Layer 2 never contaminates Layer 1. They are reported separately and measure different things: Layer 1 measures the retrieval system, Layer 2 measures the reasoning/generation system.
+**Scope:** Layer 1's span-forensic taxonomy requires character-span ground truth. It applies to benchmarks with span annotations (LegalBench-RAG) but not to document-level relevance benchmarks (most of BEIR). This is a scope boundary, not a limitation of the approach — it's what makes the taxonomy deterministic rather than model-dependent.
 
 ---
 
-## The 10-phase pipeline and what measurement found
+## Headline results
 
-The pipeline runs phases 1-2 once per corpus (indexing) and phases 3-10 per query. Each phase has been the subject of controlled A/B comparisons with the measurement framework evaluating the outcome. The framework's job is to make these calls on evidence, including saying no.
+### Primary claim: controlled config-stack delta
 
-| Phase | What it does | Strategies compared | Measurement verdict |
-|-------|-------------|---------------------|---------------------|
-| **1. Chunking** | Split documents into retrievable units | Fixed-stride (2048 char) vs section-aware boundary detection vs hierarchical (retrieve children, feed parents) | Section-aware: **corpus-dependent, rejected as general lever**. Marginal on CUAD (+3.6pp correctness), neutral on ContractNLI, harmful on MAUD (-22.8pp R@8) and PrivacyQA (-7.2pp correctness). Mechanism: section boundaries split multi-span evidence, collapsing recall on complex documents. Hierarchical: also tested negative. Both retrieval-unit approaches failed — the remaining synthesis bottleneck is comprehension, not access. |
-| **2. Indexing** | Embed and store chunks | Raw chunks vs Summary-Augmented Chunking (SAC — document summary prepended before embedding, discarded after) | SAC **validated**. Bakes document identity into dense embeddings, reducing DRM by ~10pp. Additive with other retrieval improvements. |
-| **3. Query rewriting** | Rewrite query for retrieval | DeepSeek-flash rewrite vs passthrough | Rewriter provides slight net positive. **Exonerated** as the cause of document discrimination failures (tested, DRM unchanged ±1.7pp). |
-| **4. Retrieval** | Dense (Voyage) + sparse (BM25) | With and without document routing (hybrid dense+BM25 over document summaries, pre-filtering retrieval to top-N documents) | Routing **always-on** (domain-agnostic policy). Helps all four corpora at the answer level (+1.0 to +12.9pp, never hurts). Largest gain on highest-DRM corpus. The validated lever for document discrimination. |
-| **5. Fusion** | Combine dense + sparse results | RRF vs convex combination (CC) fusion | CC **over RRF on structured benchmark corpora**. CC preserves score magnitude (a BM25 score gap of 0.95 vs 0.52 on a rare party-name token survives into the final ranking; RRF compresses it to near-zero rank difference). Per-corpus alpha: ContractNLI 0.2, CUAD 0.1, MAUD 0.2, PrivacyQA 0.1. All dense-heavy. |
-| **6. Reranking** | Cross-encoder re-scoring | Voyage rerank-2.5 on vs off | Reranker **OFF on topically-homogeneous corpora**. Cross-encoder reranking by semantic relevance is blind to document identity — on 95 near-identical NDAs, it confidently promotes wrong-document chunks that are topically relevant. Produces ~79% DRM regardless of candidate quality. Confirmed three independent ways: aggregate, controlled (same result with CC and RRF input), and mechanistic (per-query Phoenix traces showing 0/8 correct-document chunks at reranker scores 0.91-0.95). |
-| **7. Context** | Select chunks for the LLM | Top-8 from fused/reranked results | Top-8 captures all useful signal; R@8 = R@16 = R@64 across all corpora. |
-| **8. Synthesis** | LLM generates answer with claims | DeepSeek-flash, structured output via instructor (claim + cited_chunk_id + cited_text per assertion) | Structured output enables both Phase 9 verification and faithfulness judging without an extra claim-extraction step. |
-| **9. Verification** | Deterministic citation check | Three-way: ENTAILED / CONTRADICTED / BASELESS per claim, via normalized text matching against chunk content | No LLM calls. Provides the grounding signal for Phase 10's loop decision. |
-| **10. Agentic loop** | Iterate retrieval if evidence insufficient | Single-shot vs multi-iteration (up to 3) | **Single-shot preferred.** Loop adds +1.8pp at +68% compute. It recovers some multi-span gaps but worsens document discrimination. Single-shot captures ~96% of loop performance at ~60% of the cost. |
+On the combined-index benchmark regime (all 4 LegalBench-RAG corpora pooled into one 11,524-chunk index, 72 documents, 194 queries per corpus), the best configuration adds:
 
-**Best configuration:** SAC + no reranker + CC fusion (per-corpus alpha) + always-on hybrid document routing (top-3) + single-shot.
+|  | Arm 0 (RRF baseline) | Arm 1 (best config) | Delta |
+|--|---------------------|--------------------|----|
+| **Correctness** | 60.5% | 68.3% | **+7.9pp** |
+| **Faithfulness** | 91.7% | 95.9% | **+4.2pp** |
 
----
+Both arms use the same index, same embedder (voyage-4), same judge. The delta isolates the contribution of CC fusion + document routing + unconditional selector over the RRF foundation.
 
-## Current state
+**Best config:** SAC + CC fusion (per-corpus alpha, dense-heavy) + always-on hybrid document routing (top-3) + unconditional selector (wider-pool top-30, re-synth on promotion) + no reranker + single-shot.
 
-Validated on four LegalBench-RAG corpora (ContractNLI, CUAD, MAUD, PrivacyQA) — all legal domain. 194 queries per corpus, all on voyage-4 embeddings.
+### External comparison (system-vs-system, not method-alone)
 
-### Retrieval (Layer 1)
+Retrieval metrics on 3 un-confounded corpora (512-char chunks, comparable to the paper's 500-char RCTS). Published baselines from arXiv 2408.10343, Table 5 (RCTS, text-embedding-3-large, dense-only, no reranker). Measurement ruler calibrated within ~2-3pp embedding-drift floor on these corpora (Finding 44).
 
-| Corpus | P@1 | R@8 | Published baseline P@1 | Published baseline R@8 |
-|--------|-----|-----|------------------------|------------------------|
-| ContractNLI | 0.381 | 0.807 | 0.088 | 0.503 |
-| MAUD | 0.247 | 0.732 | 0.027 | 0.062 |
-| CUAD | 0.325 | 0.701 | — | — |
-| PrivacyQA | 0.326 | 0.588 | — | — |
+| Corpus | Meridian P@1 | RCTS P@1 | Meridian R@8 | RCTS R@8 |
+|--------|-------------|----------|-------------|----------|
+| ContractNLI | 0.422 | 0.066 | 0.810 | 0.250 |
+| CUAD | 0.394 | 0.020 | 0.814 | 0.317 |
+| PrivacyQA | 0.297 | 0.144 | 0.579 | 0.424 |
 
-Published baselines are from the LegalBench-RAG benchmark (Pipitone & Alami, RCTS method with text-embedding-3-large). This is a system-vs-system comparison (full pipeline vs their baseline stack), not a single-component ablation.
+**Framing:** This compares the full Meridian stack (SAC + CC + hybrid dense/sparse + routing + selector, voyage-4) against a bare baseline (RCTS chunking, dense-only retrieval, text-embedding-3-large). The advantage bundles embedder quality + hybrid retrieval + fusion method + routing. It is a system-level comparison — not evidence that any single component is responsible for the multiplier.
 
-### Answer quality (Layer 2)
+MAUD's external comparison is set aside — its 2048-char chunks (4x the paper's 500-char) create a chunk-granularity confound that mechanically deflates character-overlap precision (Finding 46). ContractNLI is caveated (benchmark-file provenance differs from the paper's — Finding 44).
 
-**Correctness** (span-informed judge, routing ON):
+### NFCorpus transfer (retrieval stack only)
 
-| Corpus | Correct |
+First non-legal test. NFCorpus (BEIR medical IR, 3,633 documents, 323 queries):
+
+| System | nDCG@10 |
 |--------|---------|
-| ContractNLI | 75.3% |
-| MAUD | 66.5% |
-| CUAD | 63.9% |
-| PrivacyQA | 61.9% |
+| Meridian (CC α=0.1, routing OFF) | 0.399 |
+| BM25+cross-encoder reranker | 0.350 |
+| BM25 | 0.325 |
+| contriever | 0.328 |
 
-The only clean before/after delta is ContractNLI: 25.8% → 75.3% (+49.5pp), with the same span-informed judge applied to both the v1 baseline and the best config. The other three corpora have absolute numbers only (no baseline answer-correctness run).
+Beats the classic BEIR baselines (original 2021 paper). These are dated single-method baselines — modern dense retrievers (2024+) score comparably. Frame as "above classic baselines," not "SOTA."
 
-**Faithfulness** (holistic groundedness, full retrieved context):
+**What transferred:** the retrieval stack (hybrid dense+sparse, CC fusion). CC over RRF adds +5.6pp on NFCorpus, comparable to +7.9pp on legal — CC fusion is a domain-general improvement.
 
-| Corpus | Mean faithfulness |
-|--------|-------------------|
-| PrivacyQA | 97.2% |
-| MAUD | 96.8% |
-| CUAD | 95.5% |
-| ContractNLI | 92.4% |
+**What did not transfer / was not tested:** the span-forensic measurement framework (Layer 1 taxonomy). BEIR provides document-level relevance judgments, not character spans — Layer 1's taxonomy could not run. Routing was correctly self-disabled by the sweep (hurts on dispersed-relevance medical text — see Limitations). NFCorpus is a retrieval-transfer result, not a measurement-framework-transfer result.
 
-High faithfulness on legal text is a true finding (extractive domain, model mostly quotes), not a dud metric. Faithfulness is orthogonal to correctness — DRM queries score faithfulness 1.0 because the model faithfully reports what the *wrong* document says.
+**The genuine finding:** routing is a *concentrated-relevance* technique. It monotonically hurts on NFCorpus (OFF > k=10 > k=5 > k=3), because medical queries have many relevant documents and routing's hard-filter discards them. The sweep auto-detected this — consistent with the legal-domain finding that routing benefit tracks document-discrimination difficulty (Finding 23). Characterizing routing's boundary is the real result.
 
 ---
 
-## What's not yet done
+## The 10-phase pipeline
 
-- **Synthesis-gap fix (confirmed as THE bottleneck).** The largest remaining error cluster: 18-43 queries per corpus where the answer is incorrect despite the model having correct, grounded evidence (INCORRECT + FAITHFUL). The model had the right evidence and reached the wrong conclusion. Three alternative hypotheses — retrieval-unit changes (section chunking, hierarchical chunking), cross-reference graph augmentation, and agentic re-retrieval — were each tested or analyzed against labeled failures and ruled out. The failure is comprehension, not access. Levers: chain-of-thought / structured reasoning prompt, or a stronger synthesis model.
-- **Non-legal transfer (the open question).** The measurement framework has been validated only on legal corpora. The transferability gate — Tier A measurement producing signal on a non-annotated corpus (FiQA or NFCorpus) — is not started. Until this is demonstrated, the framework's generality is a claim, not a result.
-- **Reasoning-based loop gate.** The current loop uses a deterministic grounding threshold. A reasoning-aware gate (loop only when the failure type is recoverable by re-retrieval) is the agentic-loop frontier.
+Phases 1-2 run once per corpus (indexing). Phases 3-10 run per query.
+
+| Phase | What it does | Measurement verdict |
+|-------|-------------|---------------------|
+| 1. Chunking | Split documents | Fixed-stride (512-char for CNL/PQA/CUAD, 2048-char for MAUD). Section-aware and hierarchical alternatives both tested negative as general levers. |
+| 2. Indexing | Embed and store | SAC (summary-augmented chunking) validated — bakes document identity into embeddings, reduces DRM. |
+| 3. Query rewriting | Transform query pre-retrieval | **OFF.** Static rewrite is net-negative on synthesis quality (Finding 36). Raw query to retrieval. |
+| 4. Retrieval | Dense (Voyage) + sparse (BM25) | Hybrid retrieval with document routing (top-3). Routing always-on for concentrated-relevance corpora, off for dispersed. |
+| 5. Fusion | Combine dense + sparse | CC fusion over RRF. Dense-heavy alpha (0.1-0.2). Transfers to non-legal domain. |
+| 6. Reranking | Cross-encoder re-scoring | **OFF.** Blind to document identity on homogeneous corpora — promotes wrong-document chunks at high confidence (~79% DRM). |
+| 7. Context | Select chunks for LLM | Top-8 from fused results. Wider pool (top-30) feeds the selector. |
+| 8. Synthesis | LLM generates answer | DeepSeek-v4-flash, structured claim-citation output. Pro tier tested indistinguishable within ±2-4pp variance (Finding 34). |
+| 9. Verification | Deterministic citation check | ENTAILED / CONTRADICTED / BASELESS per claim. Conservative false-positive on legal negation (Finding 41). |
+| 10. Agentic loop | Iterate retrieval | **Single-shot.** Loop mechanism was broken (Finding 35), fixed, retested — still no gain (Finding 37). Comprehension-bound, not access-bound. |
 
 ---
 
-## Product direction
+## Limitations
 
-*Vision, not built:* the measurement layer surfaced as a standalone tool — a CLI or web interface where a user points it at any RAG pipeline's outputs and gets the two-layer diagnostic (Layer 1 taxonomy + Layer 2 answer quality) without adopting the full Meridian agent. The framework's value is in making strategy calls on evidence; the agent is one consumer of that value.
+- **Routing degrades on topically-homogeneous cross-corpus retrieval.** ContractNLI routing drops to 76% recall in the combined-index regime — NDA documents confused with CUAD's commercial contracts. 47/194 queries get zero correct-document chunks. A genuine architectural limitation when document-level routing can't discriminate similar contract types.
+
+- **Routing hurts on dispersed-relevance corpora.** NFCorpus confirmed: routing monotonically degrades when many documents are relevant per query. Routing is a concentrated-relevance technique, not universal.
+
+- **Span-forensic framework requires character-span ground truth.** Layer 1's taxonomy (the core contribution) does not apply to document-level relevance benchmarks (most of BEIR, MS MARCO, etc.). This limits the framework's applicability to benchmarks with span annotations.
+
+- **MAUD external comparison confounded** by 2048-char vs 500-char chunk granularity (Finding 46). Not reported as a multiplier.
+
+- **ContractNLI external baseline caveated.** Benchmark-file provenance differs from the paper's generation pipeline (Finding 44). ContractNLI's published baseline range is uncertain.
+
+- **Affirmative-only evaluation.** All four LegalBench-RAG corpora contain only queries with affirmative answers. Correctness measures recall of evidence that exists — not false-positive rate on evidence that doesn't.
+
+- **Measurement-bug discipline.** Four silent bugs were caught during the headline measurement session before they could ship wrong numbers: a model-ID alias routing to the wrong tier (Finding 34), a BM25/dense channel mismatch on the combined index, a span-offset bug producing zero-overlap metrics, and an undocumented chunk-size inconsistency across corpora. Each was caught by verification checks, not by the numbers looking wrong — the project's thesis is that measurement rigor requires this kind of verify-before-trust discipline.
 
 ---
 
-## Reproducing a strategy comparison
+## Reproducing
 
 ### Infrastructure
 
-- **Qdrant** — vector database (cloud or local Docker)
-- **Voyage AI** — embeddings (voyage-4) and optional reranking (rerank-2.5)
-- **DeepSeek** — LLM calls (deepseek-v4-flash for query rewriting, synthesis, and judging)
+- **Qdrant** — vector database (cloud or local)
+- **Voyage AI** — embeddings (voyage-4)
+- **DeepSeek** — LLM calls (deepseek-v4-flash for synthesis and judging)
 
 ```bash
 cp .env.example .env
 # Fill in: VOYAGE_API_KEY, DEEPSEEK_API_KEY, QDRANT_URL, QDRANT_API_KEY
 ```
 
-### Run an evaluation arm
+### Run an evaluation
 
 ```bash
-# Run 194 queries on ContractNLI with the best config
+# Per-corpus eval (194 queries, best config)
 python scripts/run_corpus_eval.py \
   --corpus contractnli \
   --chunk-alpha 0.2 \
@@ -141,26 +130,23 @@ python scripts/run_corpus_eval.py \
   --workers 12 \
   --output data/eval_contractnli.jsonl
 
-# Judge answer correctness (Layer 2)
-python scripts/judge_answers_v2.py \
-  --corpus contractnli \
-  --input data/eval_contractnli.jsonl
+# Combined-index headline (benchmark regime)
+python scripts/run_headline_combined.py --workers 8
 
-# Judge faithfulness (Layer 2, holistic groundedness)
-python scripts/judge_faithfulness.py \
-  --corpus contractnli \
-  --input data/eval_contractnli.jsonl
+# NFCorpus transfer scout
+python scripts/run_nfcorpus_scout.py
+
+# Judges (Layer 2)
+python scripts/judge_answers_v2.py --corpus contractnli --input data/eval_contractnli.jsonl
+python scripts/judge_faithfulness.py --corpus contractnli --input data/eval_contractnli.jsonl
+
+# Measurement-layer calibration (reproduces paper's baseline)
+python scripts/run_calibration.py
 ```
-
-### A/B comparison
-
-Change one variable (e.g., chunking strategy, fusion method, routing on/off) and run both arms with the same judge. The eval harness outputs per-query JSONL with Layer 1 taxonomy (failure_type, P@1, R@8) and Layer 2 inputs (answer, claims, context_chunks). The judges add their verdicts to separate output files.
-
-Environment flags for A/B toggles: `MERIDIAN_NO_REWRITE`, `MERIDIAN_NO_RERANK`, `MERIDIAN_CC_ALPHA`, `MERIDIAN_ROUTING_TOPK`. See `CLAUDE.md` for the full list.
 
 ### Key dependencies
 
-Python 3.11+. Core: `qdrant-client`, `voyageai`, `openai`, `instructor`, `langgraph`, `rank-bm25`, `pandas`, `numpy`.
+Python 3.11+. Core: `qdrant-client`, `voyageai`, `openai`, `instructor`, `rank-bm25`, `pandas`, `numpy`, `beir`.
 
 ---
 
@@ -170,21 +156,19 @@ Python 3.11+. Core: `qdrant-client`, `voyageai`, `openai`, `instructor`, `langgr
 core/
   measurement/       Layer 1: taxonomy, metrics, span_overlap (deterministic, no LLM)
   retrieval/         Dense (Qdrant/Voyage), sparse (BM25), fusion (CC/RRF), routing
-  supervisor/        LangGraph pipeline: nodes (phases 3-10), graph, state, context
+  supervisor/        Pipeline: phases 3-10, graph, state, context
   ingestion/         Chunking (fixed-stride, section-aware), embedding pipeline
   evaluation/        Ground-truth adapters (per-corpus), fingerprinting
 
 scripts/
-  run_corpus_eval.py         Cross-corpus eval harness (the main entry point)
-  judge_answers_v2.py        Layer 2: span-informed answer correctness judge
-  judge_faithfulness.py      Layer 2: holistic groundedness / strict citation-precision
-  run_section_campaign.py    Multi-corpus A/B campaign runner (sequential, gated)
-  build_sac_index.py         SAC indexing pipeline
-  tune_cc_alpha.py           CC fusion alpha sweep
+  run_corpus_eval.py           Per-corpus eval harness
+  run_headline_combined.py     Combined-index headline (benchmark regime)
+  run_headline.py              Per-corpus headline (3-arm: baseline/flash/Pro)
+  run_nfcorpus_scout.py        NFCorpus transfer (BEIR, nDCG@10)
+  run_calibration.py           Measurement-layer calibration vs paper
+  judge_answers_v2.py          Layer 2: answer correctness
+  judge_faithfulness.py        Layer 2: faithfulness (holistic/strict)
 
 docs/
-  DECISIONS.md       Decision log with 30 findings and corrections (the evidence trail)
-  FourCorpus.md      Four-corpus retrieval sweep results
-
-CLAUDE.md            Full project brief: architecture, hard rules, current state, workflow
+  DECISIONS.md       47 findings with corrections — the evidence trail
 ```

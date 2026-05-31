@@ -2101,12 +2101,14 @@ relevance corpora.
 
 **What this means for the transferability gate (CLAUDE.md):**
   The open condition was "Tier A measurement produces signal on a non-annotated
-  corpus (FiQA or NFCorpus)." NFCorpus confirms:
-  - nDCG@10 (a Tier A, corpus-agnostic metric) produces meaningful, comparable
-    signal on a non-legal corpus.
-  - The sweep correctly identifies optimal config (routing off, dense-heavy).
-  - The system beats published baselines without domain-specific tuning.
-  Transferability condition: MET on NFCorpus.
+  corpus (FiQA or NFCorpus)." NFCorpus PARTIALLY meets this:
+  - The RETRIEVAL STACK (hybrid + CC fusion) transfers — nDCG@10 0.3988,
+    above classic baselines, config sweep works.
+  - The SPAN-FORENSIC MEASUREMENT FRAMEWORK (Layer 1 taxonomy — the core
+    contribution) was NOT exercised: BEIR provides document-level relevance,
+    not character spans. Layer 1's taxonomy could not run.
+  - Honest status: retrieval transfers, measurement framework transferability
+    is NOT YET demonstrated on a non-legal corpus with span annotations.
 
 **Precludes:** Claiming routing as a universal technique (it's concentrated-
 relevance only — hurts on dispersed). Claiming "beats SOTA" (beats classic
