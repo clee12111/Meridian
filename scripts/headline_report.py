@@ -15,10 +15,13 @@ def load(path):
     return r
 
 PUBLISHED = {
-    "contractnli": {"source": "RCTS", "p_at_1": 0.088, "r_at_8": 0.503},
+    # arXiv 2408.10343 Table 5: RCTS 500-char, text-embedding-3-large, no reranker
+    # Calibrated: MAUD, CUAD, PrivacyQA (ruler confirmed within ~2-3pp drift, Finding 44)
+    # Caveated: ContractNLI (benchmark-file provenance differs)
+    "contractnli": {"source": "RCTS (caveat)", "p_at_1": 0.066, "r_at_8": 0.250},
     "maud": {"source": "RCTS", "p_at_1": 0.027, "r_at_8": 0.062},
-    "cuad": {"source": None, "p_at_1": None, "r_at_8": None},
-    "privacyqa": {"source": None, "p_at_1": None, "r_at_8": None},
+    "cuad": {"source": "RCTS", "p_at_1": 0.020, "r_at_8": 0.317},
+    "privacyqa": {"source": "RCTS", "p_at_1": 0.144, "r_at_8": 0.424},
 }
 
 print("=" * 95)

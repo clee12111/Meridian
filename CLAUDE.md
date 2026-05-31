@@ -237,11 +237,13 @@ always-ON hybrid routing(top-3) + single-shot.
   MAUD         66.5%
   Average      66.9%
 
-**Retrieval vs published baselines:**
-  ContractNLI  P@1 0.381  R@8 0.807  (RCTS: P@1 0.088, R@8 0.503)
-  MAUD         P@1 0.247  R@8 0.732  (RCTS: P@1 0.027, R@8 0.062)
-  CUAD         P@1 0.325  R@8 0.701  (no published baseline)
-  PrivacyQA    P@1 0.326  R@8 0.588  (no published baseline)
+**Retrieval vs published baselines (arXiv 2408.10343, Table 5 RCTS no-reranker):**
+  Calibrated (ruler confirmed within ~2-3pp embedding-drift, Finding 44):
+    MAUD         P@1 0.247  R@8 0.732  (RCTS: P@1 0.027, R@8 0.062)
+    CUAD         P@1 0.325  R@8 0.701  (RCTS: P@1 0.020, R@8 0.317)
+    PrivacyQA    P@1 0.326  R@8 0.588  (RCTS: P@1 0.144, R@8 0.424)
+  Caveated (benchmark-file provenance differs — see Finding 44):
+    ContractNLI  P@1 0.381  R@8 0.807  (RCTS: P@1 0.066, R@8 0.250)
 
 **What was built / validated:**
 - Full 10-phase pipeline running end-to-end on all four corpora
