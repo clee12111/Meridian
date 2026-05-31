@@ -230,20 +230,27 @@ indexed on voyage-4, swept, judged.
 **Best config:** SAC + NoRewrite + NoRerank + CC(per-corpus α) +
 always-ON hybrid routing(top-3) + single-shot.
 
-**Answer correctness (span-informed judge, routing-ON):**
-  ContractNLI  75.3%   (v1 baseline 25.8%, honest delta +49.5pp)
-  PrivacyQA    61.9%
-  CUAD         63.9%
-  MAUD         66.5%
-  Average      66.9%
+**Answer correctness (combined-index regime, span-informed judge):**
+  Config-stack delta (Arm 0 RRF baseline → Arm 1 best config, Finding 45):
+    ContractNLI  62.9% → 71.1%  (+8.2pp)
+    PrivacyQA    49.0% → 55.7%  (+6.7pp)
+    CUAD         61.9% → 73.7%  (+11.8pp)
+    MAUD         68.0% → 72.7%  (+4.7pp)
+    Average      60.5% → 68.3%  (+7.9pp)
+  Faithfulness (Arm 1): CNL 94.1%, PQA 97.9%, CUAD 96.0%, MAUD 95.5%
+  (Prior per-corpus numbers — CNL 75.3%, PQA 61.9%, CUAD 63.9%, MAUD 66.5%
+  — were measured on an easier per-corpus-index regime; do NOT compare.)
 
-**Retrieval vs published baselines (arXiv 2408.10343, Table 5 RCTS no-reranker):**
-  Calibrated (ruler confirmed within ~2-3pp embedding-drift, Finding 44):
-    MAUD         P@1 0.247  R@8 0.732  (RCTS: P@1 0.027, R@8 0.062)
-    CUAD         P@1 0.325  R@8 0.701  (RCTS: P@1 0.020, R@8 0.317)
-    PrivacyQA    P@1 0.326  R@8 0.588  (RCTS: P@1 0.144, R@8 0.424)
-  Caveated (benchmark-file provenance differs — see Finding 44):
-    ContractNLI  P@1 0.381  R@8 0.807  (RCTS: P@1 0.066, R@8 0.250)
+**External P@k/R@k vs paper — NOT directly comparable:**
+  Chunk-granularity confound: our SAC ~2048-char chunks vs paper's RCTS
+  ~500-char mechanically deflates character-overlap P@k. Do NOT report
+  P@k/R@k multipliers (Finding 45). The valid external story is answer
+  quality and config-stack delta (immune to chunk granularity).
+
+**Routing on combined index (Finding 45):**
+  CUAD 100%, MAUD 100%, PrivacyQA 89%, ContractNLI 76%.
+  ContractNLI degrades: homogeneous NDAs confuse with CUAD commercial
+  contracts in the combined pool — a genuine system limitation.
 
 **What was built / validated:**
 - Full 10-phase pipeline running end-to-end on all four corpora
