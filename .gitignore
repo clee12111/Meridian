@@ -75,3 +75,4 @@ data/nfcorpus_vectors.db
 data/corpus_nfcorpus.parquet
 data/routing_index_nfcorpus_v4.npz
 data/nfcorpus.zip
+.claude/

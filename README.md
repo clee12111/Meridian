@@ -2,6 +2,35 @@
 
 A forensic measurement framework for retrieval-augmented generation, validated on legal and medical IR benchmarks. The measurement layer — a deterministic, two-layer diagnostic that separates retrieval failures from reasoning failures — is the contribution. A 10-phase RAG pipeline is the proving ground.
 
+```mermaid
+graph LR
+    subgraph Pipeline["Retrieval Pipeline"]
+        direction LR
+        A["Ingestion<br/><i>Chunking + SAC summary</i>"] --> B["Indexing<br/><i>Dense (voyage-4) + BM25</i>"]
+        B --> C["Routing<br/><i>Document top-k filter</i>"]
+        C --> D["Retrieval<br/><i>Dense + Sparse channels</i>"]
+        D --> E["CC Fusion<br/><i>Score-weighted merge</i>"]
+        E --> F["Selector<br/><i>LLM chunk promotion</i>"]
+        F --> G["Synthesis<br/><i>LLM answer + citations</i>"]
+        G --> H["Verification<br/><i>Deterministic citation check</i>"]
+    end
+
+    subgraph Measurement["Forensic Measurement Layer"]
+        direction LR
+        L1["Layer 1 — Deterministic<br/><i>Span taxonomy: DRM / CBF / SGP / ICR / OVR / OK</i><br/><i>P@k, R@k (character overlap)</i><br/><i>No LLM judges</i>"]
+        L2["Layer 2 — LLM-Judged<br/><i>Correctness (span-informed)</i><br/><i>Faithfulness (holistic)</i><br/><i>Pinned model, separate</i>"]
+    end
+
+    Pipeline -- "observes<br/>(one-way)" --> Measurement
+
+    style Pipeline fill:#1a1a2e,stroke:#16213e,color:#e0e0e0
+    style Measurement fill:#0f3460,stroke:#533483,color:#e0e0e0
+    style L1 fill:#162447,stroke:#1f4068,color:#e0e0e0
+    style L2 fill:#1b1b2f,stroke:#1f4068,color:#e0e0e0
+```
+
+**Key architectural constraint:** measurement observes the pipeline — the pipeline never bypasses measurement. Layer 1 (deterministic) and Layer 2 (LLM-judged) never contaminate each other. This separation is the point: when a number moves, you know whether the pipeline changed or the measurement changed.
+
 ---
 
 ## What this measures and why
