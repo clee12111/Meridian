@@ -1324,3 +1324,513 @@ successors on the 18 — multi-query retrieval (the principled successor to rewr
 decomposition (the one query/reasoning-time lever aimed at the comprehension residual, with
 faithfulness as the guardrail per the Arm-C lesson). If neither beats plain rewrite-off, ship
 rewrite-off and the comprehension residual becomes the final-phase target.
+
+---
+
+### 2026-05-30 — Finding 35: The loop's marginal value (Finding 18) is a BROKEN MECHANISM, not inherent low value; fix is monotonic improvement on BOTH axes (delta-accumulate retrieval scoped to routed docs + freeze-patch synthesis)
+
+**Decision:** The agentic loop does not work because of HOW it re-queries and re-
+synthesizes, not because looping is low-value. Finding 18's "+1.8pp at +68% compute" was a
+broken mechanism producing near-noise, not evidence that looping doesn't help. Fix the
+mechanism before building any gate (LLM critic) on top of it — a better gate cannot fix a
+broken re-query.
+
+**Diagnostic (ContractNLI, 73 looped queries / 38%, deterministic grounding gate):**
+  Outcome of the looped queries:
+    Improved (R@8 up):    16 (22%)  — lucky re-roll landed better chunks
+    Unchanged (R@8 same): 47 (64%)  — re-rolled to different chunks, same quality = NOISE
+    Regressed (R@8 down): 10 (14%)  — re-roll LOST good chunks (e.g. 0132 R@8 1.00->0.39,
+                                      0153 0.81->0.00)
+  Net: +6 (16 up, 10 down) — the margin between luck and drift, not a mechanism.
+
+**Two broken behaviors (root cause):**
+1. FULL REPLACEMENT, not accumulation. Every iteration shows new_chunks == lost_chunks — the
+   loop discards the prior chunk set and re-queries from scratch. It does not ADD chunks; it
+   REPLACES them. So a good chunk set can be thrown away for a worse one.
+2. 86% DOCUMENT DRIFT. 63/73 looped queries drifted to DIFFERENT documents on re-query — the
+   re-query is unscoped, so it re-rolls which documents are retrieved, UNDOING routing.
+   Routing already solved document discrimination (top-3 HIT on all hard cases); the
+   unscoped loop reverses it. (e.g. 0762 OK->DRM, 0132 OK->DRM losing a perfect R@8=1.00.)
+
+**Why a better GATE cannot fix this (kills the gate-first plan):** the gate decides IF the
+loop fires, not what it DOES when fired. A perfect critic sending exactly the right queries
+into the loop still sends them into a mechanism that replaces good chunks with random ones
+64% of the time and drifts documents 86% of the time. Mechanism first, gate second.
+
+**The fix — monotonic improvement on BOTH axes (each iteration can only ADD, never destroy
+verified work):**
+- RETRIEVAL side (from this diagnostic):
+  (a) DELTA retrieval — fetch only NEW chunks targeting the gap, do not re-query the full set.
+  (b) ACCUMULATE/MERGE — union new chunks with kept ones; never discard a retrieved chunk.
+      Converts the loop from a re-roll (can regress) to a monotonic accumulator (can only add
+      coverage). Kills the 64% no-op and the 14% regression.
+  (c) SCOPE the re-query to the already-routed top-3 documents — kills the 86% doc drift.
+      Out-of-routed-docs is a separate frontier problem, explicitly out of scope.
+- SYNTHESIS side (from the user's own modified loop design): FREEZE passed claims, PATCH only
+  failed ones — re-synthesize ONLY the failed claims over new evidence, anchor the passed
+  claims to their already-verified chunks. Prevents full re-synthesis from drifting claims
+  that were already correct (the synthesis-side version of the same destroy-good-work bug).
+
+**Convergence note:** the user independently designed patch-synthesis (freeze passed, patch
+failed) in a prior loop spec; the diagnostic independently found the retrieval-side version
+(delta + accumulate + scope). Same principle — monotonic improvement, never destroy verified
+work — arrived at from two directions and applied to the two halves of the loop. The correct
+loop is the UNION of both.
+
+**Fusion not reranker in the merge:** merge new+existing via existing CC fusion ordering, NOT
+the voyage reranker (document-scoped reranking measured noise-level this session, -4.6pp P@1;
+global reranker is OFF, DRM disaster). Do not reintroduce the reranker in the loop.
+
+**Gate stays deterministic FOR NOW, with a flagged limitation:** keep grounding-score >= 0.75
+as the trigger, but note it fires on GROUNDING (are claims cited), which MISSES the dominant
+failure (grounded-but-wrong — well-cited AND incorrect exits the loop satisfied). An LLM
+reasoning-sufficiency critic gate is the likely upgrade — but ONLY after the delta-accumulate-
+scope + freeze-patch mechanism is verified. Gate is a control-flow signal (allowed to be LLM/
+hybrid); it must never feed back into the Layer-1 taxonomy or Layer-2 metrics.
+
+**Test target:** the fixed loop's natural target is the access-miss residual (maud-0684, 1114,
+1452 — GT chunk retrievable but ranked 9-30 within the right doc). A scoped delta re-query that
+accumulates is exactly aimed at them: re-query within the right doc, ADD the missing chunk,
+keep what was there. Expect ~0 document drift (scoped) and monotonic improvement (accumulate).
+Faithfulness should hold (within-doc accumulation, unlike multi-query's wide fan-out).
+
+**Precludes:** Reading Finding 18 as "looping is low-value" (it was a broken mechanism).
+Building an LLM critic gate before fixing the delta/accumulate/scope mechanism. Full-
+replacement re-query. Unscoped re-query (document drift). Full re-synthesis on loop (claim
+drift). Using the reranker in the loop merge. The Tier-2 LLM verification, uncertainty
+markers, and stratified-confidence output from the modified spec are SEPARATE later additions,
+each measured independently with faithfulness watched — NOT part of the core mechanism fix.
+
+---
+
+### 2026-05-30 — Finding 36: Static pre-retrieval query transformation is OFF — rewrite, expansion, and multi-query all rejected; raw query to retrieval
+
+**Decision:** Phase 3 performs NO blind pre-retrieval query transformation. Rewrite OFF,
+expansion scoped out, multi-query shelved. The raw query goes to retrieval unmodified. The
+entire family of "transform the query before retrieval, without feedback" is rejected on
+this corpus class.
+
+**The evidence across the family:**
+- Single rewrite: net-negative on synthesis (Finding 34) — normalized queries toward generic
+  legal vocabulary, retrieved blander/harder-to-read chunks. Rewrite-off flipped hard cases.
+- Expansion: scoped out (Finding 12) — benchmark queries already name the document; expansion
+  addresses query insufficiency, not the document-discrimination bottleneck.
+- Multi-query fan-out: shelved (this finding). Two corpora, two failure modes, ZERO grounded
+  gains:
+    MAUD (retrieval-quality): grounded-correct FLAT 118->118; gain was all CORRECT+UNFAITHFUL
+      (hollow — fan-out's wider context -> ungrounded inference).
+    ContractNLI (DRM-bound): grounded-correct COLLAPSED 126->96 (-30), DRM DOUBLED 38->78,
+      R@8 -7.7pp. DESTRUCTIVE — reformulations wash out document-discriminating signal and
+      drift retrieval to wrong NDAs, reversing the routing/SAC/CC discrimination gains.
+
+**The unifying mechanism:** blind pre-retrieval transformation alters the query without
+feedback. On topically-homogeneous corpora it washes the discriminating signal (ContractNLI);
+on retrieval-quality corpora it pulls wider context that drifts faithfulness (MAUD). Neither
+produces grounded-correct gains. The corpus class (legal, document-discrimination-critical)
+penalizes query modification that doesn't preserve specificity.
+
+**What this does NOT reject (kept distinct — do not fold into "query understanding off"):**
+- DECOMPOSITION (reasoning-time, parked): not a blind pre-retrieval transform — restructures
+  reasoning into verified sub-questions. Uniquely flipped maud-0531 (entity confusion) in the
+  18-case sweep at a faithfulness cost (0.82). A candidate for the reasoning work, not rejected.
+- The LOOP's RESPONSIVE re-query (next build): re-queries WITHIN routed documents based on what
+  failed — the opposite of blind fan-out. Scoped (can't drift documents) and responsive (adapts
+  to the gap). This result VALIDATES the loop design: multi-query failed on exactly the axes
+  (document drift, blind fan-out) the loop's scope-and-accumulate were built to avoid.
+
+**Precludes:** Any static pre-retrieval query transformation (rewrite/expansion/multi-query)
+on this corpus class. Reading "query transformation off" as covering decomposition or the
+loop's responsive re-query — those are different mechanisms (reasoning-time and responsive-
+scoped respectively), not blind pre-retrieval transforms.
+
+---
+
+### 2026-05-30 — Finding 37: The repaired loop definitively does NOT beat single-shot; looping is dead even with the mechanism fixed; the synthesis gap is comprehension-bound, confirmed unreachable by any retrieval/evidence lever (5 ways)
+
+**Decision:** The agentic loop, rebuilt correctly per Finding 35 (scoped delta retrieval +
+chunk accumulation + freeze-patch, no document drift), STILL does not beat single-shot on
+grounded-correct. Looping is dead even repaired. Single-shot is the shipped default on firm
+ground. This closes the iterative-retrieval arc.
+
+**Result (mini E2E, 3 arms x 4 corpora x 50 fixed queries, CORRECT+FAITHFUL):**
+  Corpus        Arm0 single   Arm1 determ   Arm2 critic
+  ContractNLI   33/50         34/50         32/50
+  CUAD          39/50         36/50         36/50
+  MAUD          30/50         27/50         30/50
+  PrivacyQA     27/50         26/50         25/50
+  TOTAL         129/200       123/200       123/200
+Both loop arms REGRESS vs single-shot. 10 CORRECT->not-CORRECT flips (Arm1), 9 (Arm2),
+against only 4 / 6 gate-fired improvements. Real regression, not noise.
+
+**Why it failed -- NOT a broken mechanism (the rebuild worked):**
+- Chunks accumulated cleanly, monotonic, ZERO document drift (Finding 35 fix confirmed working).
+- Grounding scores IMPROVED +3-6pp (the loop did gather better evidence + traceability).
+- But the FINAL RE-SYNTHESIS (Correction #1, required to make patches visible to the judge) is
+  the leak: regenerating the full answer over wider accumulated context DROPS or MISREADS
+  things the single-shot answer got right. Monotonic on CHUNKS, not on ANSWERS. More evidence +
+  regeneration < a good first answer.
+- The one access-miss flip (maud-0684 INCORRECT->CORRECT under critic) landed at faithfulness
+  0.50 -- CORRECT+UNFAITHFUL trap. Even the "win" was ungrounded inference, not grounded fix.
+
+**Critic vs deterministic -- NO meaningful difference (closes the gate-intelligence fork):** same
+trigger rate, same grounding gain, same lack of correctness gain. Re-query quality is irrelevant
+when the mechanism downstream (re-synthesis) doesn't add grounded value. The LLM critic -- the
+suspected necessary component -- does not matter, because looping is the wrong layer.
+
+**Gate-split (Correction #2 confirmed):** 41/200 not-improved queries NEVER triggered the gate
+(grounded-but-wrong scores high, exits as "good enough" -- the grounding gate is mis-targeted for
+the dominant failure). Of 99 gate-triggered, only 4-6 improved. The gate fires on the wrong
+population AND the mechanism doesn't help the population it does fire on. Fixing the gate alone
+cannot rescue looping -- a correctness gate would route the right cases, but re-synthesis would
+still drift them.
+
+**The unifying finding (confirmed 5 ways this arc):** the synthesis gap is COMPREHENSION-bound --
+the model has correct, grounded evidence and reasons to the wrong answer -- and is unreachable by
+ANY retrieval/structure/evidence-accumulation lever. Every such lever failed for the SAME reason
+(attacks access; the failure is comprehension):
+  1. Section chunking (F27/28) -- harmful, fragments evidence
+  2. Hierarchical chunking (F31) -- harmful on MAUD, corpus-dependent
+  3. Cross-reference graph (F33) -- wrong bottleneck, evidence already present
+  4. Multi-query (F36) -- hollow/destructive, no grounded gain
+  5. The repaired loop (this) -- accumulates evidence cleanly, still regresses via re-synthesis
+Plus reasoning-prompt levers tested and failed: CoT (F34, dead), Pro/stronger model (F34, null
+on hard cases -- capability is not the ceiling).
+
+**The characterized floor:** ~2-3 genuine comprehension cases per corpus (grounded-but-wrong,
+e.g. maud-0018 denied-present-provision, maud-0788 wrong-section) resist every tested lever.
+This is either the floor of flash-class synthesis on this corpus class, or requires a
+fundamentally different synthesis approach not yet found. The measurement framework's value:
+it CHARACTERIZED this floor precisely -- names what's left, why each cheaper fix doesn't touch
+it, and the bound.
+
+**Precludes:** Iterative retrieval / agentic looping as a synthesis-gap fix on this corpus class
+(dead even repaired). Rescuing the loop by changing only the gate (mechanism doesn't help the
+right population either). Reading the loop failure as a broken implementation (the rebuild
+worked; the failure is structural -- comprehension is not access). Final re-synthesis over wider
+context as a safe operation (it drifts -- the freeze-patch design avoided regeneration for exactly
+this reason; Correction #1 reintroduced it for measurement and it leaked).
+
+---
+
+### 2026-05-30 -- Finding 38: Critique-revise is a clean no-op on the decider; the synthesis gap is mostly ACCESS dressed as comprehension, not a reasoning problem
+
+**Decision:** Single-pass surgical critique-revise (claim-reasoning check against all retrieved
+chunks, correct-then-synthesize, same model) produces ZERO grounded-correct flips, zero
+regressions, zero drift across 130 queries. The reasoning-misalignment lever is exhausted. The
+synthesis gap is predominantly an ACCESS problem (evidence not retrieved), not a comprehension
+problem -- closing the reasoning-intervention arc.
+
+**Result:** Critic fired and corrected 18 claims (5 MAUD, 4 ContractNLI, 4 CUAD, 5 PrivacyQA),
+faithfulness held PERFECTLY (no drift -- the surgical-before-synthesis placement avoided the
+Finding-37 regeneration leak, validating that design). But ZERO INCORRECT->CORRECT flips. Three
+INCORRECT->PARTIAL nudges (maud-1331, privacy_qa-0022/0055/0140).
+
+**Why it no-op'd (the reframe):** the grounded-but-wrong residual is overwhelmingly ACCESS-MISS
+-- GT evidence NOT in the retrieved chunks (mostly CBF: right doc, zero GT span overlap; and DRM:
+wrong doc). The critic corrects reasoning OVER retrieved evidence; if the evidence was never
+retrieved, no reasoning correction can conjure it. The model faithfully reports what's not in
+its context.
+
+**Reconciliation with Finding 33 (comprehension, not access):** F33 sampled 5 cases, found 4/5
+had evidence present. This run (broader residual) finds mostly access-miss. Both true: the
+genuine-comprehension cases (evidence present, misread -- maud-0018 type) are a SMALL MINORITY;
+the BULK of grounded-but-wrong is access (incomplete/wrong evidence retrieved). "Grounded-but-
+wrong" was a misnomer -- it's "grounded-in-insufficient-evidence." The model grounds faithfully
+in what it has; what it has is incomplete; hence faithful + grounded + wrong.
+
+**Why EVERY reasoning lever failed (unified, the whole arc):** CoT (F34), stronger model (F34),
+decomposition (F34), the repaired loop (F37), critique-revise (this) -- all operate on the
+evidence in context; the evidence in context was the problem. Reasoning interventions cannot
+fix an access problem. The synthesis gap decomposes: large ACCESS component (retrieval-owned,
+within-doc CBF + DRM) + small genuine-COMPREHENSION floor (a handful of true misreads).
+
+**What critique-revise IS good for (keep as a tool, not a fix):** it flips comprehension cases
+and no-ops access cases -- making it a clean DIAGNOSTIC for the access/comprehension split, and
+its surgical-before-synthesis placement is drift-free (faithfulness held). Not a decider lever;
+a measurement tool + a validated drift-free correction pattern.
+
+**The relocated lever:** the recoverable residual is WITHIN-DOCUMENT ACCESS MISSES (CBF, GT span
+retrievable but ranked below top-8 -- the 9.8% systemic issue from the document-scoped-reranking
+diagnostic). This run re-motivates that as the DOMINANT residual (not a sideshow), reopening
+whether document-scoped reranking's noise-level rejection should be revisited now that access is
+confirmed the main problem. A RETRIEVAL lever, not reasoning.
+
+**Precludes:** Any further reasoning/synthesis intervention as a synthesis-gap fix (5 levers
+exhausted, all fail for the same root reason -- the problem is access). Calling the residual
+"comprehension" (it's mostly access). Reasoning the model toward evidence that wasn't retrieved.
+
+---
+
+### 2026-05-30 -- Finding 39: Selector mechanism VALIDATED but trigger-bottlenecked; access-miss is undetectable from the output, capping output-triggered detection at ~17%
+
+**Decision:** LLM-guided chunk promotion (retrieve wider pool, promote rank-9-30 GT chunk into
+top-8, re-synthesize) WORKS when invoked -- but the conditional trigger only fires on ~17% of
+recoverable cases, because access-miss leaves no signal in the output. The mechanism is proven;
+the trigger is the bottleneck, and it is fundamentally hard. Fork: fire unconditionally (test
+pending) vs accept the trigger ceiling.
+
+**Result (130 queries, selection-residual + routing-miss):**
+  - 3 promotions, 2 grounded-correct flips + 1 partial, ALL faith 1.00, ZERO drift, R@8-confirmed
+    (privacy_qa-0151 R@8 0.86, privacy_qa-0188 R@8 1.00, cuad-1580 R@8 1.00 -- real evidence
+    promoted, not affirmative-only artifact).
+  - Safety held: no false-triggers on correct denials (population pre-filtered INCORRECT); guard
+    held on ContractNLI routing-misses (1 triggered, 0 promoted -- correctly found nothing to
+    promote when GT doc not in pool); zero drift-trap flips.
+
+**The mechanism is validated:** promote-from-wider-pool, when fired, produces grounded-correct
+flips without faithfulness drift. The localization (Finding 38: residual is within-document
+selection) is correct and the lever addresses it.
+
+**The trigger is the bottleneck -- and WHY it's hard (the real finding):** 93/130 have recoverable
+GT (rank 9-30), but the trigger (denial-detection + presence-check) fired on only 22/130 (17%)
+and promoted 3. MAUD: 15/18 recoverable, 1 triggered. The reason: the model produces FAITHFUL,
+WELL-GROUNDED, confident claims about what IS in the top-8 -- no denial language, no unsupported
+citations -- EVEN WHEN the top-8 is missing the GT evidence. A wrong answer from incomplete
+evidence is OUTPUT-INDISTINGUISHABLE from a correct answer: both are fluent, grounded, cited,
+confident. The failure is in what ISN'T retrieved, which the output cannot reveal.
+
+**Why this caps ALL output-triggered approaches:** denial-detection, presence-check, the
+verification gate, the critique-revise critic -- every approach that inspects the OUTPUT for a
+sign of trouble under-fires, because the output has no sign of trouble. (maud-0018 fired in the
+dry run via "no tail provision" denial language; the full-run synthesis said "Tail Period is
+defined but..." -- acknowledged related evidence without denial, trigger missed it. Same query,
+nondeterministic phrasing, trigger fragility exposed.)
+
+**The fork:**
+- UNCONDITIONAL firing -- run the selector on EVERY query (sidesteps the undetectable trigger:
+  don't detect the failure, just check every query's rank-9-30 for better evidence). Cost is
+  per-query, not conditional. Test pending: does it recover most of the 93 WITHOUT regressing
+  currently-correct queries (the trigger was partly protecting them)?
+- ACCEPT the trigger ceiling -- ship the ~17% gain. Probably not worth a pipeline stage for
+  3 flips.
+
+**Precludes:** Treating output-triggered detection as sufficient for access-miss (it caps at
+~17% because the failure is output-invisible). Claiming the selector "doesn't work" (it works
+when fired -- the trigger is the bottleneck, not the mechanism). Reading the low flip count as
+mechanism failure rather than trigger under-firing.
+
+---
+
+### 2026-05-30 — Finding 39 UPDATE: Selector validated at headline scale — unconditional fire solves the undetectable-trigger problem
+
+**Decision:** The headline run (776 queries × 3 arms, all 4 corpora) ran the selector
+UNCONDITIONALLY on every Arm 1/2 query — resolving Finding 39's fork in favor of
+unconditional fire. The selector is a deployable, cost-bounded LLM reranker over the
+routed wider pool (rank 9-30 → top-8 promotion + re-synthesis on promotion only).
+
+**Two measurements, two populations — both needed:**
+
+  (A) Mechanism ceiling (130 INCORRECT residual, unconditional firing, post-fixes):
+    33 flips, ~6 irreducible regressions after re-synth-only-on-promotion +
+    smart-eviction fixes, NET +27, flip-to-regression ratio 5.5:1. This is the
+    mechanism's RECOVERY CEILING — how much it can fix when fired on the failure
+    population without the trigger bottleneck.
+
+  (B) In-pipeline behavior (776-query headline, all 4 corpora, deployed config):
+    23/776 queries triggered promotions (5 CNL, 11 PQA, 4 CUAD, 3 MAUD).
+    Of 23 promoted: 16 CORRECT, 2 PARTIAL, 5 INCORRECT (70% favorable).
+    Token cost overhead: ~1.0x (selector check is cheap; re-synthesis only on
+    promotion). Arm 0 (no selector, no routing, RRF) → Arm 1 (CC + routing +
+    selector) correctness: CNL +66, PQA +34, CUAD +49, MAUD +25 = +174 total
+    (full config-stack delta).
+
+  (A) measures what the selector CAN recover. (B) measures what it DOES recover
+  in the shipped pipeline on a mixed population (mostly-correct queries where the
+  selector correctly no-ops, plus the residual where it fires).
+
+**Why unconditional fire is the right fork:** Finding 39 proved the conditional
+trigger caps at ~17% because access-miss is output-invisible. Unconditional fire
+sidesteps the undetectable-trigger problem: don't try to detect the failure, just
+check every query's rank-9-30 for better evidence. Cost is negligible (selector
+check runs on all 776, re-synth fires on only 23 = 3.0% of queries). The trigger-
+via-no-op: run the selector always, let it discover there's nothing to promote on
+~97% of queries (a fast no-op), and catch the 3% where wider-pool evidence exists.
+
+**Precludes:** Conditional-trigger approaches to the selector (proven ceiling at
+~17%). Treating the selector as expensive (it's ~1.0x token overhead amortized).
+Omitting the selector from the shipped config. Citing ONLY (A) or (B) without the
+population label — they measure different things on different populations.
+
+---
+
+### 2026-05-30 — Finding 34 CORRECTION: Prior "Pro is null" was misconfigured — ALL prior Pro tests ran flash; corrected Pro is indistinguishable from flash within measured variance
+
+**Decision:** The original Finding 34 Arm A ("Pro synthesis") used PRO_MODEL =
+"deepseek-chat", which is a LEGACY ALIAS that routes to deepseek-v4-flash — the SAME
+model as Arms 0/1. Confirmed three ways: (1) DeepSeek docs state "deepseek-chat currently
+routing to deepseek-v4-flash non-thinking" (retiring 2026-07-24); (2) served_model field
+was not logged (harness only saved the requested model string, not the API response's model
+field — gap now fixed); (3) $0.00 on deepseek-v4-pro billing line after the original run.
+
+**Every prior "Pro" test in this project's history was actually flash.** Finding 34's
+"Pro is a NULL on the hard cases" conclusion was comparing flash-vs-flash.
+
+**Corrected Pro run (deepseek-v4-pro, verified):**
+  Verification: served_model = "deepseek-v4-pro" on 776/776 records; latency 2.3-4.2x
+  flash (impossible if same model); billing line must confirm non-zero (user to verify).
+
+  Correctness (span-informed judge, same judge both arms):
+    Corpus        Flash (Arm 1)   Pro (Arm 2)   Delta
+    ContractNLI   70.6%           67.0%         -3.6pp
+    PrivacyQA     58.2%           56.7%         -1.5pp
+    CUAD          74.2%           72.7%         -1.5pp
+    MAUD          72.2%           72.2%         +0.0pp
+    Average       68.8%           67.2%         -1.7pp
+
+  Faithfulness (holistic groundedness):
+    ContractNLI   93.8%           94.4%         +0.6pp
+    PrivacyQA     97.0%           98.1%         +1.1pp
+    CUAD          95.7%           95.3%         -0.4pp
+    MAUD          95.4%           97.6%         +2.2pp
+    Average       95.5%           96.4%         +0.9pp
+
+  Cost:
+    Tokens/query: flash ~2842 avg, Pro ~3012 avg (+6%)
+    Latency:      flash ~12.8s avg, Pro ~46.8s avg (2.3-4.2x)
+
+**Corrected conclusion:** Pro is INDISTINGUISHABLE from flash within measured variance
+(±2-4pp, see Finding 40). The -1.7pp correctness delta is within the synthesis variance
+band. Faithfulness is marginally better (+0.9pp, also within noise). Flash is the correct
+default: no quality penalty, 2.3-4.2x latency penalty avoided. The aggregate is unmoved
+by model tier.
+
+**What this does NOT say:** "Pro is definitively worse" (the deltas are within noise) or
+"capability is definitively not the ceiling" (the comprehension-residual is under-powered
+in the full-set average — 5 hard cases diluted across 194 queries). What it DOES say:
+flash and Pro produce statistically indistinguishable results on this task at this scale.
+Paying 2.3-4.2x latency for ±noise is not justified.
+
+**Precludes:** Citing Finding 34's original "Pro is null on hard cases" as proven (it was
+flash-vs-flash). Pursuing deepseek-v4-pro on Phase 8 synthesis (indistinguishable from
+flash at 2.3-4.2x cost). Using "deepseek-chat" as a model ID anywhere (it is a legacy
+alias for flash, not Pro).
+
+---
+
+### 2026-05-30 — Finding 40: Measured synthesis-variance band is ±2-4pp grounded-correct (from the accidental flash-vs-flash duplicate)
+
+**Decision:** The original Arm 2 (PRO_MODEL = "deepseek-chat") accidentally ran flash,
+producing a controlled flash-vs-flash duplicate: same model, same retrieval, same selector,
+same judge — only synthesis nondeterminism differs. This gives a clean measurement of the
+synthesis variance floor.
+
+**Flash-vs-flash correctness deltas (Arm 1 vs original Arm 2, both flash):**
+  ContractNLI   -2.1pp
+  PrivacyQA     -3.6pp
+  CUAD          -2.6pp
+  MAUD          -1.0pp
+
+**Flash-vs-flash faithfulness deltas:**
+  ContractNLI   +0.0pp
+  PrivacyQA     +0.3pp
+  CUAD          -0.6pp
+  MAUD          +0.5pp
+
+**The variance band:** Grounded-correct has a ±2-4pp synthesis variance floor from
+model nondeterminism alone (same prompt, same model, same context, different random
+seed). Faithfulness is tighter at ±0.6pp. Any quality delta below these bands is noise
+and must not be narrated as an improvement or regression.
+
+**This joins the R@8 variance floor (±0.50pp, Finding 4 — Voyage embedding
+nondeterminism) as a hard rule on reporting.** Sub-band deltas on either metric are
+noise. The correctness band is much wider than the retrieval band because synthesis
+amplifies retrieval variance through the LLM's nondeterministic generation.
+
+**Why:** Reporting a -1.7pp Pro-vs-flash correctness delta as "Pro is worse" would be
+wrong — it is within the ±2-4pp band. Similarly, a +2pp improvement from any config
+change must exceed 4pp to be attributable. (The config-stack delta Arm 0→Arm 1 is +25
+to +66pp per corpus, well above the band — those are real.)
+
+**Precludes:** Claiming quality deltas below ±4pp correctness or ±0.6pp faithfulness
+as real. Designing experiments that expect to resolve sub-band differences.
+
+---
+
+### 2026-05-30 — Finding 41: Phase-9 verification has a negation false-positive rate of 0.20-0.33 on MAUD grounded claims; holistic judge is the faithfulness headline, not Phase 9
+
+**Decision:** Phase 9's NLI-based verification (CONTRADICTED/SUPPORTED/NOT_MENTIONED)
+produces false positives on legal negation language ("shall not", "does not apply",
+"no obligation") in MAUD. Claims that are correctly grounded in the retrieved context
+are flagged CONTRADICTED at rates of 0.20-0.33 because the NLI model reads negation
+in the legal text as contradicting the claim about the negation.
+
+**This is conservative by design** — the NLI model errs toward flagging rather than
+missing contradictions. But it makes Phase 9's CONTRADICTED rate unusable as a
+faithfulness metric on corpora with pervasive legal negation.
+
+**The fix is already shipped:** holistic faithfulness (judge_faithfulness.py, Finding 30)
+is the canonical faithfulness headline. It judges each claim against the full retrieved
+context using an LLM that understands legal negation in context. Phase 9's deterministic
+verification remains in the pipeline as a conservative safety check (its false positives
+are safe — they flag too much, not too little) but its CONTRADICTED rate is NOT a
+faithfulness metric.
+
+**Precludes:** Using Phase-9 CONTRADICTED counts as a faithfulness number in reporting.
+Attempting to "fix" Phase 9 negation handling (the NLI model is conservative by design;
+an LLM judge already handles this in Layer 2). Blocking on Phase-9 false positives for
+deployment.
+
+---
+
+### 2026-05-30 — Finding 42: Served-model logging fix — harness now logs the API-served model, not just the requested model ID
+
+**Decision:** The synthesis harness (run_headline.py) previously saved only the REQUESTED
+model string (the constant passed to the API call) in the output record's "model" field.
+It did not capture the API response's "model" field, which reports what model ACTUALLY
+SERVED the request. This gap allowed the deepseek-chat legacy alias to hide — the record
+said "deepseek-chat" (the request), but the API served deepseek-v4-flash (identical to
+the flash arm).
+
+**Fix:** synthesize() now extracts served_model from the instructor raw response:
+    served_model = getattr(in_tok, 'model', None)
+and writes it as a distinct "served_model" field in every output record, alongside the
+existing "model" field (requested model, kept for backwards compatibility).
+
+**Verification protocol (mandatory before reporting any model-tier comparison):**
+  1. served_model field in saved records must match the intended model
+  2. Latency signature must be consistent with the tier (Pro is 2.3-4.2x flash)
+  3. Billing line for the tier must show non-zero spend
+
+**Why this matters:** Without served-model logging, a model-ID alias change on the
+provider side silently invalidates an entire experimental arm. This happened: every "Pro"
+test in the project's history was actually flash, undetected until the billing and docs
+were checked manually. The fix is a two-line instrumentation change that makes the
+failure mode visible in the saved data.
+
+**Precludes:** Running model-tier comparisons without checking the served_model field
+in the output. Trusting the requested model ID as ground truth for what was served.
+
+---
+
+### 2026-05-30 — Finding 43: Headline numbers are a CONFIG-STACK delta (CC + routing + selector over RRF), NOT a full-system delta; do not merge with the 25.8%→75.3% number
+
+**Decision:** The headline measurement run (3 arms × 4 corpora × 194 queries) measures
+the config-stack delta: CC fusion + document routing + unconditional selector over the
+RRF baseline, with SAC chunking HELD CONSTANT across all arms. This is NOT the full v1→v2
+system delta.
+
+**Headline correctness (Arm 0 baseline → Arm 1 best-flash, span-informed judge):**
+  ContractNLI   36.6% → 70.6%   (+34.0pp)
+  PrivacyQA     40.7% → 58.2%   (+17.5pp)
+  CUAD          49.0% → 74.2%   (+25.3pp)
+  MAUD          59.3% → 72.2%   (+12.9pp)
+
+**The 25.8%→75.3% ContractNLI number (from Finding 24) is a DIFFERENT measurement:**
+that was the full-system delta including SAC chunking, measured on ContractNLI only, with
+a different baseline (pre-SAC fixed-stride). The headline's 36.6%→70.6% ContractNLI delta
+starts from the SAC-indexed RRF baseline, which is already much higher than the pre-SAC
+starting point. These two numbers are NOT additive and must NOT be cited together as if
+they measure the same thing.
+
+**External comparison (retrieval metrics only, vs published RCTS baselines):**
+  ContractNLI   P@1 0.362  R@8 0.795  (RCTS: P@1 0.088, R@8 0.503)
+  MAUD          P@1 0.267  R@8 0.762  (RCTS: P@1 0.027, R@8 0.062)
+  CUAD          P@1 0.388  R@8 0.813  (no published baseline)
+  PrivacyQA     P@1 0.286  R@8 0.563  (no published baseline)
+These are deterministic retrieval metrics on identical queries and are directly comparable
+to published baselines. Answer correctness is NOT comparable (different judges, prompts,
+models).
+
+**Precludes:** Quoting headline config-stack deltas alongside the full-system 25.8%→75.3%
+number. Claiming the headline measures "v1 vs v2." Comparing answer-correctness numbers
+across different judge configurations.

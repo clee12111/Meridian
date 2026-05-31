@@ -19,8 +19,8 @@ until v2 is demonstrably better. One gate remains:
   Tier A measurement produces signal on a non-annotated corpus (FiQA or
   NFCorpus) — NOT STARTED, the open transferability item.
 (Prior conditions resolved: agent runs all 10 phases on LegalBench ✓
-COMPLETE; Phase 10 vs single-shot measured at +1.8pp / +68% compute,
-single-shot preferred — Finding 18.)
+COMPLETE; Phase 10's +1.8pp / +68% compute was a broken mechanism,
+not inherent low value — Finding 35. Loop under redesign.)
 Until the transfer gate is met: v1 ships, v2 builds.
 
 ---
@@ -34,7 +34,16 @@ Phases 1-2 run once per corpus. Phases 3-10 run per query.
   1. Chunking              — fixed-size / semantic / section-aware / agentic
   2. Indexing              — Qdrant + voyage-4 + BM25 + HNSW (voyage-4-large
                             reserved for final headline run only)
-  3. Query Understanding   — rewriting / expansion / decomposition / HyDE
+  3. Query Understanding   — OFF by default (Finding 36: static pre-
+                            retrieval query transformation rejected —
+                            rewrite net-negative on synthesis, multi-query
+                            doubled ContractNLI DRM / hollow on MAUD,
+                            expansion scoped out). Raw query to retrieval.
+                            CRITICAL DISTINCTION: "rewrite off" governs the
+                            INITIAL query only; the loop's responsive,
+                            routed-doc-scoped re-query (Phase 10) is a
+                            DIFFERENT, sanctioned mechanism — do not strip
+                            it when disabling Phase 3.
   4. Retrieval             — dense + sparse channels
   5. Fusion                — RRF or convex combination
   6. Reranking             — cross-encoder over top 25-50
@@ -104,6 +113,13 @@ Measurement never depends on the agent. Agent never bypasses measurement.
    default, --strict for citation-precision diagnostic). Layer 2 never
    contaminates Layer 1. (Finding 20 established the boundary; Finding 30
    formalized the two-regime faithfulness design.)
+   **Scope clarification:** the deterministic MEASUREMENT LAYER stays
+   LLM-free (the trust anchor). The SYSTEM — synthesis (Phase 8), loop
+   steering (Phase 10 critic gate), LLM-based verification — can be
+   fully hybrid/non-deterministic. Measurement-floor deterministic;
+   steering allowed to be LLM. This pre-authorizes an LLM critic gate
+   in Phase 10 provided it never feeds back into Layer-1 taxonomy or
+   Layer-2 metrics (Finding 35).
 2. **Per-span scoring, not merged-character-set.** Finding 3 fix; do not regress.
 3. **Sub-floor deltas are noise.** R@8 has 0.50pp variance floor (Voyage
    embedding nondeterminism). Never narrate sub-floor changes as improvements.
@@ -129,9 +145,15 @@ Measurement never depends on the agent. Agent never bypasses measurement.
 11. **Cited-span is a secondary metric**, valid only on extractive corpora
     (where cited_text is verbatim-findable). Never make it primary where
     extraction failure exceeds ~25%. (Finding 19.)
-12. **Single-shot preferred.** Loop adds +1.8pp at +68% compute. Use
-    single-shot as default; loop only when SGP recovery justifies cost.
-    (Finding 18.)
+12. **Loop mechanism under redesign.** Finding 18's +1.8pp/+68% compute
+    measured a BROKEN mechanism: full-replacement re-query (64% no-op,
+    14% regression) + 86% document drift (unscoped re-query undoes
+    routing). Not the loop's ceiling — a broken re-roll producing
+    near-noise (Finding 35). Redesign: delta retrieval + accumulate
+    (union not replace) + scope re-query to routed top-3 docs +
+    freeze passed claims + patch only failed claims + CC-fusion-merge
+    (NOT reranker). Single-shot remains the shipped default until the
+    redesigned loop is validated.
 13. **Document routing ALWAYS-ON (domain-agnostic policy).** Routing
     helps all four corpora at the answer level (+1.0 to +12.9pp, never
     hurts); benefit tracks DRM rate (largest on ContractNLI). The system
@@ -205,8 +227,8 @@ Two failure modes to actively counter:
 correctness validated end-to-end. All four LegalBench-RAG corpora
 indexed on voyage-4, swept, judged.
 
-**Best config:** SAC + NoRerank + CC(per-corpus α) + always-ON
-hybrid routing(top-3) + single-shot.
+**Best config:** SAC + NoRewrite + NoRerank + CC(per-corpus α) +
+always-ON hybrid routing(top-3) + single-shot.
 
 **Answer correctness (span-informed judge, routing-ON):**
   ContractNLI  75.3%   (v1 baseline 25.8%, honest delta +49.5pp)
@@ -260,6 +282,10 @@ chunking (retrieve tight children, feed parent context) was the
 indicated next lever but also tested negative (Finding 31). Both
 retrieval-unit approaches failed; the synthesis bottleneck is
 comprehension, not access (Finding 33). See Findings 27-28, 31, 33.
+Optimal chunk granularity is corpus-dependent (tracks answer span-
+length, Finding 32): no universal choice. Fixed-stride is the
+MAUD-safe shipped default; hierarchy is a CUAD-class opt-in, not
+default.
 
 **Faithfulness (Layer 2, LLM-judged):**
 Holistic groundedness is the canonical default: each claim judged
@@ -282,30 +308,47 @@ numbers are invalid.
 **Resume swap conditions:**
 1. Agent runs all 10 phases on LegalBench  ✓ COMPLETE
 2. Tier A measurement on non-annotated corpus  — not started
-3. Phase 10 measurably beats single-shot  — measured: +1.8pp at
-   +68% compute (Finding 18). Marginal. Single-shot preferred.
+3. Phase 10 measurably beats single-shot  — Finding 18's +1.8pp was
+   a broken mechanism (Finding 35). Loop redesigned; under active test.
 
 **Next (in priority order):**
-1. Phase 8 synthesis fix — INCORRECT+FAITHFUL cluster (grounded but
-   wrong: right evidence, wrong conclusion). 18-43 queries per corpus
-   under holistic judge (CUAD 34, ContractNLI 31, MAUD 18, PrivacyQA 43).
-   Material cluster. Now confirmed as THE bottleneck: retrieval-unit
-   changes (section chunking F28, hierarchy F31), cross-reference graph
-   (F33), and the agentic loop have all been tested/analyzed and do NOT
-   address it — the failure is comprehension, not access. Levers:
-   chain-of-thought / structured reasoning prompt, or a stronger
-   synthesis model, or both.
-2. BEIR / non-legal transfer — Tier A measurement on FiQA or
+1. Redesigned loop — delta-accumulate retrieval scoped to routed
+   top-3 docs + freeze-patch synthesis. The broken loop (Finding 35)
+   is the mechanism fix; it targets the access-limited residual
+   (maud-0684, 1114, 1452 — GT chunk retrievable but ranked 9-30
+   within the right doc). Expect ~0 document drift and monotonic
+   improvement. Faithfulness is the guardrail (per Arm-C lesson,
+   Finding 34).
+2. Synthesis gap — DECOMPOSED into four types (Finding 34):
+   (a) retrieval-quality (rewrite degrading chunks) — FIXED by
+   rewrite-OFF (Finding 36, shipped);
+   (b) access-limited (answer needs wider context) — target for
+   redesigned loop (#1 above);
+   (c) entity-confusion (~1 case, partially helped by SAC framing);
+   (d) genuine comprehension residual (~5 hard cases, INCORRECT
+   across all five arms including Pro). CoT tested dead; Pro tested
+   null (zero hard-case flips — capability is NOT the ceiling,
+   Finding 34). Do NOT pursue frontier model on Phase 8.
+3. BEIR / non-legal transfer — Tier A measurement on FiQA or
    NFCorpus. The open transferability condition. Holistic faithfulness
    (Finding 30) is the metric designed for this regime.
-3. Reasoning-based loop gate (vs current deterministic grounding
-   gate) — the agentic-loop frontier piece.
-4. Final headline run on voyage-4-large once config locked.
+4. LLM critic gate for the loop — ONLY after the delta-accumulate-
+   scope + freeze-patch mechanism is verified. Gate is a control-flow
+   signal (allowed to be LLM/hybrid); must never feed back into Layer-1
+   taxonomy or Layer-2 metrics (Finding 35).
+5. Final headline run on voyage-4-large once config locked.
 
 **Known issues / open flags:**
-- INCORRECT+FAITHFUL synthesis failures — Phase 8 answers wrong
-  despite having correct, grounded evidence (18-43 per corpus).
-  The largest remaining error cluster. Reasoning-layer fix needed.
+- INCORRECT+FAITHFUL synthesis gap — DECOMPOSED (Finding 34): (a)
+  retrieval-quality from rewrite — FIXED by rewrite-OFF (Finding 36);
+  (b) access-limited — target for redesigned loop; (c) entity-
+  confusion (~1 case); (d) genuine comprehension residual (~5 hard
+  cases, INCORRECT across all arms including Pro — capability is NOT
+  the ceiling). CoT dead, Pro null. Do NOT pursue frontier model.
+- Phase 3 rewrite is OFF (Finding 36) — all static pre-retrieval
+  query transformation (rewrite/expansion/multi-query) rejected on
+  this corpus class. Raw query to retrieval. Does NOT affect the
+  loop's responsive, routed-doc-scoped re-query (Phase 10).
 - Phase 9 CONTRADICTED: false positive rate on legal negation
   ("shall not") — conservative by design, NLI model fix deferred
 - Cited-span extraction fails ~8% (non-DRM) — LLM paraphrases
@@ -371,6 +414,6 @@ numbers are invalid.
 
 ## Decision log
 
-Decisions are recorded in docs/DECISIONS.md (Findings 1-30 + corrections).
+Decisions are recorded in docs/DECISIONS.md (Findings 1-36 + corrections).
 Append new entries there. Format: date, decision, why, precludes. See that
 file for full history and format instructions.
