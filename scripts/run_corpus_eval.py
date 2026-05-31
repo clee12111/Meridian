@@ -112,12 +112,17 @@ def main():
                    help="Hierarchical parquet (enables parent swap in Phase 7). "
                         "Children from this parquet are used for retrieval; "
                         "parents are fed to the model via Phase 7 dedup.")
+    p.add_argument("--rerank", action="store_true",
+                   help="Enable voyage rerank-2.5 (document-scoped with routing)")
     args = p.parse_args()
 
     cfg = CORPUS_CONFIG[args.corpus]
 
     os.environ["MERIDIAN_EMBED_MODEL"] = "voyage-4"
-    os.environ["MERIDIAN_NO_RERANK"] = "1"
+    if not args.rerank:
+        os.environ["MERIDIAN_NO_RERANK"] = "1"
+    elif "MERIDIAN_NO_RERANK" in os.environ:
+        del os.environ["MERIDIAN_NO_RERANK"]
     os.environ["MERIDIAN_CC_ALPHA"] = str(args.chunk_alpha)
 
     if args.routing_topk:
