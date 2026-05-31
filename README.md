@@ -32,7 +32,9 @@ Ruler calibrated against LegalBench-RAG (arXiv 2408.10343) on 3/4 corpora.
 
 ![Architecture](./figures/fig1_architecture.png)
 
-The pipeline spine runs top-to-bottom (ingestion through verification). The measurement layer observes at two points — Layer 1 scores the *retrieval output* (deterministic, no LLM), Layer 2 scores the *answer output* (LLM-judged, separate). The arrows are one-way: measurement observes the pipeline; the pipeline never bypasses measurement. This separation is the architecture's point — when a number moves, you know which side changed.
+Sequential pipeline spine: query enters at the top, flows through ingestion, indexing, routing (document top-k filter), retrieval (dense + sparse channels), CC fusion (score-weighted merge), selector (LLM chunk promotion from the wider pool), synthesis (LLM answer + citations), verification (deterministic citation check), and out as an answer. The selector taps the wider retrieval pool (ranks 9-30) and promotes chunks into the top-8 context on evidence of unsupported claims. The diagram shows a verification-to-synthesis loop — this is a capability; all headline numbers use single-shot (Finding 18: loop is marginal, +1.8pp at +68% compute).
+
+The measurement layer observes at two points via one-way arrows: Layer 1 (deterministic span taxonomy) observes the fusion/retrieval output, Layer 2 (LLM-judged correctness and faithfulness) observes the synthesized answer. The pipeline never reads from measurement — this separation is the architecture's point. When a number moves, you know which side changed.
 
 ---
 
